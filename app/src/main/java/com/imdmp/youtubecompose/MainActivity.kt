@@ -10,10 +10,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.imdmp.datalibrary.SampleDataProvider
 import com.imdmp.youtubecompose.ui.theme.YoutubeComposeTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.schabi.newpipe.extractor.kiosk.KioskInfo
+import org.schabi.newpipe.extractor.services.youtube.YoutubeService
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        GlobalScope.launch(Dispatchers.IO) {
+            val info = KioskInfo.getInfo(YoutubeService(0),"https://www.youtube.com/feed/trending")
+
+
+            Timber.d("got this: $info" )
+        }
         setContent {
             YoutubeComposeTheme {
                 // A surface container using the 'background' color from the theme
@@ -24,6 +36,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 
 @Composable
 fun Greeting(name: String) {
