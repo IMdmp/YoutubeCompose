@@ -8,29 +8,24 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.imdmp.datalibrary.SampleDataProvider
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
+import com.imdmp.youtubecompose.player.PlayerDataSource
 import com.imdmp.youtubecompose.ui.theme.YoutubeComposeTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.schabi.newpipe.extractor.kiosk.KioskInfo
-import org.schabi.newpipe.extractor.services.youtube.YoutubeService
-import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        GlobalScope.launch(Dispatchers.IO) {
-            val info = KioskInfo.getInfo(YoutubeService(0),"https://www.youtube.com/feed/trending")
 
+        val dataSource = PlayerDataSource(
+            this, DownloaderImpl.USER_AGENT,
+            DefaultBandwidthMeter.Builder(this).build()
+        )
 
-            Timber.d("got this: $info" )
-        }
         setContent {
             YoutubeComposeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    ListScreen()
+                    VideoPlayer(dataSource)
                 }
             }
         }

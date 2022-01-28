@@ -74,4 +74,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:3.12.13"
     implementation 'androidx.preference:preference:1.1.1'
 
+    def exoPlayerVersion = '2.14.2'
+    implementation "com.google.android.exoplayer:exoplayer:${exoPlayerVersion}"
+    implementation "com.google.android.exoplayer:extension-mediasession:${exoPlayerVersion}"
 }
