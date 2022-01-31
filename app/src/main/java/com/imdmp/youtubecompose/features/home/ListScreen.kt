@@ -1,13 +1,13 @@
-package com.imdmp.youtubecompose
+package com.imdmp.youtubecompose.features.home
 
-import android.content.ClipData
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -25,19 +25,40 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.skydoves.landscapist.glide.GlideImage
+import com.imdmp.youtubecompose.R
 
 @Composable
-fun ListScreen(){
-    val dataItem = DataItem("https://random.dog/ea60dc85-258d-471b-8299-3fdb1c9e8319.jpg",title = "Top 10 Facts","Lemmino")
-    Column {
-        VideoItem(item = dataItem)
+fun ListScreen(homeListViewModel: HomeListViewModel) {
+    val videoListState = homeListViewModel.videoList.observeAsState()
+
+    videoListState.value?.let { ListScreen(it) }
+}
+
+@Composable
+fun ListScreen(dataList: List<DataItem>) {
+
+    LazyColumn {
+        item {
+            Toolbar()
+        }
+        items(dataList) { data ->
+            VideoItem(item = data)
+        }
+    }
+}
+
+
+@Composable
+fun Toolbar() {
+    Row(Modifier.padding(8.dp)) {
+        Text("Youtube Compose", fontSize = 22.sp)
     }
 }
 
 @Composable
-fun VideoItem(item: DataItem){
+fun VideoItem(item: DataItem) {
     ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
-        val (image,authorImage,title,button,subtitle) = createRefs()
+        val (image, authorImage, title, button, subtitle) = createRefs()
 
         GlideImage(
             imageModel = item.imageUrl,
@@ -111,16 +132,16 @@ fun VideoItem(item: DataItem){
 
 @Composable
 @Preview
-fun PreviewVideoItem(){
-    val dataItem = DataItem("",title = "Top 10 Facts","Lemmino")
+fun PreviewVideoItem() {
+    val dataItem = DataItem("", title = "Top 10 Facts", "Lemmino")
     VideoItem(dataItem)
 }
 
 data class DataItem(
-    val imageUrl:String,
-    val title :String = "",
-    val author:String ="",
-    val viewCount:Int = 0
+    val imageUrl: String,
+    val title: String = "",
+    val author: String = "",
+    val viewCount: Int = 0
 )
 
 //@Composable

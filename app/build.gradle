@@ -77,4 +77,6 @@ dependencies {
     def exoPlayerVersion = '2.14.2'
     implementation "com.google.android.exoplayer:exoplayer:${exoPlayerVersion}"
     implementation "com.google.android.exoplayer:extension-mediasession:${exoPlayerVersion}"
+
+    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha02")
 }

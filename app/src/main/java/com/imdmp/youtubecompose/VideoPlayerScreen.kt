@@ -20,6 +20,7 @@ import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
 import com.imdmp.youtubecompose.player.PlayerDataSource
+import com.imdmp.youtubecompose.utils.buildMediaSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,8 +35,6 @@ import java.lang.IllegalStateException
 @Composable
 fun VideoPlayer(dataSource: PlayerDataSource) {
     Box(modifier = Modifier.fillMaxSize()) {
-        val sampleVideo =
-            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
         val context = LocalContext.current
         val player = SimpleExoPlayer.Builder(context).build()
         val playerView = PlayerView(context)
@@ -43,75 +42,23 @@ fun VideoPlayer(dataSource: PlayerDataSource) {
             mutableStateOf(true)
         }
         playerView.player = player
-        LaunchedEffect(player) {
-            this.launch(Dispatchers.IO) {
-                val mediaSource = getSampleMediaItem(dataSource)
-                withContext(Dispatchers.Main) {
-                    player.setMediaSource(mediaSource)
-                }
-            }
+//        LaunchedEffect(player) {
+//            this.launch(Dispatchers.IO) {
+//                val mediaSource = getSampleMediaItem(dataSource)
+//                withContext(Dispatchers.Main) {
+//                    player.setMediaSource(mediaSource)
+//                }
+//            }
+//
+//
+//            player.prepare()
+//            player.playWhenReady = playWhenReady
+//
+//        }
 
-
-            player.prepare()
-            player.playWhenReady = playWhenReady
-
-        }
         AndroidView(factory = {
             playerView
         })
     }
 }
 
-suspend fun getSampleMediaItem(dataSource: PlayerDataSource): MediaSource {
-    val info = KioskInfo.getInfo(YoutubeService(0), "https://www.youtube.com/feed/trending")
-
-    //extract 'feed'
-    val sampleLink = "https://www.youtube.com/watch?v=W7g82nFdWig"
-    Timber.d("got this: $info")
-
-    // extract video streams
-    val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), sampleLink)
-
-//            val tag = MediaSourceTag(info, streamInfo, 0)
-
-
-    Timber.d("stream info: $streamInfo")
-    val sampleSource = streamInfo.videoOnlyStreams.get(0)
-
-    //prepare exoplayer media source
-    val sampleMediaSource = buildMediaSource(
-        dataSource, sampleSource.url, "",
-        MediaFormat.getSuffixById(sampleSource.getFormatId())
-    )
-    Timber.d("mediaSource; $sampleMediaSource")
-
-    return sampleMediaSource
-
-}
-
-fun buildMediaSource(
-    dataSource: PlayerDataSource,
-    sourceUrl: String,
-    cacheKey: String,
-    overrideExtension: String,
-): MediaSource {
-    val uri = Uri.parse(sourceUrl)
-    @C.ContentType val type: Int =
-        if (TextUtils.isEmpty(overrideExtension)) Util.inferContentType(uri) else Util.inferContentType(
-            ".$overrideExtension"
-        )
-    val factory: MediaSourceFactory
-    factory = when (type) {
-        C.TYPE_SS -> dataSource.getLiveSsMediaSourceFactory()
-        C.TYPE_DASH -> dataSource.getDashMediaSourceFactory()
-        C.TYPE_HLS -> dataSource.getHlsMediaSourceFactory()
-        C.TYPE_OTHER -> dataSource.getExtractorMediaSourceFactory()
-        else -> throw IllegalStateException("Unsupported type: $type")
-    }
-    return factory.createMediaSource(
-        MediaItem.Builder()
-            .setUri(uri)
-            .setCustomCacheKey(cacheKey)
-            .build()
-    )
-}
