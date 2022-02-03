@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose
+package com.imdmp.youtubecompose.features.player
 
 import android.net.Uri
 import android.text.TextUtils
@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
+import com.imdmp.youtubecompose.features.home.DataItem
 import com.imdmp.youtubecompose.player.PlayerDataSource
 import com.imdmp.youtubecompose.utils.buildMediaSource
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +34,7 @@ import timber.log.Timber
 import java.lang.IllegalStateException
 
 @Composable
-fun VideoPlayer(dataSource: PlayerDataSource) {
+fun VideoPlayer(dataSource: PlayerDataSource,dataItem: DataItem) {
     Box(modifier = Modifier.fillMaxSize()) {
         val context = LocalContext.current
         val player = SimpleExoPlayer.Builder(context).build()
@@ -42,23 +43,51 @@ fun VideoPlayer(dataSource: PlayerDataSource) {
             mutableStateOf(true)
         }
         playerView.player = player
-//        LaunchedEffect(player) {
-//            this.launch(Dispatchers.IO) {
-//                val mediaSource = getSampleMediaItem(dataSource)
-//                withContext(Dispatchers.Main) {
-//                    player.setMediaSource(mediaSource)
-//                }
-//            }
-//
-//
-//            player.prepare()
-//            player.playWhenReady = playWhenReady
-//
-//        }
+        LaunchedEffect(player) {
+            this.launch(Dispatchers.IO) {
+                val mediaSource = getMediaItem(dataSource,dataItem)
+                withContext(Dispatchers.Main) {
+                    player.setMediaSource(mediaSource)
+                }
+            }
+
+            player.prepare()
+            player.playWhenReady = playWhenReady
+
+        }
 
         AndroidView(factory = {
             playerView
         })
     }
+}
+
+fun getMediaItem(dataSource: PlayerDataSource, dataItem: DataItem): MediaSource {
+
+    val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), dataItem.streamUrl)
+
+    val firstSource = streamInfo.videoOnlyStreams!![0]
+    val uri = Uri.parse(firstSource.url)
+
+    val overrideExtension = MediaFormat.getSuffixById(firstSource.formatId)
+    @C.ContentType val type: Int =
+        if (TextUtils.isEmpty(overrideExtension)) Util.inferContentType(uri) else Util.inferContentType(
+            ".$overrideExtension"
+        )
+
+
+    val factory: MediaSourceFactory = when (type) {
+        C.TYPE_SS -> dataSource.liveSsMediaSourceFactory
+        C.TYPE_DASH -> dataSource.dashMediaSourceFactory
+        C.TYPE_HLS -> dataSource.hlsMediaSourceFactory
+        C.TYPE_OTHER -> dataSource.extractorMediaSourceFactory
+        else -> throw IllegalStateException("Unsupported type: $type")
+    }
+
+    return factory.createMediaSource(
+        MediaItem.Builder()
+            .setUri(uri)
+            .build()
+    )
 }
 

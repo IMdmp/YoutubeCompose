@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav"
+    app:startDestination="@id/homeListFragment">
+
+    <fragment
+        android:id="@+id/homeListFragment"
+        android:name="com.imdmp.youtubecompose.features.home.HomeListFragment"
+        android:label="HomeListFragment" >
+        <action
+            android:id="@+id/action_homeListFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.imdmp.youtubecompose.features.player.PlayerFragment"
+        android:label="PlayerFragment" >
+        <argument
+            android:name="dataItem"
+            app:argType="com.imdmp.youtubecompose.features.home.DataItem"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
+</navigation>

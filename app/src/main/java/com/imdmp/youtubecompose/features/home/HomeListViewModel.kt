@@ -28,8 +28,7 @@ class HomeListViewModel : ViewModel() {
                             imageUrl = streamInfoItem.thumbnailUrl,
                             title = streamInfoItem.name,
                             author = streamInfoItem.uploaderName,
-                            viewCount = streamInfoItem.viewCount.toInt()
-                        )
+                            viewCount = streamInfoItem.viewCount.toInt(),streamInfoItem.url)
                     }
             }
         }

@@ -32,6 +32,16 @@ class YoutubeCompose : Application() {
             client.start()
         }
 
+        //todo:
+        // convert all the other activities to fragment and use navigation components
+        // use navigation components.
+        // use dagger2- hilt to inject components.
+        // add listeners to handle changing.
+        // implement search
+        // add bottom nav
+        // integrate google account to get feed?
+        // integrate to add subscriptions?
+
     }
 
     fun getPreferredLocalization(

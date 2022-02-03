@@ -1,6 +1,7 @@
 package com.imdmp.youtubecompose.features.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,21 +29,21 @@ import com.skydoves.landscapist.glide.GlideImage
 import com.imdmp.youtubecompose.R
 
 @Composable
-fun ListScreen(homeListViewModel: HomeListViewModel) {
+fun ListScreen(homeListViewModel: HomeListViewModel, listScreenActions: ListScreenActions) {
     val videoListState = homeListViewModel.videoList.observeAsState()
 
-    videoListState.value?.let { ListScreen(it) }
+    videoListState.value?.let { ListScreen(it, listScreenActions) }
 }
 
 @Composable
-fun ListScreen(dataList: List<DataItem>) {
+fun ListScreen(dataList: List<DataItem>, listScreenActions: ListScreenActions) {
 
     LazyColumn {
         item {
             Toolbar()
         }
         items(dataList) { data ->
-            VideoItem(item = data)
+            VideoItem(item = data, listScreenActions)
         }
     }
 }
@@ -55,9 +56,27 @@ fun Toolbar() {
     }
 }
 
+interface VideoItemActions {
+
+    companion object {
+        fun default(): VideoItemActions = object : VideoItemActions {
+            override fun videoItemSelected(dataItem: DataItem) {
+                TODO("Not yet implemented")
+            }
+
+        }
+    }
+
+    fun videoItemSelected(dataItem: DataItem)
+}
+
 @Composable
-fun VideoItem(item: DataItem) {
-    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+fun VideoItem(item: DataItem, videoItemActions: VideoItemActions) {
+    ConstraintLayout(modifier = Modifier
+        .fillMaxWidth()
+        .clickable {
+            videoItemActions.videoItemSelected(item)
+        }) {
         val (image, authorImage, title, button, subtitle) = createRefs()
 
         GlideImage(
@@ -133,16 +152,9 @@ fun VideoItem(item: DataItem) {
 @Composable
 @Preview
 fun PreviewVideoItem() {
-    val dataItem = DataItem("", title = "Top 10 Facts", "Lemmino")
-    VideoItem(dataItem)
+    val dataItem = DataItem.default()
+    VideoItem(dataItem, VideoItemActions.default())
 }
-
-data class DataItem(
-    val imageUrl: String,
-    val title: String = "",
-    val author: String = "",
-    val viewCount: Int = 0
-)
 
 //@Composable
 //@Preview
