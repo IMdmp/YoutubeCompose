@@ -11,9 +11,13 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.imdmp.youtubecompose.features.player.PlayerFragmentArgs
 import com.imdmp.youtubecompose.ui.theme.YoutubeComposeTheme
 
 class HomeListFragment : Fragment(), ListScreenActions {
+
+    val args: HomeListFragmentArgs by navArgs()
 
     private val homeListViewModel: HomeListViewModel by activityViewModels()
 
@@ -36,11 +40,19 @@ class HomeListFragment : Fragment(), ListScreenActions {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        homeListViewModel.fetchVideoList()
+        if (args.query.isEmpty())
+            homeListViewModel.fetchVideoList()
+        else
+            homeListViewModel.search(args.query)
     }
 
     override fun videoItemSelected(dataItem: DataItem) {
         val action = HomeListFragmentDirections.actionHomeListFragmentToPlayerFragment(dataItem)
+        findNavController().navigate(action)
+    }
+
+    override fun searchClicked() {
+        val action = HomeListFragmentDirections.actionHomeListFragmentToSearchFragment()
         findNavController().navigate(action)
     }
 }

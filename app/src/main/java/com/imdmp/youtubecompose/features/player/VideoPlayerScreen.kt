@@ -28,7 +28,9 @@ import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.MediaFormat
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.kiosk.KioskInfo
+import org.schabi.newpipe.extractor.search.SearchExtractor
 import org.schabi.newpipe.extractor.services.youtube.YoutubeService
+import org.schabi.newpipe.extractor.services.youtube.extractors.YoutubeSearchExtractor
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import timber.log.Timber
 import java.lang.IllegalStateException
@@ -65,7 +67,6 @@ fun VideoPlayer(dataSource: PlayerDataSource,dataItem: DataItem) {
 fun getMediaItem(dataSource: PlayerDataSource, dataItem: DataItem): MediaSource {
 
     val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), dataItem.streamUrl)
-
     val firstSource = streamInfo.videoOnlyStreams!![0]
     val uri = Uri.parse(firstSource.url)
 

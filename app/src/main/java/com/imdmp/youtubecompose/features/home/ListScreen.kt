@@ -1,5 +1,6 @@
 package com.imdmp.youtubecompose.features.home
 
+import SimpleOutlinedTextFieldSample
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -40,7 +41,7 @@ fun ListScreen(dataList: List<DataItem>, listScreenActions: ListScreenActions) {
 
     LazyColumn {
         item {
-            Toolbar()
+            Toolbar(listScreenActions)
         }
         items(dataList) { data ->
             VideoItem(item = data, listScreenActions)
@@ -48,15 +49,31 @@ fun ListScreen(dataList: List<DataItem>, listScreenActions: ListScreenActions) {
     }
 }
 
+interface ToolbarActions{
+    fun searchClicked()
+
+    companion object{
+        fun default () : ToolbarActions = object:ToolbarActions{
+            override fun searchClicked() {
+                TODO("Not yet implemented")
+            }
+
+        }
+    }
+}
 
 @Composable
-fun Toolbar() {
-    Row(Modifier.padding(8.dp)) {
+fun Toolbar(toolbarActions: ToolbarActions) {
+    Row(Modifier.padding(8.dp).clickable {
+        toolbarActions.searchClicked()
+    }) {
         Text("Youtube Compose", fontSize = 22.sp)
+        SimpleOutlinedTextFieldSample()
     }
 }
 
 interface VideoItemActions {
+    fun videoItemSelected(dataItem: DataItem)
 
     companion object {
         fun default(): VideoItemActions = object : VideoItemActions {
@@ -66,8 +83,6 @@ interface VideoItemActions {
 
         }
     }
-
-    fun videoItemSelected(dataItem: DataItem)
 }
 
 @Composable

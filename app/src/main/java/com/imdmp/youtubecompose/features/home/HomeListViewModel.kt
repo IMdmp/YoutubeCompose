@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.kiosk.KioskInfo
+import org.schabi.newpipe.extractor.search.SearchInfo
 import org.schabi.newpipe.extractor.services.youtube.YoutubeService
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import timber.log.Timber
@@ -28,9 +29,38 @@ class HomeListViewModel : ViewModel() {
                             imageUrl = streamInfoItem.thumbnailUrl,
                             title = streamInfoItem.name,
                             author = streamInfoItem.uploaderName,
-                            viewCount = streamInfoItem.viewCount.toInt(),streamInfoItem.url)
+                            viewCount = streamInfoItem.viewCount.toInt(), streamInfoItem.url
+                        )
                     }
             }
+        }
+    }
+
+    fun search(query: String) {
+        val contentFilter = listOf("")
+        val sortFilter = ""
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val res = SearchInfo.getInfo(
+                NewPipe.getService(0), NewPipe.getService(0)
+                    .searchQHFactory
+                    .fromQuery(query, contentFilter, sortFilter)
+            )
+
+            withContext(Dispatchers.Main) {
+                videoList.value =
+                    res.relatedItems.map { streamInfoItem ->
+                        DataItem(
+                            imageUrl = streamInfoItem.thumbnailUrl,
+                            title = streamInfoItem.name,
+                            author = "",
+                            viewCount = 0, streamInfoItem.url
+                        )
+                    }
+            }
+
+            Timber.d("check. $res")
         }
     }
 }
