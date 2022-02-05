@@ -11,7 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.imdmp.youtubecompose.ui.theme.YoutubeComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeListFragment : Fragment(), ListScreenActions {
 
     val args: HomeListFragmentArgs by navArgs()

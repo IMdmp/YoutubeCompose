@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imdmp.youtubecompose.player.PlayerDataSource
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -13,8 +15,10 @@ import org.schabi.newpipe.extractor.search.SearchInfo
 import org.schabi.newpipe.extractor.services.youtube.YoutubeService
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import timber.log.Timber
+import javax.inject.Inject
 
-class HomeListViewModel : ViewModel() {
+@HiltViewModel
+class HomeListViewModel @Inject constructor(): ViewModel() {
     val videoList = MutableLiveData<List<DataItem>>()
 
     fun fetchVideoList() {

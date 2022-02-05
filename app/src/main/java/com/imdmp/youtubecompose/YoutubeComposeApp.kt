@@ -10,13 +10,15 @@ import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.soloader.SoLoader
 import com.imdmp.youtubecompose.DownloaderImpl.RECAPTCHA_COOKIES_KEY
+import dagger.hilt.android.HiltAndroidApp
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.downloader.Downloader
 import org.schabi.newpipe.extractor.localization.ContentCountry
 import org.schabi.newpipe.extractor.localization.Localization
 import java.util.*
 
-class YoutubeCompose : Application() {
+@HiltAndroidApp
+class YoutubeComposeApp : Application() {
     override fun onCreate() {
         super.onCreate()
         NewPipe.init(

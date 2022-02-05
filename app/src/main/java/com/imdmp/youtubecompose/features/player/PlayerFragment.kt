@@ -12,20 +12,22 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.imdmp.youtubecompose.DownloaderImpl
 import com.imdmp.youtubecompose.player.PlayerDataSource
 import com.imdmp.youtubecompose.ui.theme.YoutubeComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class PlayerFragment : Fragment() {
 
     val args: PlayerFragmentArgs by navArgs()
+
+    @Inject lateinit var playerDataSource: PlayerDataSource
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dataSource = PlayerDataSource(
-            requireContext(), DownloaderImpl.USER_AGENT,
-            DefaultBandwidthMeter.Builder(requireContext()).build()
-        )
+
         return ComposeView(requireContext()).apply {
             // Dispose of the Composition when the view's LifecycleOwner
             // is destroyed
@@ -33,7 +35,7 @@ class PlayerFragment : Fragment() {
             setContent {
                 YoutubeComposeTheme() {
                     // In Compose world
-                    args.dataItem?.let { VideoPlayer(dataSource, it) }
+                    args.dataItem?.let { VideoPlayer(playerDataSource, it) }
                 }
             }
         }
