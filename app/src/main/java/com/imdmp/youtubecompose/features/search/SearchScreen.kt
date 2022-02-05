@@ -15,7 +15,6 @@ import com.imdmp.youtubecompose.features.search.SearchScreenActions
 fun SearchScreen(searchScreenActions: SearchScreenActions = SearchScreenActions.default()) {
     Column {
         SimpleOutlinedTextFieldSample(
-
             imeActionSelected = {
                 searchScreenActions.onSearchClicked(it)
             }
