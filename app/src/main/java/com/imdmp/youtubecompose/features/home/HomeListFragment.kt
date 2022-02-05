@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.compose.material.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.imdmp.youtubecompose.features.player.PlayerFragmentArgs
 import com.imdmp.youtubecompose.ui.theme.YoutubeComposeTheme
 
 class HomeListFragment : Fragment(), ListScreenActions {
@@ -33,7 +30,7 @@ class HomeListFragment : Fragment(), ListScreenActions {
             setContent {
                 YoutubeComposeTheme() {
                     // In Compose world
-                    ListScreen(homeListViewModel, this@HomeListFragment)
+                    VideoListScreen(homeListViewModel, this@HomeListFragment)
                 }
             }
         }
