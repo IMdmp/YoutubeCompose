@@ -2,7 +2,7 @@ package com.imdmp.youtubecompose.di
 
 import android.content.Context
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.imdmp.youtubecompose.DownloaderImpl
+import com.imdmp.youtubecompose.extractor.DownloaderImpl
 import com.imdmp.youtubecompose.player.PlayerDataSource
 import dagger.Module
 import dagger.Provides

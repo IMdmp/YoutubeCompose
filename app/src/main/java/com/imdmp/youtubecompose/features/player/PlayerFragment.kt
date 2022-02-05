@@ -8,10 +8,9 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.imdmp.youtubecompose.DownloaderImpl
 import com.imdmp.youtubecompose.player.PlayerDataSource
 import com.imdmp.youtubecompose.ui.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -20,13 +19,13 @@ class PlayerFragment : Fragment() {
 
     val args: PlayerFragmentArgs by navArgs()
 
-    @Inject lateinit var playerDataSource: PlayerDataSource
+    @Inject lateinit var getVideoStreamUrlUseCase: GetVideoStreamUrlUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         return ComposeView(requireContext()).apply {
             // Dispose of the Composition when the view's LifecycleOwner
@@ -35,7 +34,7 @@ class PlayerFragment : Fragment() {
             setContent {
                 YoutubeComposeTheme() {
                     // In Compose world
-                    args.dataItem?.let { VideoPlayer(playerDataSource, it) }
+                    args.dataItem?.let { VideoPlayerScreen(getVideoStreamUrlUseCase, it) }
                 }
             }
         }

@@ -2,14 +2,14 @@ package com.imdmp.youtubecompose
 
 import android.app.Application
 import android.content.Context
-import android.preference.PreferenceManager
 import com.facebook.flipper.android.AndroidFlipperClient
 import com.facebook.flipper.android.utils.FlipperUtils
 import com.facebook.flipper.core.FlipperClient
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.soloader.SoLoader
-import com.imdmp.youtubecompose.DownloaderImpl.RECAPTCHA_COOKIES_KEY
+import com.imdmp.youtubecompose.extractor.DownloaderImpl
+import com.imdmp.youtubecompose.extractor.DownloaderImpl.RECAPTCHA_COOKIES_KEY
 import dagger.hilt.android.HiltAndroidApp
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.downloader.Downloader
