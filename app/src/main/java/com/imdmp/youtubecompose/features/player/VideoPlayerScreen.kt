@@ -37,9 +37,8 @@ import timber.log.Timber
 import java.lang.IllegalStateException
 
 @Composable
-fun VideoPlayerScreen(videoPlayerViewModel: VideoPlayerViewModel, dataItem: DataItem) {
+fun VideoPlayerScreen(videoPlayerViewModel: VideoPlayerViewModel, streamUrl: String) {
 
-    var getVideoStreamUrlUseCase: GetVideoStreamUrlUseCase
     Box(modifier = Modifier.fillMaxSize()) {
         val context = LocalContext.current
         val player = SimpleExoPlayer.Builder(context).build()
@@ -50,10 +49,10 @@ fun VideoPlayerScreen(videoPlayerViewModel: VideoPlayerViewModel, dataItem: Data
         playerView.player = player
         LaunchedEffect(player) {
             this.launch(Dispatchers.IO) {
-//                val mediaSource = getVideoStreamUrlUseCase(dataItem.streamUrl)
-//                withContext(Dispatchers.Main) {
-//                    player.setMediaSource(mediaSource)
-//                }
+                val mediaSource = videoPlayerViewModel.getMediaSource(streamUrl)
+                withContext(Dispatchers.Main) {
+                    player.setMediaSource(mediaSource)
+                }
             }
 
             player.prepare()

@@ -40,7 +40,7 @@ fun VideoListScreen(homeListViewModel: HomeListViewModel, navController: NavCont
     videoListState.value?.let {
         VideoListScreen(it, object : ListScreenActions {
             override fun videoItemSelected(dataItem: DataItem) {
-
+                navController.navigate(Destination.Player.createRoute(dataItem.streamUrl))
             }
 
             override fun searchClicked() {
