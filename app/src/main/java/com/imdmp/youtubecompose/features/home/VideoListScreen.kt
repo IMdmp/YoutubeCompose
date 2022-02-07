@@ -30,10 +30,10 @@ import com.skydoves.landscapist.glide.GlideImage
 import com.imdmp.youtubecompose.R
 
 @Composable
-fun VideoListScreen(homeListViewModel: HomeListViewModel, listScreenActions: ListScreenActions) {
+fun VideoListScreen(homeListViewModel: HomeListViewModel) {
     val videoListState = homeListViewModel.videoList.observeAsState()
 
-    videoListState.value?.let { VideoListScreen(it, listScreenActions) }
+    videoListState.value?.let { VideoListScreen(it, homeListViewModel) }
 }
 
 @Composable
