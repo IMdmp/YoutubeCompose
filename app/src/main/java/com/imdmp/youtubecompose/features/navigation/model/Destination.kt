@@ -11,4 +11,6 @@ sealed class Destination(
 
     object Home : Destination("home")
     object Player: Destination("player")
+    object Search: Destination("search")
+
 }

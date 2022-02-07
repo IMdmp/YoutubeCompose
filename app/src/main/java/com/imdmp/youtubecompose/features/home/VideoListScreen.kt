@@ -26,14 +26,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.skydoves.landscapist.glide.GlideImage
 import com.imdmp.youtubecompose.R
+import com.imdmp.youtubecompose.features.navigation.model.Destination
 
 @Composable
-fun VideoListScreen(homeListViewModel: HomeListViewModel) {
+fun VideoListScreen(homeListViewModel: HomeListViewModel, navController: NavController) {
     val videoListState = homeListViewModel.videoList.observeAsState()
 
-    videoListState.value?.let { VideoListScreen(it, homeListViewModel) }
+    videoListState.value?.let {
+        VideoListScreen(it, object : ListScreenActions {
+            override fun videoItemSelected(dataItem: DataItem) {
+
+            }
+
+            override fun searchClicked() {
+                navController.navigate(Destination.Search.path)
+            }
+        })
+    }
 }
 
 @Composable
@@ -49,11 +63,11 @@ fun VideoListScreen(dataList: List<DataItem>, listScreenActions: ListScreenActio
     }
 }
 
-interface ToolbarActions{
+interface ToolbarActions {
     fun searchClicked()
 
-    companion object{
-        fun default () : ToolbarActions = object:ToolbarActions{
+    companion object {
+        fun default(): ToolbarActions = object : ToolbarActions {
             override fun searchClicked() {
                 TODO("Not yet implemented")
             }
@@ -64,9 +78,12 @@ interface ToolbarActions{
 
 @Composable
 fun Toolbar(toolbarActions: ToolbarActions) {
-    Row(Modifier.padding(8.dp).clickable {
-        toolbarActions.searchClicked()
-    }) {
+    Row(
+        Modifier
+            .padding(8.dp)
+            .clickable {
+                toolbarActions.searchClicked()
+            }) {
         Text("Youtube Compose", fontSize = 22.sp)
         SimpleOutlinedTextFieldSample()
     }
