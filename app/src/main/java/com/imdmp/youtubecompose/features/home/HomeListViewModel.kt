@@ -18,8 +18,15 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeListViewModel @Inject constructor(): ViewModel() {
+class HomeListViewModel @Inject constructor() : ViewModel(),ListScreenActions {
     val videoList = MutableLiveData<List<DataItem>>()
+
+    init {
+        if (true) {
+            fetchVideoList()
+        } else
+            search("")
+    }
 
     fun fetchVideoList() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -66,5 +73,13 @@ class HomeListViewModel @Inject constructor(): ViewModel() {
 
             Timber.d("check. $res")
         }
+    }
+
+    override fun videoItemSelected(dataItem: DataItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun searchClicked() {
+        TODO("Not yet implemented")
     }
 }

@@ -22,6 +22,7 @@ fun SearchScreen(searchScreenActions: SearchScreenActions = SearchScreenActions.
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SimpleOutlinedTextFieldSample(
     imeAction: ImeAction = ImeAction.Search,

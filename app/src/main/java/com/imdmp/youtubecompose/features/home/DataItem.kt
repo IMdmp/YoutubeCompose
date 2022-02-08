@@ -3,6 +3,8 @@ package com.imdmp.youtubecompose.features.home
 import android.os.Parcelable
 import androidx.annotation.Nullable
 import kotlinx.parcelize.Parcelize
+import java.io.Serializable
+
 
 @Parcelize
 data class DataItem(

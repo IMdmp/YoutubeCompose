@@ -12,6 +12,7 @@ import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
 import org.schabi.newpipe.extractor.MediaFormat
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.stream.StreamInfo
+import timber.log.Timber
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
@@ -37,10 +38,14 @@ class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource)
             else -> throw IllegalStateException("Unsupported type: $type")
         }
 
-        return factory.createMediaSource(
+        val mediaSource = factory.createMediaSource(
             MediaItem.Builder()
                 .setUri(uri)
                 .build()
         )
+        Timber.d("media Source : $mediaSource")
+
+        return mediaSource
+
     }
 }
