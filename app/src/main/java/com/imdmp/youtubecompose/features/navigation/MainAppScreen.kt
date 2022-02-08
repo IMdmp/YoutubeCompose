@@ -14,6 +14,7 @@ import com.imdmp.youtubecompose.features.navigation.model.Destination
 import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
 import timber.log.Timber
+import java.net.URLDecoder
 
 @Composable
 fun MainAppScreen(modifier: Modifier = Modifier) {
@@ -33,7 +34,7 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
             requireNotNull(streamUrl) { "streamUrl parameter wasn't found. Please make sure it's set!" }
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
-            VideoPlayerScreen(videoPlayerViewModel, streamUrl)
+            VideoPlayerScreen(videoPlayerViewModel, URLDecoder.decode(streamUrl,"utf-8"))
         }
 
         composable(Destination.Search.path) {

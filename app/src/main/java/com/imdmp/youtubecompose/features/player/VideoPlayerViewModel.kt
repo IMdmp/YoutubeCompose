@@ -12,6 +12,6 @@ class VideoPlayerViewModel @Inject constructor(
 ) : ViewModel() {
 
     suspend fun getMediaSource(streamUrl: String): MediaSource {
-        return getVideoStreamUrlUseCase.invoke(streamUrl)
+        return getVideoStreamUrlUseCase(streamUrl)
     }
 }

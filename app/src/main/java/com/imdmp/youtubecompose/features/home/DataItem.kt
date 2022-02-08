@@ -6,13 +6,14 @@ import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
 
+@Parcelize
 data class DataItem(
     val imageUrl: String,
     val title: String = "",
     val author: String = "",
     val viewCount: Int = 0,
     val streamUrl: String
-) : Serializable {
+) : Parcelable {
     companion object {
         fun default(): DataItem = DataItem(
             imageUrl = "", title = "", author = "", viewCount = 0, streamUrl = ""

@@ -51,12 +51,14 @@ fun VideoPlayerScreen(videoPlayerViewModel: VideoPlayerViewModel, streamUrl: Str
             this.launch(Dispatchers.IO) {
                 val mediaSource = videoPlayerViewModel.getMediaSource(streamUrl)
                 withContext(Dispatchers.Main) {
+                    Timber.d("media Source : $mediaSource")
                     player.setMediaSource(mediaSource)
+                    player.prepare()
+                    player.playWhenReady = playWhenReady
                 }
+
             }
 
-            player.prepare()
-            player.playWhenReady = playWhenReady
 
         }
 
