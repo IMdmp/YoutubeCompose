@@ -9,14 +9,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.navigation.NavController
+import com.imdmp.youtubecompose.features.navigation.model.Destination
 import com.imdmp.youtubecompose.features.search.SearchScreenActions
+import com.imdmp.youtubecompose.features.search.SearchViewModel
 
 @Composable
-fun SearchScreen(searchScreenActions: SearchScreenActions = SearchScreenActions.default()) {
+fun SearchScreen(searchViewModel: SearchViewModel, navController: NavController) {
     Column {
         SimpleOutlinedTextFieldSample(
             imeActionSelected = {
-                searchScreenActions.onSearchClicked(it)
+                navController.navigate(Destination.VideoList.createRoute(it))
             }
         )
     }

@@ -19,13 +19,6 @@ import javax.inject.Inject
 class VideoListViewModel @Inject constructor() : ViewModel() {
     val videoList = MutableLiveData<List<VideoListItem>>()
 
-    init {
-        if (true) {
-            fetchVideoList()
-        } else
-            search("")
-    }
-
     fun fetchVideoList() {
         viewModelScope.launch(Dispatchers.IO) {
             val info = KioskInfo.getInfo(YoutubeService(0), "https://www.youtube.com/feed/trending")
@@ -39,6 +32,10 @@ class VideoListViewModel @Inject constructor() : ViewModel() {
     }
 
     fun search(query: String) {
+        if(query.isEmpty()){
+            fetchVideoList()
+            return
+        }
         val contentFilter = listOf("")
         val sortFilter = ""
 

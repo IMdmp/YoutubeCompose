@@ -29,8 +29,9 @@ import com.skydoves.landscapist.glide.GlideImage
 import com.imdmp.youtubecompose.features.navigation.model.Destination
 
 @Composable
-fun VideoListScreen(videoListViewModel: VideoListViewModel, navController: NavController) {
+fun VideoListScreen(videoListViewModel: VideoListViewModel, navController: NavController,query:String) {
     val videoListState = videoListViewModel.videoList.observeAsState()
+    videoListViewModel.search(query)
 
     videoListState.value?.let {
         VideoListScreen(it, object : VideoListScreenActions {

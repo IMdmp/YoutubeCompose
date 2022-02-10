@@ -12,6 +12,7 @@ import com.imdmp.youtubecompose.features.videolist.VideoListScreen
 import com.imdmp.youtubecompose.features.navigation.model.Destination
 import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
+import com.imdmp.youtubecompose.features.search.SearchViewModel
 import java.net.URLDecoder
 
 @Composable
@@ -20,11 +21,13 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destination.VideoList.path
+        startDestination = Destination.Search.path
     ) {
-        composable(Destination.VideoList.path) {
+        composable(Destination.VideoList.path) { backStackEntry ->
+            val query = backStackEntry.arguments?.getString(Destination.VIDEO_LIST)
+
             val viewModel = hiltViewModel<VideoListViewModel>()
-            VideoListScreen(viewModel, navController)
+            VideoListScreen(viewModel, navController, URLDecoder.decode(query, "utf-8"))
         }
 
         composable(Destination.Player.path) { backStackEntry ->
@@ -32,11 +35,12 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
             requireNotNull(streamUrl) { "streamUrl parameter wasn't found. Please make sure it's set!" }
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
-            VideoPlayerScreen(videoPlayerViewModel, URLDecoder.decode(streamUrl,"utf-8"))
+            VideoPlayerScreen(videoPlayerViewModel, URLDecoder.decode(streamUrl, "utf-8"))
         }
 
         composable(Destination.Search.path) {
-            SearchScreen()
+            val viewModel = hiltViewModel<SearchViewModel>()
+            SearchScreen(viewModel, navController)
         }
     }
 }
