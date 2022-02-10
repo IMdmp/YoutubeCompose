@@ -12,6 +12,7 @@ import com.imdmp.youtubecompose.features.videolist.VideoListScreen
 import com.imdmp.youtubecompose.features.navigation.model.Destination
 import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
+import com.imdmp.youtubecompose.features.profile.ProfileScreen
 import com.imdmp.youtubecompose.features.search.SearchViewModel
 import java.net.URLDecoder
 
@@ -21,13 +22,23 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destination.Search.path
+        startDestination = Destination.VideoList.path
     ) {
         composable(Destination.VideoList.path) { backStackEntry ->
-            val query = backStackEntry.arguments?.getString(Destination.VIDEO_LIST)
+            val query = backStackEntry.arguments?.getString(Destination.VIDEO_LIST, "")
 
             val viewModel = hiltViewModel<VideoListViewModel>()
-            VideoListScreen(viewModel, navController, URLDecoder.decode(query, "utf-8"))
+            if (query.isNullOrEmpty()) {
+                VideoListScreen(viewModel, navController, "")
+            } else {
+                VideoListScreen(
+                    query = URLDecoder.decode(query, "utf-8"),
+                    videoListViewModel = viewModel,
+                    navController = navController
+                )
+            }
+
+
         }
 
         composable(Destination.Player.path) { backStackEntry ->
@@ -41,6 +52,10 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
         composable(Destination.Search.path) {
             val viewModel = hiltViewModel<SearchViewModel>()
             SearchScreen(viewModel, navController)
+        }
+
+        composable(Destination.Profile.path) {
+            ProfileScreen()
         }
     }
 }
