@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.features.navigation
+package com.imdmp.youtubecompose
 
 import SearchScreen
 import androidx.compose.runtime.Composable
@@ -7,13 +7,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.imdmp.youtubecompose.features.home.DataItem
-import com.imdmp.youtubecompose.features.home.HomeListViewModel
-import com.imdmp.youtubecompose.features.home.VideoListScreen
+import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
+import com.imdmp.youtubecompose.features.videolist.VideoListScreen
 import com.imdmp.youtubecompose.features.navigation.model.Destination
 import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
-import timber.log.Timber
 import java.net.URLDecoder
 
 @Composable
@@ -22,10 +20,10 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destination.Home.path
+        startDestination = Destination.VideoList.path
     ) {
-        composable(Destination.Home.path) {
-            val viewModel = hiltViewModel<HomeListViewModel>()
+        composable(Destination.VideoList.path) {
+            val viewModel = hiltViewModel<VideoListViewModel>()
             VideoListScreen(viewModel, navController)
         }
 

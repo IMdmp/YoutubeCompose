@@ -1,7 +1,6 @@
-package com.imdmp.youtubecompose.features.home
+package com.imdmp.youtubecompose.features.videolist
 
 import SimpleOutlinedTextFieldSample
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,28 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.skydoves.landscapist.glide.GlideImage
-import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.features.navigation.model.Destination
 
 @Composable
-fun VideoListScreen(homeListViewModel: HomeListViewModel, navController: NavController) {
-    val videoListState = homeListViewModel.videoList.observeAsState()
+fun VideoListScreen(videoListViewModel: VideoListViewModel, navController: NavController) {
+    val videoListState = videoListViewModel.videoList.observeAsState()
 
     videoListState.value?.let {
-        VideoListScreen(it, object : ListScreenActions {
-            override fun videoItemSelected(dataItem: DataItem) {
-                navController.navigate(Destination.Player.createRoute(dataItem.streamUrl))
+        VideoListScreen(it, object : VideoListScreenActions {
+            override fun videoItemSelected(videoListItem: VideoListItem) {
+                navController.navigate(Destination.Player.createRoute(videoListItem.streamUrl))
             }
 
             override fun searchClicked() {
@@ -51,14 +46,14 @@ fun VideoListScreen(homeListViewModel: HomeListViewModel, navController: NavCont
 }
 
 @Composable
-fun VideoListScreen(dataList: List<DataItem>, listScreenActions: ListScreenActions) {
+fun VideoListScreen(videoListList: List<VideoListItem>, videoListScreenActions: VideoListScreenActions) {
 
     LazyColumn {
         item {
-            Toolbar(listScreenActions)
+            Toolbar(videoListScreenActions)
         }
-        items(dataList) { data ->
-            VideoItem(item = data, listScreenActions)
+        items(videoListList) { data ->
+            VideoItem(item = data, videoListScreenActions)
         }
     }
 }
@@ -90,11 +85,11 @@ fun Toolbar(toolbarActions: ToolbarActions) {
 }
 
 interface VideoItemActions {
-    fun videoItemSelected(dataItem: DataItem)
+    fun videoItemSelected(videoListItem: VideoListItem)
 
     companion object {
         fun default(): VideoItemActions = object : VideoItemActions {
-            override fun videoItemSelected(dataItem: DataItem) {
+            override fun videoItemSelected(videoListItem: VideoListItem) {
                 TODO("Not yet implemented")
             }
 
@@ -103,7 +98,7 @@ interface VideoItemActions {
 }
 
 @Composable
-fun VideoItem(item: DataItem, videoItemActions: VideoItemActions) {
+fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
     ConstraintLayout(modifier = Modifier
         .fillMaxWidth()
         .clickable {
@@ -126,8 +121,8 @@ fun VideoItem(item: DataItem, videoItemActions: VideoItemActions) {
                     width = Dimension.fillToConstraints
                 }
         )
-        Image(
-            painter = painterResource(id = R.drawable.p3),
+        GlideImage(
+            imageModel = item.authorImageUrl ?: "",
             contentDescription = null,
             modifier = Modifier
                 .size(32.dp)
@@ -172,7 +167,7 @@ fun VideoItem(item: DataItem, videoItemActions: VideoItemActions) {
             onClick = { },
             modifier = Modifier
                 .constrainAs(button) {
-                    top.linkTo(image.bottom)
+                    top.linkTo(authorImage.bottom)
                     end.linkTo(parent.end)
                 }
         ) {
@@ -184,7 +179,7 @@ fun VideoItem(item: DataItem, videoItemActions: VideoItemActions) {
 @Composable
 @Preview
 fun PreviewVideoItem() {
-    val dataItem = DataItem.default()
+    val dataItem = VideoListItem.default()
     VideoItem(dataItem, VideoItemActions.default())
 }
 

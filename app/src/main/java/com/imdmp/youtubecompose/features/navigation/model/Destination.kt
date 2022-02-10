@@ -8,10 +8,11 @@ sealed class Destination(
 
     companion object {
         const val STREAM_URL = "stream_url"
+        const val VIDEO_LIST = "video_list"
     }
 
 
-    object Home : Destination("home")
+    object VideoList : Destination(VIDEO_LIST)
     object Player : Destination("{$STREAM_URL}/player") {
         fun createRoute(url: String): String {
             return "${URLEncoder.encode(url, "utf-8")}/player"
