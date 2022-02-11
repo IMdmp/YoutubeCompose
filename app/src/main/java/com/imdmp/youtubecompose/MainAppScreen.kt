@@ -14,6 +14,7 @@ import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
 import com.imdmp.youtubecompose.features.search.SearchViewModel
+import timber.log.Timber
 import java.net.URLDecoder
 
 @Composable
@@ -43,6 +44,7 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
 
         composable(Destination.Player.path) { backStackEntry ->
             val streamUrl = backStackEntry.arguments?.getString(Destination.STREAM_URL)
+            Timber.d("test stream url: $streamUrl")
             requireNotNull(streamUrl) { "streamUrl parameter wasn't found. Please make sure it's set!" }
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()

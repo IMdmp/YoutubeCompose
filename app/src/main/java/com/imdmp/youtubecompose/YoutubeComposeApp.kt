@@ -11,10 +11,13 @@ import com.facebook.soloader.SoLoader
 import com.imdmp.youtubecompose.extractor.DownloaderImpl
 import com.imdmp.youtubecompose.extractor.DownloaderImpl.RECAPTCHA_COOKIES_KEY
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.DEBUG_PROPERTY_NAME
+import kotlinx.coroutines.DEBUG_PROPERTY_VALUE_ON
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.downloader.Downloader
 import org.schabi.newpipe.extractor.localization.ContentCountry
 import org.schabi.newpipe.extractor.localization.Localization
+import timber.log.Timber
 import java.util.*
 
 @HiltAndroidApp
@@ -34,17 +37,10 @@ class YoutubeComposeApp : Application() {
             client.start()
         }
 
-        //todo:
-        // convert all the other activities to fragment and use navigation components
-        // use navigation components.
-        // use dagger2- hilt to inject components.
-        // add listeners to handle changing.
-        // implement search
-        // add bottom nav
-        // integrate google account to get feed?
-        // integrate to add subscriptions?
-
+        Timber.plant(Timber.DebugTree())
+        System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
     }
+
 
     fun getPreferredLocalization(
         context: Context
