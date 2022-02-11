@@ -1,6 +1,5 @@
 package com.imdmp.youtubecompose.features.videolist
 
-import SimpleOutlinedTextFieldSample
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -129,19 +128,6 @@ interface ToolbarActions {
             }
 
         }
-    }
-}
-
-@Composable
-fun Toolbar(toolbarActions: ToolbarActions) {
-    Row(
-        Modifier
-            .padding(8.dp)
-            .clickable {
-                toolbarActions.searchClicked()
-            }) {
-        Text("Youtube Compose", fontSize = 22.sp)
-        SimpleOutlinedTextFieldSample()
     }
 }
 
