@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.ui.theme
+package com.imdmp.youtubecompose.features.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

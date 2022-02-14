@@ -11,12 +11,12 @@ import javax.inject.Inject
 @HiltViewModel
 class VideoPlayerViewModel @Inject constructor(
     private val getVideoStreamUrlUseCase: GetVideoStreamUrlUseCase
-) : ViewModel() {
+) : ViewModel(),VideoPlayerScreenCallbacks {
 
     val uiState = MutableStateFlow(VideoState())
 
-    suspend fun getMediaSource(streamUrl: String): MediaSource {
-        return getVideoStreamUrlUseCase(streamUrl)
+    override suspend fun getMediaSource(url: String): MediaSource {
+        return getVideoStreamUrlUseCase(url)
     }
 
     fun handleEvent(videoEvent: VideoEvent) {

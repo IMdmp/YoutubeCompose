@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.imdmp.youtubecompose.extractor;
+package com.imdmp.youtubecompose.usecases.extractor;
 
 import android.util.Log;
 

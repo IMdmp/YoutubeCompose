@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.extractor;
+package com.imdmp.youtubecompose.usecases.extractor;
 
 
 import static com.imdmp.youtubecompose.BuildConfig.DEBUG;

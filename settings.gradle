@@ -9,5 +9,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "YoutubeCompose"
 include ':app'
-include ':DataLibrary'
-project(':DataLibrary').projectDir = new File(settingsDir,'../RapidPrototypingLibrary/DataLibrary')

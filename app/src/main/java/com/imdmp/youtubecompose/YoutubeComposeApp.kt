@@ -8,8 +8,8 @@ import com.facebook.flipper.core.FlipperClient
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
 import com.facebook.soloader.SoLoader
-import com.imdmp.youtubecompose.extractor.DownloaderImpl
-import com.imdmp.youtubecompose.extractor.DownloaderImpl.RECAPTCHA_COOKIES_KEY
+import com.imdmp.youtubecompose.usecases.extractor.DownloaderImpl
+import com.imdmp.youtubecompose.usecases.extractor.DownloaderImpl.RECAPTCHA_COOKIES_KEY
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.DEBUG_PROPERTY_NAME
 import kotlinx.coroutines.DEBUG_PROPERTY_VALUE_ON

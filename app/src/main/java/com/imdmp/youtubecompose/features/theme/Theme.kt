@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.ui.theme
+package com.imdmp.youtubecompose.features.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
