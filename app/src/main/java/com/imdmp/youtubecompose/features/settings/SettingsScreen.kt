@@ -18,8 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun Settings() {
-    val viewModel: SettingsViewModel = viewModel()
+fun Settings(viewModel: SettingsViewModel) {
 
     MaterialTheme {
         SettingsScreen(
@@ -31,7 +30,7 @@ fun Settings() {
 }
 
 @Composable
-fun SettingsScreen(
+private fun SettingsScreen(
     modifier: Modifier = Modifier,
     state: SettingsState,
     onToggleFeedEnabledSettings: () -> Unit

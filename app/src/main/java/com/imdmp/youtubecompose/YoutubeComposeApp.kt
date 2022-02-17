@@ -7,6 +7,7 @@ import com.facebook.flipper.android.utils.FlipperUtils
 import com.facebook.flipper.core.FlipperClient
 import com.facebook.flipper.plugins.inspector.DescriptorMapping
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
+import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
 import com.facebook.soloader.SoLoader
 import com.imdmp.youtubecompose.usecases.extractor.DownloaderImpl
 import com.imdmp.youtubecompose.usecases.extractor.DownloaderImpl.RECAPTCHA_COOKIES_KEY
@@ -32,9 +33,19 @@ class YoutubeComposeApp : Application() {
         SoLoader.init(this, false)
 
         if (BuildConfig.DEBUG && FlipperUtils.shouldEnableFlipper(this)) {
-            val client: FlipperClient = AndroidFlipperClient.getInstance(this)
-            client.addPlugin(InspectorFlipperPlugin(this, DescriptorMapping.withDefaults()))
-            client.start()
+            AndroidFlipperClient.getInstance(this).apply {
+                addPlugin(
+                    InspectorFlipperPlugin(
+                        this@YoutubeComposeApp,
+                        DescriptorMapping.withDefaults()
+                    )
+                )
+                addPlugin(
+                    SharedPreferencesFlipperPlugin(this@YoutubeComposeApp)
+                )
+                this.start()
+
+            }
         }
 
         Timber.plant(Timber.DebugTree())
@@ -46,7 +57,7 @@ class YoutubeComposeApp : Application() {
         context: Context
     ): Localization? {
         return Localization
-                .fromLocale(Locale.getDefault())
+            .fromLocale(Locale.getDefault())
 
     }
 

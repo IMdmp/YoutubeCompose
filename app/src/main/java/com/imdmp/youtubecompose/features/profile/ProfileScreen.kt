@@ -1,19 +1,37 @@
 package com.imdmp.youtubecompose.features.profile
 
 import android.provider.ContactsContract
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.imdmp.youtubecompose.features.settings.Settings
+import com.imdmp.youtubecompose.features.settings.SettingsViewModel
 
 @Composable
-fun ProfileScreen() {
-    Text("Profile")
+fun ProfileScreen(settingsViewModel: SettingsViewModel) {
+    Column {
+        Text("Profile")
+
+        Box(
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxWidth()
+        )
+        Settings(settingsViewModel)
+    }
 }
+
 
 @Preview
 @Composable
 fun PreviewProfileScreen() {
-    ProfileScreen()
+//    ProfileScreen()
 }
 
 /*

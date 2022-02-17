@@ -14,6 +14,9 @@ import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
 import com.imdmp.youtubecompose.features.search.SearchViewModel
+import com.imdmp.youtubecompose.features.settings.SettingsViewModel
+import com.imdmp.youtubecompose.features.splash.SplashScreen
+import com.imdmp.youtubecompose.features.splash.SplashViewModel
 import timber.log.Timber
 import java.net.URLDecoder
 
@@ -23,8 +26,14 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destination.VideoList.path
+        startDestination = Destination.Splash.path
     ) {
+        composable(Destination.Splash.path) {
+            val viewModel = hiltViewModel<SplashViewModel>()
+
+            SplashScreen(navController, viewModel)
+        }
+
         composable(Destination.VideoList.path) { backStackEntry ->
             val query = backStackEntry.arguments?.getString(Destination.VIDEO_LIST, "")
 
@@ -57,7 +66,9 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
         }
 
         composable(Destination.Profile.path) {
-            ProfileScreen()
+            val settingsViewModel = hiltViewModel<SettingsViewModel>()
+
+            ProfileScreen(settingsViewModel)
         }
     }
 }

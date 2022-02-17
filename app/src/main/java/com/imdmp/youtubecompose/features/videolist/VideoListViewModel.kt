@@ -1,8 +1,10 @@
 package com.imdmp.youtubecompose.features.videolist
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.imdmp.youtubecompose.di.SharedPreferencesKeys
 import com.imdmp.youtubecompose.features.videolist.VideoListItem.Companion.mapToDataItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +18,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class VideoListViewModel @Inject constructor() : ViewModel() {
+class VideoListViewModel @Inject constructor(val sharedPreferences: SharedPreferences) :
+    ViewModel() {
     val videoList = MutableLiveData<List<VideoListItem>>()
 
     fun fetchVideoList() {
@@ -32,7 +35,7 @@ class VideoListViewModel @Inject constructor() : ViewModel() {
     }
 
     fun search(query: String) {
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             fetchVideoList()
             return
         }
@@ -48,7 +51,7 @@ class VideoListViewModel @Inject constructor() : ViewModel() {
 
             withContext(Dispatchers.Main) {
                 videoList.value =
-                    res.relatedItems.mapToDataItems ()
+                    res.relatedItems.mapToDataItems()
             }
 
             Timber.d("check. $res")

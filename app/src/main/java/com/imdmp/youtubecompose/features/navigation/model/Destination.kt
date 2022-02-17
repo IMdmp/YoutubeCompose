@@ -29,9 +29,15 @@ sealed class Destination(
 
     }
 
+    object Splash : Destination("Splash", "splash")
 
     object VideoList : Destination("VideoList", "{$VIDEO_LIST}/videoList", Icons.Default.Home) {
-        fun createRoute(query: String): String {
+        fun createRoute(query: String = ""): String {
+
+            if (query.isEmpty()) {
+                return VideoList.path
+            }
+
             return "${URLEncoder.encode(query, "utf-8")}/videoList"
         }
     }
