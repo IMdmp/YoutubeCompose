@@ -6,9 +6,21 @@ interface VideoPlayerScreenCallbacks {
 
     suspend fun getMediaSource(url:String):MediaSource
 
+    fun prepareAndPlayVideoPlayer(url:String)
+
+    fun disposeVideoPlayer()
+
     companion object{
         fun default():VideoPlayerScreenCallbacks = object: VideoPlayerScreenCallbacks{
             override suspend fun getMediaSource(url: String): MediaSource {
+                TODO("Not yet implemented")
+            }
+
+            override fun prepareAndPlayVideoPlayer(url: String) {
+                TODO("Not yet implemented")
+            }
+
+            override fun disposeVideoPlayer() {
                 TODO("Not yet implemented")
             }
 

@@ -9,6 +9,8 @@ import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.imdmp.youtubecompose.player.PlayerDataSource
 import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.MediaFormat
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.stream.StreamInfo
@@ -20,7 +22,7 @@ class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource)
     GetVideoStreamUrlUseCase {
     override suspend fun invoke(encryptedStreamUrl: String): MediaSource {
         val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), encryptedStreamUrl)
-        val firstSource = streamInfo.videoOnlyStreams!![0]
+        val firstSource = streamInfo.videoStreams!![2]
 
         Timber.d("first source: ${firstSource.url}")
         val uri = Uri.parse(firstSource.url)

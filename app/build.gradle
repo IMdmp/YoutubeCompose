@@ -96,7 +96,25 @@ dependencies {
     implementation 'com.google.accompanist:accompanist-pager:0.24.2-alpha'
     implementation 'com.google.accompanist:accompanist-pager-indicators:0.24.2-alpha'
 
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
+
+    androidTestImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    androidTestImplementation("org.mockito:mockito-android:3.12.4")
+
+    androidTestImplementation 'androidx.lifecycle:lifecycle-runtime-testing:2.4.1'
+
 }
+
+android {
+    packagingOptions {
+        exclude "**/attach_hotspot_windows.dll"
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+        exclude "META-INF/licenses/ASM"
+    }
+}
+
 //tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 //    kotlinOptions.freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
 //}

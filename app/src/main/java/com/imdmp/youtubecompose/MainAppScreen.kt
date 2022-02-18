@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
 import com.imdmp.youtubecompose.features.videolist.VideoListScreen
 import com.imdmp.youtubecompose.features.navigation.model.Destination
-import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
+import com.imdmp.youtubecompose.features.player.Playback
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
 import com.imdmp.youtubecompose.features.search.SearchViewModel
@@ -57,7 +57,11 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
             requireNotNull(streamUrl) { "streamUrl parameter wasn't found. Please make sure it's set!" }
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
-            VideoPlayerScreen(videoPlayerViewModel, URLDecoder.decode(streamUrl, "utf-8"))
+            Playback(
+                streamUrl = URLDecoder.decode(streamUrl, "utf-8"),
+                player = videoPlayerViewModel.player,
+                videoPlayerScreenCallbacks = videoPlayerViewModel
+            )
         }
 
         composable(Destination.Search.path) {
