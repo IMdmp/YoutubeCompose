@@ -10,6 +10,8 @@ interface VideoPlayerScreenCallbacks {
 
     fun disposeVideoPlayer()
 
+    fun selectFullScreen()
+
     companion object{
         fun default():VideoPlayerScreenCallbacks = object: VideoPlayerScreenCallbacks{
             override suspend fun getMediaSource(url: String): MediaSource {
@@ -21,6 +23,10 @@ interface VideoPlayerScreenCallbacks {
             }
 
             override fun disposeVideoPlayer() {
+                TODO("Not yet implemented")
+            }
+
+            override fun selectFullScreen() {
                 TODO("Not yet implemented")
             }
 

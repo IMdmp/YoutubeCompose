@@ -78,7 +78,7 @@ dependencies {
     def exoPlayerVersion = '2.14.2'
     implementation "com.google.android.exoplayer:exoplayer:${exoPlayerVersion}"
     implementation "com.google.android.exoplayer:extension-mediasession:${exoPlayerVersion}"
-
+    androidTestImplementation "com.google.android.exoplayer:exoplayer-testutils:${exoPlayerVersion}"
     implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha02")
 
     implementation 'androidx.fragment:fragment-ktx:1.4.0'
@@ -98,6 +98,9 @@ dependencies {
 
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
+
+
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 
     androidTestImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     androidTestImplementation("org.mockito:mockito-android:3.12.4")

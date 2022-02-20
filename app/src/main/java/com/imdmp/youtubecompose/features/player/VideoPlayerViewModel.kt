@@ -43,6 +43,10 @@ class VideoPlayerViewModel @Inject constructor(
         player.stop()
     }
 
+    override fun selectFullScreen() {
+        TODO("Not yet implemented")
+    }
+
     fun handleEvent(videoEvent: VideoEvent) {
         when (videoEvent) {
             VideoEvent.VideoError -> {

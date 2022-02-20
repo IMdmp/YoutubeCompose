@@ -24,7 +24,6 @@ class VideoPlayerPlaybackTest {
 
     lateinit var testLifecycleOwner: TestLifecycleOwner
 
-
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
@@ -32,14 +31,14 @@ class VideoPlayerPlaybackTest {
     }
 
     @Test
-    fun EXOPLAYER_PAUSE_WHEN_LIFECYCLE_ONPAUSE() {
+    fun Exoplayer_Pause_When_Lifecycle_OnPause() {
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 
         verify(exoPlayer).pause()
     }
 
     @Test
-    fun EXOPLAYER_PLAY_WHEN_LIFEYCLE_ONRESUME(){
+    fun Exoplayer_Play_When_Lifecycle_OnResume(){
         testLifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
         verify(exoPlayer).play()
