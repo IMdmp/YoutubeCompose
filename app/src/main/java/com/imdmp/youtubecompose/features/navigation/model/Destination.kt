@@ -51,4 +51,6 @@ sealed class Destination(
     object Search : Destination("Search", "search", Icons.Default.Search)
 
     object Profile : Destination("Profile", "profile", Icons.Default.Person)
+
+    object FullScreenView : Destination("Full Screen View","fullscreenview")
 }

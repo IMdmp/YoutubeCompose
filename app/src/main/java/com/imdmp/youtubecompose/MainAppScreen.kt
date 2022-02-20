@@ -57,11 +57,11 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
             requireNotNull(streamUrl) { "streamUrl parameter wasn't found. Please make sure it's set!" }
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
-            Playback(
-                streamUrl = URLDecoder.decode(streamUrl, "utf-8"),
-                player = videoPlayerViewModel.player,
-                videoPlayerScreenCallbacks = videoPlayerViewModel
-            )
+//            Playback(
+//                streamUrl = URLDecoder.decode(streamUrl, "utf-8"),
+//                player = videoPlayerViewModel.player,
+//                videoPlayerScreenCallbacks = videoPlayerViewModel
+//            )
         }
 
         composable(Destination.Search.path) {

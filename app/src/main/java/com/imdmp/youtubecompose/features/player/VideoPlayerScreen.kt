@@ -8,25 +8,29 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
+import com.imdmp.youtubecompose.base.Tags
+import com.imdmp.youtubecompose.features.navigation.model.Destination
 
 @Composable
 fun Playback(
     player: ExoPlayer,
     streamUrl: String,
+    navController: NavController,
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
-
-    ) {
+) {
     MaterialTheme {
         val context = LocalContext.current
         LaunchedEffect(player) {
@@ -52,6 +56,13 @@ fun Playback(
             onDispose {
                 videoPlayerScreenCallbacks.disposeVideoPlayer()
             }
+        }
+
+        Button(onClick = {
+            navController.navigate(Destination.FullScreenView.path)
+
+        }, Modifier.testTag(Tags.TAG_BUTTON_SET_FULLSCREENVIEW)) {
+            Text("Full Screen")
         }
     }
 }
