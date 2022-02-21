@@ -53,4 +53,7 @@ sealed class Destination(
     object Profile : Destination("Profile", "profile", Icons.Default.Person)
 
     object FullScreenView : Destination("Full Screen View","fullscreenview")
+
+    object Test:Destination("test","test")
+
 }

@@ -60,7 +60,6 @@ fun Playback(
 
         Button(onClick = {
             navController.navigate(Destination.FullScreenView.path)
-
         }, Modifier.testTag(Tags.TAG_BUTTON_SET_FULLSCREENVIEW)) {
             Text("Full Screen")
         }

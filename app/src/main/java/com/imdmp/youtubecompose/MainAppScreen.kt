@@ -1,12 +1,16 @@
 package com.imdmp.youtubecompose
 
 import SearchScreen
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.imdmp.youtubecompose.features.fullscreenview.FullScreenView
 import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
 import com.imdmp.youtubecompose.features.videolist.VideoListScreen
 import com.imdmp.youtubecompose.features.navigation.model.Destination
@@ -16,22 +20,24 @@ import com.imdmp.youtubecompose.features.profile.ProfileScreen
 import com.imdmp.youtubecompose.features.search.SearchViewModel
 import com.imdmp.youtubecompose.features.settings.SettingsViewModel
 import com.imdmp.youtubecompose.features.splash.SplashScreen
-import com.imdmp.youtubecompose.features.splash.SplashViewModel
 import timber.log.Timber
 import java.net.URLDecoder
 
 @Composable
-fun MainAppScreen(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
+fun MainAppScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(
+    ),
+    startDestination: String = Destination.Splash.path
+) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Destination.Splash.path
+        startDestination = startDestination
     ) {
         composable(Destination.Splash.path) {
-            val viewModel = hiltViewModel<SplashViewModel>()
 
-            SplashScreen(navController, viewModel)
+            SplashScreen(navController)
         }
 
         composable(Destination.VideoList.path) { backStackEntry ->
@@ -73,6 +79,15 @@ fun MainAppScreen(modifier: Modifier = Modifier) {
             val settingsViewModel = hiltViewModel<SettingsViewModel>()
 
             ProfileScreen(settingsViewModel)
+        }
+
+        composable(Destination.FullScreenView.path) {
+
+            FullScreenView()
+        }
+
+        composable(Destination.Test.path){
+            Text("")
         }
     }
 }

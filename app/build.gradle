@@ -45,6 +45,12 @@ android {
     }
 
 }
+android {
+    defaultConfig {
+        testInstrumentationRunner "com.imdmp.youtubecompose.CustomTestRunner"
+    }
+}
+
 
 dependencies {
 
@@ -102,11 +108,15 @@ dependencies {
 
     androidTestImplementation 'androidx.test:rules:1.2.0'
 
-    androidTestImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
-    androidTestImplementation("org.mockito:mockito-android:3.12.4")
-
     androidTestImplementation 'androidx.lifecycle:lifecycle-runtime-testing:2.4.1'
 
+    // For instrumented tests.
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.38.1'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.38.1'
+
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.0"
+    androidTestImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+//    androidTestImplementation("org.mockito:mockito-android:3.12.4")
 }
 
 android {

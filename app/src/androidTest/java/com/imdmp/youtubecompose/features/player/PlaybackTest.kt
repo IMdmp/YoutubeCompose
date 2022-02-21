@@ -1,38 +1,42 @@
 package com.imdmp.youtubecompose.features.player
 
 import android.content.Context
-import androidx.annotation.UiThread
-import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.test.annotation.UiThreadTest
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.testutil.TestExoPlayerBuilder
+import com.imdmp.youtubecompose.MainActivity
+import com.imdmp.youtubecompose.MainAppScreen
 import com.imdmp.youtubecompose.base.Tags
-import com.imdmp.youtubecompose.base.Tags.TAG_FULLSCREENVIEW
 import com.imdmp.youtubecompose.features.navigation.model.Destination
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.*
-
+import com.imdmp.youtubecompose.features.splash.SplashViewModel
+import dagger.hilt.android.testing.BindValue
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
+@HiltAndroidTest
 class PlaybackTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule(order = 0)
+    var hiltAndroidRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    @BindValue
+    var splashViewModel: SplashViewModel = mock()
 
     @Mock
     lateinit var videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks
@@ -40,9 +44,9 @@ class PlaybackTest {
     @Mock
     lateinit var mockedNavController: NavController
 
-    lateinit var exoPlayer: ExoPlayer
+    private lateinit var exoPlayer: ExoPlayer
 
-    lateinit var context: Context
+    private lateinit var context: Context
 
     @UiThreadTest
     @Before
@@ -50,6 +54,8 @@ class PlaybackTest {
         MockitoAnnotations.openMocks(this)
         context = ApplicationProvider.getApplicationContext()
         exoPlayer = TestExoPlayerBuilder(context).build()
+
+        hiltAndroidRule.inject()
     }
 
     @Test
@@ -69,25 +75,9 @@ class PlaybackTest {
 
     @Test
     fun Player_Control_SelectFullScreen_FullScreenDisplay() {
-        videoPlayerScreenCallbacks = mock()
-//
-//        composeTestRule.setContent {
-//            Playback(
-//                player = exoPlayer,
-//                streamUrl = "",
-//                videoPlayerScreenCallbacks = videoPlayerScreenCallbacks
-//            )
-//        }
-//
-//        videoPlayerScreenCallbacks.selectFullScreen()
-//
-//        composeTestRule.onNodeWithTag(
-//            TAG_FULLSCREENVIEW
-//        ).assertIsEnabled()
-
         composeTestRule.setContent {
             val navController = rememberNavController()
-
+            MainAppScreen(navController = navController)
             Playback(
                 streamUrl = "",
                 videoPlayerScreenCallbacks = videoPlayerScreenCallbacks,
@@ -95,12 +85,10 @@ class PlaybackTest {
                 player = exoPlayer
             )
         }
+
+
         composeTestRule.onNodeWithTag(Tags.TAG_BUTTON_SET_FULLSCREENVIEW).performClick()
-//        verify(navController).navigate(Destination.FullScreenView.path)
+        composeTestRule.onNodeWithTag(Destination.FullScreenView.path).assertExists()
 
-
-//        composeTestRule.onNodeWithTag(
-//            Tags.TAG_COMMENTS_LIST
-//        ).assertIsEnabled()
     }
 }
