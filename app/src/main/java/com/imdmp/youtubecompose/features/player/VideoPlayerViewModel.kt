@@ -6,8 +6,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ActivityScoped
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -21,7 +19,7 @@ class VideoPlayerViewModel @Inject constructor(
     val player: ExoPlayer
 ) : ViewModel(), VideoPlayerScreenCallbacks {
 
-    val uiState = MutableStateFlow(VideoState())
+    val uiState = MutableStateFlow(VideoPlayerScreenState())
 
     override suspend fun getMediaSource(url: String): MediaSource {
         return getVideoStreamUrlUseCase(url)

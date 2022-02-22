@@ -66,7 +66,7 @@ class PlaybackTest {
                 player = exoPlayer,
                 streamUrl = dummyUrlString,
                 navController = mockedNavController,
-                videoPlayerScreenCallbacks = videoPlayerScreenCallbacks
+                playerScreenCallbacks = videoPlayerScreenCallbacks
             )
         }
 
@@ -80,7 +80,7 @@ class PlaybackTest {
             MainAppScreen(navController = navController)
             Playback(
                 streamUrl = "",
-                videoPlayerScreenCallbacks = videoPlayerScreenCallbacks,
+                playerScreenCallbacks = videoPlayerScreenCallbacks,
                 navController = navController,
                 player = exoPlayer
             )

@@ -1,7 +1,8 @@
 package com.imdmp.youtubecompose.features.player
 
-data class VideoState(
-    val playerStatus: PlayerStatus = PlayerStatus.LOADING
+data class VideoPlayerScreenState(
+    val playerStatus: PlayerStatus = PlayerStatus.LOADING,
+    val streamUrl:String = ""
 ) {
 }
 

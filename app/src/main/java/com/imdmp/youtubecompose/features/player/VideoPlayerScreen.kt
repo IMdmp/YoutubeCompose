@@ -1,98 +1,57 @@
 package com.imdmp.youtubecompose.features.player
 
-import android.view.ViewGroup
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView
-import com.imdmp.youtubecompose.base.Tags
-import com.imdmp.youtubecompose.features.navigation.model.Destination
-
-@Composable
-fun Playback(
-    player: ExoPlayer,
-    streamUrl: String,
-    navController: NavController,
-    videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
-) {
-    MaterialTheme {
-        val context = LocalContext.current
-        LaunchedEffect(player) {
-            videoPlayerScreenCallbacks.prepareAndPlayVideoPlayer(streamUrl)
-        }
-
-        DisposableEffect(
-            AndroidView(
-                modifier = Modifier.fillMaxSize(),
-                factory = {
-                    PlayerView(context).apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        this.player = player
-                    }
-                },
-                update = {
-
-                }
-            )
-        ) {
-            onDispose {
-                videoPlayerScreenCallbacks.disposeVideoPlayer()
-            }
-        }
-
-        Button(onClick = {
-            navController.navigate(Destination.FullScreenView.path)
-        }, Modifier.testTag(Tags.TAG_BUTTON_SET_FULLSCREENVIEW)) {
-            Text("Full Screen")
-        }
-    }
-}
-
-
-//@OptIn(ExperimentalPagerApi::class)
-//@Composable
-//fun Playback(
-//    streamUrl: String,
-//    videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
-//    player: ExoPlayer
-//) {
-//    val context = LocalContext.current
-//
-//    Playback()
-//}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Playback() {
+fun VideoPlayerScreen(
+    navController: NavController,
+    player: ExoPlayer,
+    videoPlayerScreenState: VideoPlayerScreenState,
+    videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
+    lifecycleOwner: LifecycleOwner,
+) {
+
     val pagerState = rememberPagerState()
+    HandleLifecycleChanges(
+        lifecycleOwner = lifecycleOwner,
+        state = videoPlayerScreenState.playerStatus,
+        exoPlayer = player
+    )
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (videoPlayer, pager, pagerTabs) = createRefs()
-//        Playback(
-//            Modifier
-//                .aspectRatio(16 / 9f)
-//                .constrainAs(videoPlayer) {
-//                    top.linkTo(parent.top)
-//                    start.linkTo(parent.start)
-//                })
+        Playback(
+            Modifier
+                .aspectRatio(16 / 9f)
+                .constrainAs(videoPlayer) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                },
+            player = player,
+            streamUrl = videoPlayerScreenState.streamUrl,
+            navController = navController,
+            playerScreenCallbacks = videoPlayerScreenCallbacks,
+        )
 
 
         HorizontalPager(
@@ -145,6 +104,34 @@ fun Playback() {
         }
     }
 
+}
+
+
+@Composable
+fun HandleLifecycleChanges(
+    lifecycleOwner: LifecycleOwner,
+    state: PlayerStatus,
+    exoPlayer: ExoPlayer
+) {
+    val currentPlayerStatus by rememberUpdatedState(state)
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (currentPlayerStatus == PlayerStatus.PLAYING) {
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    exoPlayer.play()
+                } else if (event == Lifecycle.Event.ON_START) {
+                    exoPlayer.pause()
+                }
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 }
 
 @Preview

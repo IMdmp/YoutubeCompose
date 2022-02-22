@@ -1,41 +1,73 @@
 package com.imdmp.youtubecompose.features.player
 
 import android.content.Context
+import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
+import com.imdmp.youtubecompose.base.Tags
+import com.imdmp.youtubecompose.features.navigation.model.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-//@Composable
-//fun Playback(modifier: Modifier = Modifier, context: Context = LocalContext.current) {
-//
-//    val playerView = PlayerView(context)
-//
-////    LaunchedEffect(Unit) {
-////        this.launch(Dispatchers.IO) {
-////            val mediaSource = videoPlayerScreenCallbacks.getMediaSource(streamUrl)
-////            withContext(Dispatchers.Main) {
-////                playerView.player = player
-////                player.setMediaSource(mediaSource)
-////                player.prepare()
-////                player.play()
-////            }
-////        }
-////    }
-//
-//    Box(
-//        modifier = modifier
-//    ) {
-//        AndroidView(
-//            factory = {
-//                playerView
-//            })
-//    }
-//}
-//
+interface PlaybackScreenCallbacks{
+    fun prepareAndPlayVideoPlayer(url:String)
+
+    fun disposeVideoPlayer()
+}
+
+@Composable
+fun Playback(
+    modifier: Modifier = Modifier,
+    player: ExoPlayer,
+    streamUrl: String,
+    navController: NavController,
+    playerScreenCallbacks: PlaybackScreenCallbacks,
+) {
+    MaterialTheme {
+        val context = LocalContext.current
+        LaunchedEffect(player) {
+            playerScreenCallbacks.prepareAndPlayVideoPlayer(streamUrl)
+        }
+
+        DisposableEffect(
+            AndroidView(
+                modifier = modifier.fillMaxSize(),
+                factory = {
+                    PlayerView(context).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        this.player = player
+                    }
+                },
+                update = {
+
+                }
+            )
+        ) {
+            onDispose {
+                playerScreenCallbacks.disposeVideoPlayer()
+            }
+        }
+
+        Button(onClick = {
+            navController.navigate(Destination.FullScreenView.path)
+        }, Modifier.testTag(Tags.TAG_BUTTON_SET_FULLSCREENVIEW)) {
+            Text("Full Screen")
+        }
+    }
+}
