@@ -72,4 +72,8 @@ class VideoPlayerViewModel @Inject constructor(
         uiState.value = uiState.value.copy(playerStatus = newPlayerStatus)
     }
 
+    fun updateUrl(streamUrl: String) {
+        uiState.value = uiState.value.copy(streamUrl = streamUrl)
+    }
+
 }

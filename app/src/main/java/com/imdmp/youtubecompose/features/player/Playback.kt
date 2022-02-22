@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.google.android.exoplayer2.ExoPlayer
@@ -70,4 +71,13 @@ fun Playback(
             Text("Full Screen")
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewPlayback() {
+//    Playback(
+//        player =Ex, streamUrl = "", navController =, playerScreenCallbacks =
+//
+//    )
 }

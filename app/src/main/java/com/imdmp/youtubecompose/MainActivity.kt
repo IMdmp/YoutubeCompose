@@ -14,33 +14,56 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.google.android.exoplayer2.ExoPlayer
+import com.imdmp.youtubecompose.features.player.Playback
+import com.imdmp.youtubecompose.features.player.VideoPlayerScreenCallbacks
+import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
 import com.imdmp.youtubecompose.features.player.fullscreenmode.VideoPlayerFullScreen
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity(), BaseActivityCallbacks {
+
+    @Inject
+    lateinit var player: ExoPlayer
+
+    val sampleUrl = "https://www.youtube.com/watch?v=iwa0SLUMDAs"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MaterialTheme {
-//                MainAppScreen()
-                val isFullScreen = remember {
-                    mutableStateOf(false)
-                }
+                val viewModel: VideoPlayerViewModel = viewModel()
 
-                if (isFullScreen.value) {
-                    VideoPlayerFullScreen(baseActivityCallbacks = this)
-                } else {
+                MainAppScreen(baseActivityCallbacks = this)
 
-                    Column {
-                        Button(onClick = {
-                            setOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-                            isFullScreen.value = isFullScreen.value.not()
-                        }) {
-                            Text(text = "To full screen")
-                        }
-                    }
-                }
+
+//                Playback(
+//                    player = player, streamUrl = sampleUrl, navController = rememberNavController(
+//                    ), playerScreenCallbacks = viewModel
+//                )
+
+//                val isFullScreen = remember {
+//                    mutableStateOf(false)
+//                }
+//
+//                if (isFullScreen.value) {
+//                    VideoPlayerFullScreen(baseActivityCallbacks = this)
+//                } else {
+//
+//                    Column {
+//                        Button(onClick = {
+//                            setOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+//                            isFullScreen.value = isFullScreen.value.not()
+//                        }) {
+//                            Text(text = "To full screen")
+//                        }
+//                    }
+//                }
 
             }
         }
