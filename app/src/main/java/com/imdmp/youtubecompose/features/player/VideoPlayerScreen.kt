@@ -3,6 +3,8 @@ package com.imdmp.youtubecompose.features.player
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -54,7 +56,9 @@ fun VideoPlayerScreen(
             playerScreenCallbacks = videoPlayerScreenCallbacks,
         )
 
-
+        LaunchedEffect(key1 = Unit ){
+            videoPlayerScreenCallbacks.retrieveComments()
+        }
         HorizontalPager(
             count = 2, state = pagerState, modifier = Modifier
                 .constrainAs(pager) {
@@ -66,7 +70,18 @@ fun VideoPlayerScreen(
                     height = Dimension.fillToConstraints
                 }
         ) {
-            Text("test here.")
+
+            if (this.currentPage == 0) {
+                LazyColumn() {
+                    items(videoPlayerScreenState.commentList) {
+                        Text(text = it)
+                    }
+                }
+
+
+            } else {
+                Text("test here.")
+            }
         }
         Surface(
             color = MaterialTheme.colors.background,

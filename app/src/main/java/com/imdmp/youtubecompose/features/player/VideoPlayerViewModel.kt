@@ -10,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.schabi.newpipe.extractor.NewPipe
+import org.schabi.newpipe.extractor.comments.CommentsInfo
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -74,6 +76,21 @@ class VideoPlayerViewModel @Inject constructor(
 
     fun updateUrl(streamUrl: String) {
         uiState.value = uiState.value.copy(streamUrl = streamUrl)
+    }
+
+    override fun retrieveComments() {
+        val url = uiState.value.streamUrl
+        viewModelScope.launch(Dispatchers.IO) {
+            val comments = CommentsInfo.getInfo(NewPipe.getService(0), url)
+
+            Timber.d("test here. $comments ")
+
+            uiState.value =
+                uiState.value.copy(commentList = comments.relatedItems.map {
+                it.commentText
+            })
+
+        }
     }
 
 }

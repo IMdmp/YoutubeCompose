@@ -7,6 +7,9 @@ interface VideoPlayerScreenCallbacks : PlaybackScreenCallbacks {
     suspend fun getMediaSource(url: String): MediaSource
 
     fun selectFullScreen()
+    fun retrieveComments() {
+        TODO("Not yet implemented")
+    }
 
     companion object {
         fun default(): VideoPlayerScreenCallbacks = object : VideoPlayerScreenCallbacks {
