@@ -29,7 +29,14 @@ class VideoPlayerViewModel @Inject constructor(
 
     override fun prepareAndPlayVideoPlayer(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val mediaSource = getMediaSource(url)
+            val urlToUse =
+                if (url.isEmpty()) {
+                    uiState.value.streamUrl
+                } else {
+                    url
+                }
+
+            val mediaSource = getMediaSource(urlToUse)
 
             withContext(Dispatchers.Main) {
                 player.setMediaSource(mediaSource)
@@ -41,10 +48,6 @@ class VideoPlayerViewModel @Inject constructor(
 
     override fun disposeVideoPlayer() {
         player.stop()
-    }
-
-    override fun selectFullScreen() {
-        TODO("Not yet implemented")
     }
 
     fun handleEvent(videoEvent: VideoEvent) {

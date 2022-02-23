@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 interface PlaybackScreenCallbacks{
-    fun prepareAndPlayVideoPlayer(url:String)
+    fun prepareAndPlayVideoPlayer(url:String="")
 
     fun disposeVideoPlayer()
 }
@@ -33,15 +33,13 @@ interface PlaybackScreenCallbacks{
 @Composable
 fun Playback(
     modifier: Modifier = Modifier,
-    player: ExoPlayer,
-    streamUrl: String,
-    navController: NavController,
+    player: ExoPlayer?,
     playerScreenCallbacks: PlaybackScreenCallbacks,
 ) {
     MaterialTheme {
         val context = LocalContext.current
         LaunchedEffect(player) {
-            playerScreenCallbacks.prepareAndPlayVideoPlayer(streamUrl)
+            playerScreenCallbacks.prepareAndPlayVideoPlayer()
         }
 
         DisposableEffect(
@@ -64,20 +62,11 @@ fun Playback(
                 playerScreenCallbacks.disposeVideoPlayer()
             }
         }
-
-        Button(onClick = {
-            navController.navigate(Destination.FullScreenView.path)
-        }, Modifier.testTag(Tags.TAG_BUTTON_SET_FULLSCREENVIEW)) {
-            Text("Full Screen")
-        }
     }
 }
 
 @Preview
 @Composable
 fun PreviewPlayback() {
-//    Playback(
-//        player =Ex, streamUrl = "", navController =, playerScreenCallbacks =
-//
-//    )
+    Playback(player = null, playerScreenCallbacks = VideoPlayerScreenCallbacks.default())
 }

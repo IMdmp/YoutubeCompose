@@ -6,9 +6,7 @@ interface VideoPlayerScreenCallbacks : PlaybackScreenCallbacks {
 
     suspend fun getMediaSource(url: String): MediaSource
 
-    fun selectFullScreen()
     fun retrieveComments() {
-        TODO("Not yet implemented")
     }
 
     companion object {
@@ -18,15 +16,11 @@ interface VideoPlayerScreenCallbacks : PlaybackScreenCallbacks {
             }
 
             override fun prepareAndPlayVideoPlayer(url: String) {
-                TODO("Not yet implemented")
+//                TODO("Not yet implemented")
             }
 
             override fun disposeVideoPlayer() {
-                TODO("Not yet implemented")
-            }
-
-            override fun selectFullScreen() {
-                TODO("Not yet implemented")
+//                TODO("Not yet implemented")
             }
 
         }
