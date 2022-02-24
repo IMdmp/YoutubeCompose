@@ -1,42 +1,29 @@
 package com.imdmp.youtubecompose.features.videolist
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.imdmp.youtubecompose.R
-import com.skydoves.landscapist.glide.GlideImage
 import com.imdmp.youtubecompose.features.navigation.model.Destination
 
 @Composable
 fun VideoListScreen(
-    videoListViewModel: VideoListViewModel,
+    videoListViewModel: VideoListViewModel = hiltViewModel(),
     navController: NavController,
     query: String
 ) {
@@ -131,107 +118,26 @@ interface ToolbarActions {
     }
 }
 
-interface VideoItemActions {
-    fun videoItemSelected(videoListItem: VideoListItem)
-
-    companion object {
-        fun default(): VideoItemActions = object : VideoItemActions {
-            override fun videoItemSelected(videoListItem: VideoListItem) {
-                TODO("Not yet implemented")
-            }
-
-        }
-    }
-}
-
-@Composable
-fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
-    ConstraintLayout(modifier = Modifier
-        .fillMaxWidth()
-        .clickable {
-            videoItemActions.videoItemSelected(item)
-        }) {
-        val (image, authorImage, title, button, subtitle) = createRefs()
-
-        GlideImage(
-            imageModel = item.imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .height(200.dp)
-                .constrainAs(image) {
-                    linkTo(
-                        start = parent.start,
-                        end = parent.end,
-                    )
-                    top.linkTo(parent.top)
-                    width = Dimension.fillToConstraints
-                }
-        )
-        GlideImage(
-            imageModel = item.authorImageUrl ?: "",
-            contentDescription = null,
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .constrainAs(authorImage) {
-                    start.linkTo(parent.start, margin = 12.dp)
-                    top.linkTo(image.bottom, margin = 16.dp)
-                    end.linkTo(title.start)
-                }
-        )
-        Text(
-            text = item.title,
-            style = MaterialTheme.typography.h6.copy(fontSize = 14.sp),
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.constrainAs(title) {
-                linkTo(
-                    start = authorImage.end,
-                    startMargin = 16.dp,
-                    end = button.start,
-                    endMargin = 16.dp
-                )
-                linkTo(
-                    top = authorImage.top,
-                    bottom = subtitle.top
-                )
-                width = Dimension.fillToConstraints
-            }
-        )
-        Text(
-            text = "${item.author} . ${item.viewCount}k views . 6 hours ago",
-            style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier
-                .constrainAs(subtitle) {
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(title.start)
-                    width = Dimension.fillToConstraints
-                }
-                .padding(bottom = 24.dp)
-        )
-        IconButton(
-            onClick = { },
-            modifier = Modifier
-                .constrainAs(button) {
-                    top.linkTo(authorImage.bottom)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            Icon(Icons.Default.MoreVert, tint = Color.Gray, contentDescription = null)
-        }
-    }
-}
-
-@Composable
 @Preview
-fun PreviewVideoItem() {
-    val dataItem = VideoListItem.default()
-    VideoItem(dataItem, VideoItemActions.default())
-}
+@Composable
+fun PreviewVideoListScreen() {
 
-//@Composable
-//@Preview
-//fun PreviewListScreen(){
-//    ListScreen()
-//}
+    val sampleVideoListItem = VideoListItem(
+        imageUrl = "", title = "", author = "", authorImageUrl = null, viewCount = 0, streamUrl = ""
+
+    )
+
+    val videoList = listOf(
+        sampleVideoListItem.copy(title = "Title1", author = "Author1", viewCount = 2L),
+        sampleVideoListItem.copy(title = "Title2", author = "Author2", viewCount = 1L),
+        sampleVideoListItem.copy(title = "Title3", author = "Author3", viewCount = 5L),
+        sampleVideoListItem.copy(title = "Title4", author = "Author4", viewCount = 10L)
+
+    )
+
+    VideoListScreen(
+        videoList = videoList,
+        navController = rememberNavController(),
+        videoListScreenActions = VideoListScreenActions.default()
+    )
+}
