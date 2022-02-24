@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.features.navigation.model.Destination
+import com.imdmp.youtubecompose.features.theme.YoutubeComposeTheme
 
 @Composable
 fun VideoListScreen(
@@ -51,7 +53,7 @@ fun VideoListScreen(
 private fun VideoListScreen(
     videoList: List<VideoListItem>,
     navController: NavController,
-    videoListScreenActions: VideoListScreenActions
+    videoListScreenActions: VideoListScreenActions,
 ) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
 
@@ -63,7 +65,7 @@ private fun VideoListScreen(
         TopAppBar(
             modifier = Modifier,
             title = {
-                Text(text = stringResource(id = R.string.app_name))
+                Text(text = stringResource(id = R.string.app_name),color = Color.Black)
             },
 
             actions = {
@@ -79,18 +81,19 @@ private fun VideoListScreen(
         )
     },
         bottomBar = {
-            BottomNavigationBar(
-                currentDestination = currentDestination,
-                onNavigate = { destination ->
-                    navController.navigate(destination.path) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                BottomNavigationBar(
+                    currentDestination = currentDestination,
+                    onNavigate = { destination ->
+                        navController.navigate(destination.path) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                })
-        }
+                    })
+            }
+
     ) {
 
         LazyColumn {
@@ -134,10 +137,11 @@ fun PreviewVideoListScreen() {
         sampleVideoListItem.copy(title = "Title4", author = "Author4", viewCount = 10L)
 
     )
-
-    VideoListScreen(
-        videoList = videoList,
-        navController = rememberNavController(),
-        videoListScreenActions = VideoListScreenActions.default()
-    )
+    YoutubeComposeTheme {
+        VideoListScreen(
+            videoList = videoList,
+            navController = rememberNavController(),
+            videoListScreenActions = VideoListScreenActions.default()
+        )
+    }
 }

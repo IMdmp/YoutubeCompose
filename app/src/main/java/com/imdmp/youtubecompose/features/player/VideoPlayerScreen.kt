@@ -29,6 +29,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.features.navigation.model.Destination
+import com.imdmp.youtubecompose.features.theme.YoutubeComposeTheme
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -173,11 +174,13 @@ fun PreviewVideoPlayerScreen() {
     val videoPlayerScreenState = VideoPlayerScreenState(
     )
 
-    VideoPlayerScreen(
-        navController = navController,
-        player = null,
-        videoPlayerScreenState = videoPlayerScreenState,
-        videoPlayerScreenCallbacks = VideoPlayerScreenCallbacks.default(),
-    )
+    YoutubeComposeTheme {
+        VideoPlayerScreen(
+            navController = navController,
+            player = null,
+            videoPlayerScreenState = videoPlayerScreenState,
+            videoPlayerScreenCallbacks = VideoPlayerScreenCallbacks.default(),
+        )
+    }
 }
 
