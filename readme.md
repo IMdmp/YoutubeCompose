@@ -1,12 +1,14 @@
 
 Pet project to practice Jetpack, UI and other android technologies.
 
-
-
-Extractor from New pipe extractor: https://github.com/TeamNewPipe/NewPipeExtractor
-Downloader from New pipe code: https://github.com/TeamNewPipe/NewPipe
-
-initial ui code from Compose Cookbook: https://github.com/Gurupreet/ComposeCookBook
+Libraries:
+- Jetpack compose UI + testing
+- Compose Navigation
+- Dagger-Hilt
+- Mockito
+- Extractor from New pipe extractor: https://github.com/TeamNewPipe/NewPipeExtractor
+- Downloader from New pipe code: https://github.com/TeamNewPipe/NewPipe
+- initial youtube ui code from Compose Cookbook: https://github.com/Gurupreet/ComposeCookBook
 
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
