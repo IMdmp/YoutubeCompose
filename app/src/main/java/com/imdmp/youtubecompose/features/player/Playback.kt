@@ -50,6 +50,8 @@ fun Playback(
                         layoutParams = ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
                         )
+                        this.useController =false
+                        this.hideController()
                         this.player = player
                     }
                 },

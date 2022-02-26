@@ -1,7 +1,11 @@
 package com.imdmp.youtubecompose.features.player
 
 import android.content.Context
+import androidx.compose.ui.test.assertAny
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
 import androidx.navigation.NavController
@@ -10,6 +14,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.testutil.TestExoPlayerBuilder
+import com.imdmp.youtubecompose.base.Tags
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -59,8 +64,31 @@ class VideoPlayerScreenTest {
             )
         }
 
-//        composeTestRule.onNodeWithTag(
-//            Tags.TAG_COMMENTS_LIST
-//        ).assertIsEnabled()
+        composeTestRule.onNodeWithTag(
+            Tags.TAG_COMMENTS_LIST,
+        )
     }
+    
+    @Test
+    fun VideoPlayerScreen_Contrains_LifecycleHandler(){
+        composeTestRule.setContent {
+
+            VideoPlayerScreen(
+                navController = mockedNavController,
+                player = mockedVideoPlayer,
+                videoPlayerScreenState = VideoPlayerScreenState(
+                    playerStatus =PlayerStatus.IDLE,
+                    streamUrl = ""
+                ),
+                videoPlayerScreenCallbacks =videoPlayerScreenCallbacks,
+                lifecycleOwner =lifecycleOwner,
+
+                )
+        }
+
+        composeTestRule.onNodeWithTag(
+            Tags.TAG_PLAYER_LIFECYCLER_HANDLER
+        ).assertIsDisplayed()
+    }
+
 }
