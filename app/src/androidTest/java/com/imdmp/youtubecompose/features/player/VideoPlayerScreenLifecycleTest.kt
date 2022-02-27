@@ -1,26 +1,19 @@
 package com.imdmp.youtubecompose.features.player
 
-import android.content.Context
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.testing.TestLifecycleOwner
-import androidx.navigation.NavController
 import androidx.test.annotation.UiThreadTest
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.testutil.TestExoPlayerBuilder
-import kotlinx.coroutines.test.runBlockingTest
+import com.imdmp.youtubecompose.features.videoplayer.HandleLifecycleChanges
+import com.imdmp.youtubecompose.features.videoplayer.model.PlayerStatus
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import org.mockito.Spy
-import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
 @RunWith(AndroidJUnit4::class)

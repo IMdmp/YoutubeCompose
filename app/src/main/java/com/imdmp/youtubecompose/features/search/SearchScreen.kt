@@ -1,31 +1,33 @@
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.imdmp.youtubecompose.features.navigation.model.Destination
-import com.imdmp.youtubecompose.features.search.SearchScreenActions
-import com.imdmp.youtubecompose.features.search.SearchState
-import com.imdmp.youtubecompose.features.search.SearchViewModel
+import com.imdmp.youtubecompose.features.search.model.SearchState
+import com.imdmp.youtubecompose.features.search.model.SearchViewModel
+import com.imdmp.youtubecompose.features.ui.navigation.model.Destination
 import timber.log.Timber
 
 @Composable
-fun SearchScreen(searchViewModel: SearchViewModel, navController: NavController) {
+fun SearchScreen(
+    searchViewModel: SearchViewModel = hiltViewModel<SearchViewModel>(),
+    navController: NavController
+) {
 
     SearchScreen(
         searchViewModel = searchViewModel,

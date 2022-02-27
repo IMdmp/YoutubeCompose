@@ -1,9 +1,7 @@
 package com.imdmp.youtubecompose.features.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -14,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.imdmp.youtubecompose.features.settings.model.SettingsState
+import com.imdmp.youtubecompose.features.settings.model.SettingsViewModel
 
 @Composable
 fun Settings(viewModel: SettingsViewModel) {

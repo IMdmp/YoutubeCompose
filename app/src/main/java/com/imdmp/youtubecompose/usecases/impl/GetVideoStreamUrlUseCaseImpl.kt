@@ -7,16 +7,12 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.imdmp.youtubecompose.player.PlayerDataSource
 import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.imdmp.youtubecompose.usecases.player.PlayerDataSource
 import org.schabi.newpipe.extractor.MediaFormat
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import timber.log.Timber
-import java.lang.IllegalStateException
-import javax.inject.Inject
 
 class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource) :
     GetVideoStreamUrlUseCase {

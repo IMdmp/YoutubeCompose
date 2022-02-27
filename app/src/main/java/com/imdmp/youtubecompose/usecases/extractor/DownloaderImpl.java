@@ -9,7 +9,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.imdmp.youtubecompose.utils.CookieUtils;
+import com.imdmp.youtubecompose.base.utils.CookieUtils;
 
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.downloader.Request;

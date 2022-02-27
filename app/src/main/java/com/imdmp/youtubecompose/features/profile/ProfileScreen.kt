@@ -1,6 +1,5 @@
 package com.imdmp.youtubecompose.features.profile
 
-import android.provider.ContactsContract
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.imdmp.youtubecompose.features.settings.Settings
-import com.imdmp.youtubecompose.features.settings.SettingsViewModel
+import com.imdmp.youtubecompose.features.settings.model.SettingsViewModel
 
 @Composable
-fun ProfileScreen(settingsViewModel: SettingsViewModel) {
+fun ProfileScreen(settingsViewModel: SettingsViewModel = hiltViewModel<SettingsViewModel>()) {
     Column {
         Text("Profile")
 

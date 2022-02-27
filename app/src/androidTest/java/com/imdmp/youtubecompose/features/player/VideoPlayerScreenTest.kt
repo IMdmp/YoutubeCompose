@@ -1,10 +1,8 @@
 package com.imdmp.youtubecompose.features.player
 
 import android.content.Context
-import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
@@ -15,6 +13,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.testutil.TestExoPlayerBuilder
 import com.imdmp.youtubecompose.base.Tags
+import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerScreen
+import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
+import com.imdmp.youtubecompose.features.videoplayer.model.PlayerStatus
+import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
+import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,6 +40,9 @@ class VideoPlayerScreenTest {
 
     lateinit var lifecycleOwner: LifecycleOwner
 
+    @Mock
+    lateinit var mockedControlsCallback: ControlsCallback
+
     @UiThreadTest
     @Before
     fun setup() {
@@ -52,15 +58,14 @@ class VideoPlayerScreenTest {
         composeTestRule.setContent {
 
             VideoPlayerScreen(
-                navController = mockedNavController,
                 player = mockedVideoPlayer,
                 videoPlayerScreenState = VideoPlayerScreenState(
-                    playerStatus =PlayerStatus.IDLE,
+                    playerStatus = PlayerStatus.IDLE,
                     streamUrl = ""
                 ),
                 videoPlayerScreenCallbacks =videoPlayerScreenCallbacks,
                 lifecycleOwner =lifecycleOwner,
-
+                controlsCallback = mockedControlsCallback
             )
         }
 
@@ -74,16 +79,15 @@ class VideoPlayerScreenTest {
         composeTestRule.setContent {
 
             VideoPlayerScreen(
-                navController = mockedNavController,
                 player = mockedVideoPlayer,
                 videoPlayerScreenState = VideoPlayerScreenState(
-                    playerStatus =PlayerStatus.IDLE,
+                    playerStatus = PlayerStatus.IDLE,
                     streamUrl = ""
                 ),
-                videoPlayerScreenCallbacks =videoPlayerScreenCallbacks,
-                lifecycleOwner =lifecycleOwner,
-
-                )
+                videoPlayerScreenCallbacks = videoPlayerScreenCallbacks,
+                lifecycleOwner = lifecycleOwner,
+                controlsCallback = mockedControlsCallback,
+            )
         }
 
         composeTestRule.onNodeWithTag(

@@ -2,19 +2,15 @@ package com.imdmp.youtubecompose.features.player
 
 import android.content.Context
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import androidx.test.annotation.UiThreadTest
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.testutil.TestExoPlayerBuilder
 import com.imdmp.youtubecompose.MainActivity
-import com.imdmp.youtubecompose.MainAppScreen
-import com.imdmp.youtubecompose.base.Tags
-import com.imdmp.youtubecompose.features.navigation.model.Destination
 import com.imdmp.youtubecompose.features.splash.SplashViewModel
+import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
+import com.imdmp.youtubecompose.features.videoplayer.playback.Playback
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

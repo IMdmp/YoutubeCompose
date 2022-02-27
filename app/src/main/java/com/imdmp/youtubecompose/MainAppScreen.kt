@@ -18,43 +18,33 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.imdmp.youtubecompose.features.fullscreenview.FullScreenView
-import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
-import com.imdmp.youtubecompose.features.videolist.VideoListScreen
-import com.imdmp.youtubecompose.features.navigation.model.Destination
-import com.imdmp.youtubecompose.features.player.VideoPlayerScreen
-import com.imdmp.youtubecompose.features.player.VideoPlayerScreenState
-import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
-import com.imdmp.youtubecompose.features.search.SearchViewModel
-import com.imdmp.youtubecompose.features.settings.SettingsViewModel
 import com.imdmp.youtubecompose.features.splash.SplashScreen
-import kotlinx.coroutines.flow.observeOn
+import com.imdmp.youtubecompose.features.ui.navigation.model.Destination
+import com.imdmp.youtubecompose.features.videolist.VideoListScreen
+import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
+import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerScreen
+import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
+import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerViewModel
 import timber.log.Timber
 import java.net.URLDecoder
 
 @Composable
 fun MainAppScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(
-    ),
+    navController: NavHostController = rememberNavController(),
     startDestination: String = Destination.Splash.path,
     baseActivityCallbacks: BaseActivityCallbacks? = null
 ) {
-    // Remember a SystemUiController
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = MaterialTheme.colors.isLight
 
     SideEffect {
-        // Update all of the system bar colors to be transparent, and use
-        // dark icons if we're in light theme
         systemUiController.setStatusBarColor(
             color = Color.Transparent,
             darkIcons = useDarkIcons
         )
-
-        // setStatusBarsColor() and setNavigationBarColor() also exist
     }
-
 
     NavHost(
         modifier = modifier,
@@ -62,25 +52,22 @@ fun MainAppScreen(
         startDestination = startDestination
     ) {
         composable(Destination.Splash.path) {
-
             SplashScreen(navController)
         }
 
         composable(Destination.VideoList.path) { backStackEntry ->
             val query = backStackEntry.arguments?.getString(Destination.VIDEO_LIST, "")
+            val videoListViewModel = hiltViewModel<VideoListViewModel>()
+            videoListViewModel.query = URLDecoder.decode(query, "utf-8")
 
-            val viewModel = hiltViewModel<VideoListViewModel>()
             if (query.isNullOrEmpty()) {
-                VideoListScreen(viewModel, navController, "")
+                VideoListScreen(navController = navController)
             } else {
                 VideoListScreen(
-                    query = URLDecoder.decode(query, "utf-8"),
-                    videoListViewModel = viewModel,
+                    videoListViewModel = videoListViewModel,
                     navController = navController
                 )
             }
-
-
         }
 
         composable(Destination.Player.path) { backStackEntry ->
@@ -89,31 +76,31 @@ fun MainAppScreen(
             requireNotNull(streamUrl) { "streamUrl parameter wasn't found. Please make sure it's set!" }
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
-
             videoPlayerViewModel.updateUrl(streamUrl)
+
             VideoPlayerScreen(
-                navController = navController,
                 player = videoPlayerViewModel.player,
                 videoPlayerScreenState = videoPlayerViewModel.uiState.collectAsState().value,
                 videoPlayerScreenCallbacks = videoPlayerViewModel,
-                lifecycleOwner = LocalLifecycleOwner.current
+                lifecycleOwner = LocalLifecycleOwner.current,
+                controlsCallback = object : ControlsCallback {
+                    override fun fullScreenClicked() {
+                        navController.navigate(Destination.FullScreenView.path)
+                    }
+
+                    override fun pauseOrPlayClicked() {
+                        videoPlayerViewModel.pauseOrPlayClicked()
+                    }
+                }
             )
-            //            Playback(
-//                streamUrl = URLDecoder.decode(streamUrl, "utf-8"),
-//                player = videoPlayerViewModel.player,
-//                videoPlayerScreenCallbacks = videoPlayerViewModel
-//            )
         }
 
         composable(Destination.Search.path) {
-            val viewModel = hiltViewModel<SearchViewModel>()
-            SearchScreen(viewModel, navController)
+            SearchScreen(navController = navController)
         }
 
         composable(Destination.Profile.path) {
-            val settingsViewModel = hiltViewModel<SettingsViewModel>()
-
-            ProfileScreen(settingsViewModel)
+            ProfileScreen()
         }
 
         composable(Destination.FullScreenView.path) {
