@@ -22,15 +22,14 @@ fun BottomNavigationBar(
             onNavigate = onNavigate
         ).forEach { destination ->
 
-            Surface(contentColor = Color.Black) {
 
-                BottomNavigationItem(
-                    selected = destination.selected,
-                    icon = { destination.icon() },
-                    label = { destination.label() },
-                    onClick = { destination.onClick() }
-                )
-            }
+            BottomNavigationItem(
+                selected = destination.selected,
+                icon = { destination.icon() },
+                label = { destination.label() },
+                onClick = { destination.onClick() }
+            )
         }
+
     }
 }

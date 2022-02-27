@@ -21,6 +21,7 @@ import com.imdmp.youtubecompose.features.player.Playback
 import com.imdmp.youtubecompose.features.player.VideoPlayerScreenCallbacks
 import com.imdmp.youtubecompose.features.player.VideoPlayerViewModel
 import com.imdmp.youtubecompose.features.player.fullscreenmode.VideoPlayerFullScreen
+import com.imdmp.youtubecompose.features.theme.YoutubeComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -36,7 +37,7 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MaterialTheme {
+            YoutubeComposeTheme {
                 val viewModel: VideoPlayerViewModel = viewModel()
 
                 MainAppScreen(baseActivityCallbacks = this)
