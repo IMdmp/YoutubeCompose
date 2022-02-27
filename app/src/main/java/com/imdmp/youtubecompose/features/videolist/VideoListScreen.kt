@@ -2,53 +2,38 @@ package com.imdmp.youtubecompose.features.videolist
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.imdmp.youtubecompose.R
-import com.imdmp.youtubecompose.features.navigation.model.Destination
-import com.imdmp.youtubecompose.features.theme.YoutubeComposeTheme
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Brands
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.brands.Youtube
-import compose.icons.fontawesomeicons.solid.User
+import com.imdmp.youtubecompose.features.ui.navigation.model.Destination
+import com.imdmp.youtubecompose.features.ui.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
+import com.imdmp.youtubecompose.features.videolist.model.VideoListScreenActions
+import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
+import com.imdmp.youtubecompose.features.videolist.topappbar.HomeTopAppBar
+import com.imdmp.youtubecompose.features.videolist.videoitem.VideoItem
 
 @Composable
 fun VideoListScreen(
     videoListViewModel: VideoListViewModel = hiltViewModel(),
     navController: NavController,
-    query: String
 ) {
     val videoListState = videoListViewModel.videoList.observeAsState().value
 
-    LaunchedEffect(query) {
-        videoListViewModel.search(query)
+    LaunchedEffect(videoListViewModel.query) {
+        videoListViewModel.search(videoListViewModel.query)
     }
-
 
     VideoListScreen(videoListState, navController, object : VideoListScreenActions {
         override fun videoItemSelected(videoListItem: VideoListItem) {
@@ -58,18 +43,11 @@ fun VideoListScreen(
         override fun searchClicked() {
             navController.navigate(Destination.Search.path)
         }
+
+        override fun profileClicked() {
+            navController.navigate(Destination.Profile.path)
+        }
     })
-
-
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(
-            color = Color.Blue
-        )
-    }
 }
 
 @Composable
@@ -78,72 +56,13 @@ private fun VideoListScreen(
     navController: NavController,
     videoListScreenActions: VideoListScreenActions,
 ) {
-    val navBackStackEntry = navController.currentBackStackEntryAsState()
-
-    val currentDestination by derivedStateOf {
-        Destination.fromString(navBackStackEntry.value?.destination?.route)
-    }
-
     Scaffold(
         topBar = {
-            TopAppBar(
-                modifier = Modifier,
-                backgroundColor = colors.surface,
-                contentColor = colors.onSurface,
-                navigationIcon = {
-                    Icon(
-                        imageVector = FontAwesomeIcons.Brands.Youtube,
-                        contentDescription = null,
-                        tint = Color.Red,
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .size(32.dp)
-                    )
-                },
-                title = {
-                    Text(text = stringResource(id = R.string.app_name), color = Color.Black)
-                },
-
-                actions = {
-                    IconButton(onClick = {
-                        videoListScreenActions.searchClicked()
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "",
-                            modifier = Modifier.padding(horizontal = 8.dp)
-                        )
-                    }
-
-                    IconButton(onClick = { navController.navigate(Destination.Profile.path) }) {
-                        Icon(
-                            imageVector = FontAwesomeIcons.Solid.User,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                                .size(24.dp)
-                                .clip(CircleShape)
-                        )
-                    }
-                }
+            HomeTopAppBar(
+                toolbarActions = videoListScreenActions
             )
-        },
-//        bottomBar = {
-//            BottomNavigationBar(
-//                currentDestination = currentDestination,
-//                onNavigate = { destination ->
-//                    navController.navigate(destination.path) {
-//                        popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true
-//                        }
-//                        launchSingleTop = true
-//                        restoreState = true
-//                    }
-//                })
-//        }
-
+        }
     ) {
-
         if (videoList.isNullOrEmpty()) {
             LoadingScreen()
         } else {
@@ -152,26 +71,16 @@ private fun VideoListScreen(
                     VideoItem(item = data, videoListScreenActions)
                 }
             }
-
         }
-
     }
 }
 
-fun toSearch() {
-
-}
-
-interface ToolbarActions {
-    fun searchClicked()
-
-    companion object {
-        fun default(): ToolbarActions = object : ToolbarActions {
-            override fun searchClicked() {
-                TODO("Not yet implemented")
-            }
-
-        }
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator(
+            color = Color.Blue
+        )
     }
 }
 
