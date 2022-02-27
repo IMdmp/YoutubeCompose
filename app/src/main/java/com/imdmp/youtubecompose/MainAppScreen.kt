@@ -2,17 +2,21 @@ package com.imdmp.youtubecompose
 
 import SearchScreen
 import android.content.pm.ActivityInfo
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.imdmp.youtubecompose.features.fullscreenview.FullScreenView
 import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
 import com.imdmp.youtubecompose.features.videolist.VideoListScreen
@@ -36,6 +40,22 @@ fun MainAppScreen(
     startDestination: String = Destination.Splash.path,
     baseActivityCallbacks: BaseActivityCallbacks? = null
 ) {
+    // Remember a SystemUiController
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = MaterialTheme.colors.isLight
+
+    SideEffect {
+        // Update all of the system bar colors to be transparent, and use
+        // dark icons if we're in light theme
+        systemUiController.setStatusBarColor(
+            color = Color.Transparent,
+            darkIcons = useDarkIcons
+        )
+
+        // setStatusBarsColor() and setNavigationBarColor() also exist
+    }
+
+
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -109,7 +129,7 @@ fun MainAppScreen(
                 videoPlayerViewModel = videoPlayerViewModel,
                 player = videoPlayerViewModel.player,
                 playerScreenCallbacks = videoPlayerViewModel,
-                )
+            )
         }
 
         composable(Destination.Test.path) {
