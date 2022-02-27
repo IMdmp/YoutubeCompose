@@ -1,5 +1,7 @@
 package com.imdmp.youtubecompose.features.videolist
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -46,23 +49,32 @@ fun VideoListScreen(
         videoListViewModel.search(query)
     }
 
-    videoListState?.let {
-        VideoListScreen(it, navController, object : VideoListScreenActions {
-            override fun videoItemSelected(videoListItem: VideoListItem) {
-                navController.navigate(Destination.Player.createRoute(videoListItem.streamUrl))
-            }
 
-            override fun searchClicked() {
-                navController.navigate(Destination.Search.path)
-            }
-        })
-    }
+    VideoListScreen(videoListState, navController, object : VideoListScreenActions {
+        override fun videoItemSelected(videoListItem: VideoListItem) {
+            navController.navigate(Destination.Player.createRoute(videoListItem.streamUrl))
+        }
+
+        override fun searchClicked() {
+            navController.navigate(Destination.Search.path)
+        }
+    })
+
 
 }
 
 @Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator(
+            color = Color.Blue
+        )
+    }
+}
+
+@Composable
 private fun VideoListScreen(
-    videoList: List<VideoListItem>,
+    videoList: List<VideoListItem>?,
     navController: NavController,
     videoListScreenActions: VideoListScreenActions,
 ) {
@@ -132,11 +144,17 @@ private fun VideoListScreen(
 
     ) {
 
-        LazyColumn {
-            items(videoList) { data ->
-                VideoItem(item = data, videoListScreenActions)
+        if (videoList.isNullOrEmpty()) {
+            LoadingScreen()
+        } else {
+            LazyColumn {
+                items(videoList) { data ->
+                    VideoItem(item = data, videoListScreenActions)
+                }
             }
+
         }
+
     }
 }
 
