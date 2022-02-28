@@ -39,6 +39,7 @@ fun MainAppScreen(
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = MaterialTheme.colors.isLight
 
+
     SideEffect {
         systemUiController.setStatusBarColor(
             color = Color.Transparent,
