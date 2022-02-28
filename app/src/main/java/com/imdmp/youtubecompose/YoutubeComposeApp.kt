@@ -2,13 +2,6 @@ package com.imdmp.youtubecompose
 
 import android.app.Application
 import android.content.Context
-import com.facebook.flipper.android.AndroidFlipperClient
-import com.facebook.flipper.android.utils.FlipperUtils
-import com.facebook.flipper.core.FlipperClient
-import com.facebook.flipper.plugins.inspector.DescriptorMapping
-import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin
-import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin
-import com.facebook.soloader.SoLoader
 import com.imdmp.youtubecompose.usecases.extractor.DownloaderImpl
 import com.imdmp.youtubecompose.usecases.extractor.DownloaderImpl.RECAPTCHA_COOKIES_KEY
 import dagger.hilt.android.HiltAndroidApp
@@ -30,23 +23,8 @@ class YoutubeComposeApp : Application() {
             getPreferredLocalization(this),
             ContentCountry(Locale.getDefault().country)
         )
-        SoLoader.init(this, false)
 
-        if (BuildConfig.DEBUG && FlipperUtils.shouldEnableFlipper(this)) {
-            AndroidFlipperClient.getInstance(this).apply {
-                addPlugin(
-                    InspectorFlipperPlugin(
-                        this@YoutubeComposeApp,
-                        DescriptorMapping.withDefaults()
-                    )
-                )
-                addPlugin(
-                    SharedPreferencesFlipperPlugin(this@YoutubeComposeApp)
-                )
-                this.start()
-
-            }
-        }
+        AppConfig.setup(this@YoutubeComposeApp)
 
         Timber.plant(Timber.DebugTree())
         System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
