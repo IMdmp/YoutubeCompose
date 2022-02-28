@@ -28,7 +28,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
 import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.features.ui.theme.YoutubeComposeTheme
-import com.imdmp.youtubecompose.features.videoplayer.comments.Comments
 import com.imdmp.youtubecompose.features.videoplayer.controls.Controls
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
 import com.imdmp.youtubecompose.features.videoplayer.model.PlayerStatus
@@ -66,6 +65,10 @@ fun VideoPlayerScreen(
             tween(delayMillis = 0)
         } else tween(delayMillis = 750)
     )
+    LaunchedEffect(key1 = Unit) {
+        videoPlayerScreenCallbacks.retrieveComments()
+    }
+
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (videoPlayer, pager, pagerTabs, controls) = createRefs()
@@ -84,10 +87,6 @@ fun VideoPlayerScreen(
             playerScreenCallbacks = videoPlayerScreenCallbacks,
         )
 
-        LaunchedEffect(key1 = Unit) {
-            videoPlayerScreenCallbacks.retrieveComments()
-        }
-
         Controls(
             controlsCallback = controlsCallback,
             modifier = Modifier
@@ -101,6 +100,8 @@ fun VideoPlayerScreen(
                     height = Dimension.fillToConstraints
                 })
 
+
+
         HorizontalPager(
             count = 2, state = pagerState, modifier = Modifier
                 .constrainAs(pager) {
@@ -113,7 +114,7 @@ fun VideoPlayerScreen(
                 }
         ) {
             if (this.currentPage == 0) {
-                Comments(videoPlayerScreenState = videoPlayerScreenState)
+//                Comments(videoPlayerScreenState = videoPlayerScreenState)
             } else {
                 Text("test here.")
             }
@@ -155,7 +156,6 @@ fun VideoPlayerScreen(
             }
         }
     }
-
 }
 
 @Composable
@@ -193,6 +193,12 @@ fun HandleLifecycleChanges(
         }
     }
 }
+
+//@Preview
+//@Composable
+//fun VideoDescription() {
+//
+//}
 
 @Preview
 @Composable
