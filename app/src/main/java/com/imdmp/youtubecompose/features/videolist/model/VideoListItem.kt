@@ -29,7 +29,7 @@ data class VideoListItem(
         )
 
         fun List<InfoItem>.mapToDataItems(): List<VideoListItem> {
-            return this.map { infoItem ->
+            return this.mapNotNull { infoItem ->
                 when (infoItem.infoType) {
                     InfoItem.InfoType.STREAM -> {
                         infoItem as StreamInfoItem
@@ -44,50 +44,26 @@ data class VideoListItem(
                     }
                     InfoItem.InfoType.PLAYLIST -> {
                         infoItem as PlaylistInfoItem
-
-                        VideoListItem(
-                            imageUrl = "",
-                            title = "",
-                            author = "",
-                            authorImageUrl = null,
-                            viewCount = 0,
-                            streamUrl = ""
-                        )
+                        //todo
+                        null
                     }
                     InfoItem.InfoType.CHANNEL -> {
                         infoItem as ChannelInfoItem
-                        VideoListItem(
-                            imageUrl = "",
-                            title = "",
-                            author = "",
-                            authorImageUrl = null,
-                            viewCount = 0,
-                            streamUrl = ""
-                        )
+                        //todo
+                        null
                     }
                     InfoItem.InfoType.COMMENT -> {
-                        VideoListItem(
-                            imageUrl = "",
-                            title = "",
-                            author = "",
-                            authorImageUrl = null,
-                            viewCount = 0,
-                            streamUrl = ""
-                        )
+                        //todo
+
+                        null
                     }
 
                     else -> {
                         requireNotNull(infoItem.infoType)
                         { "info item info type is null. Please make sure it's set!" }
+                        //todo
 
-                        VideoListItem(
-                            imageUrl = "",
-                            title = "",
-                            author = "",
-                            authorImageUrl = null,
-                            viewCount = 0,
-                            streamUrl = ""
-                        )
+                        null
                     }
                 }
 
