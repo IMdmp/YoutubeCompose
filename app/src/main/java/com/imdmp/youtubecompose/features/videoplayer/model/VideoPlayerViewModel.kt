@@ -3,6 +3,7 @@ package com.imdmp.youtubecompose.features.videoplayer.model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import com.imdmp.youtubecompose.features.videoplayer.VideoEvent
 import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
@@ -21,6 +22,24 @@ class VideoPlayerViewModel @Inject constructor(
     private val getVideoStreamUrlUseCase: GetVideoStreamUrlUseCase,
     val player: ExoPlayer
 ) : ViewModel(), VideoPlayerScreenCallbacks {
+
+    init {
+        player.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(state: Int) {
+                super.onPlaybackStateChanged(state)
+
+                when (state) {
+                    Player.STATE_READY -> {
+                        handleEvent(VideoEvent.VideoLoaded)
+                    }
+                    Player.STATE_BUFFERING -> {
+                        handleEvent(VideoEvent.VideoLoading)
+                    }
+                }
+            }
+        }
+        )
+    }
 
     val uiState = MutableStateFlow(VideoPlayerScreenState())
 
@@ -67,7 +86,14 @@ class VideoPlayerViewModel @Inject constructor(
             }
             VideoEvent.VideoLoaded -> {
                 Timber.d("video loaded!")
+                uiState.value = uiState.value.copy(playerStatus = PlayerStatus.IDLE)
+
             }
+
+            VideoEvent.VideoLoading ->{
+                uiState.value = uiState.value.copy(playerStatus = PlayerStatus.LOADING)
+            }
+
             VideoEvent.ToggleStatus -> {
                 togglePlayerStatus()
             }

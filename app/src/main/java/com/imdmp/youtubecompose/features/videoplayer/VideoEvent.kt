@@ -6,4 +6,6 @@ sealed class VideoEvent {
     object VideoLoaded : VideoEvent()
 
     object VideoError: VideoEvent()
+
+    object VideoLoading:VideoEvent()
 }

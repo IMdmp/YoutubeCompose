@@ -28,6 +28,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
 import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.features.ui.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.features.videoplayer.controls.ControlState
 import com.imdmp.youtubecompose.features.videoplayer.controls.Controls
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
 import com.imdmp.youtubecompose.features.videoplayer.model.PlayerStatus
@@ -43,7 +44,8 @@ fun VideoPlayerScreen(
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     controlsCallback: ControlsCallback,
-) {
+
+    ) {
 
     val pagerState = rememberPagerState()
 
@@ -71,7 +73,7 @@ fun VideoPlayerScreen(
 
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (videoPlayer, pager, pagerTabs, controls) = createRefs()
+        val (videoPlayer, pager, pagerTabs, controls, progressIndicator) = createRefs()
         Playback(
             Modifier
                 .aspectRatio(16 / 9f)
@@ -85,7 +87,29 @@ fun VideoPlayerScreen(
                 .testTag(Tags.TEST),
             player = player,
             playerScreenCallbacks = videoPlayerScreenCallbacks,
+            onUpdate = { playerView ->
+                when (videoPlayerScreenState.playerStatus) {
+                    PlayerStatus.PAUSED -> {
+                        playerView.player?.pause()
+                    }
+                    PlayerStatus.PLAYING -> {
+                        playerView.player?.play()
+                    }
+                }
+            }
         )
+
+        if (videoPlayerScreenState.playerStatus == PlayerStatus.LOADING) {
+            CircularProgressIndicator(
+                color = Color.Blue,
+                modifier = Modifier
+                    .constrainAs(progressIndicator) {
+                        start.linkTo(videoPlayer.start)
+                        end.linkTo(videoPlayer.end)
+                        top.linkTo(videoPlayer.top)
+                        bottom.linkTo(videoPlayer.bottom)
+                    })
+        }
 
         Controls(
             controlsCallback = controlsCallback,
@@ -98,7 +122,13 @@ fun VideoPlayerScreen(
                     bottom.linkTo(videoPlayer.bottom)
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
-                })
+                },
+            controlState = if (videoPlayerScreenState.playerStatus == PlayerStatus.PAUSED) {
+                ControlState.PAUSED
+            } else {
+                ControlState.PLAYING
+            }
+        )
 
 
 

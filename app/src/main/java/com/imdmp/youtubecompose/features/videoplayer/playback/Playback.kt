@@ -17,6 +17,7 @@ fun Playback(
     modifier: Modifier = Modifier,
     player: ExoPlayer?,
     playerScreenCallbacks: PlaybackScreenCallbacks,
+    onUpdate: (PlayerView) -> Unit = {}
 ) {
     val context = LocalContext.current
     LaunchedEffect(player) {
@@ -36,9 +37,7 @@ fun Playback(
                     this.player = player
                 }
             },
-            update = {
-
-            }
+            update = onUpdate
         )
     ) {
         onDispose {
