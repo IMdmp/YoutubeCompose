@@ -12,6 +12,8 @@ import com.facebook.soloader.SoLoader
 object AppConfig {
     fun setup(context: Context) {
         if (BuildConfig.DEBUG && FlipperUtils.shouldEnableFlipper(context)) {
+            SoLoader.init(context, false)
+
             AndroidFlipperClient.getInstance(context).apply {
                 addPlugin(
                     InspectorFlipperPlugin(
