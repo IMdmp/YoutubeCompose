@@ -18,7 +18,7 @@ class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource)
     GetVideoStreamUrlUseCase {
     override suspend fun invoke(encryptedStreamUrl: String): MediaSource {
         val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), encryptedStreamUrl)
-        val firstSource = streamInfo.videoStreams!![2]
+        val firstSource = streamInfo.videoStreams!![1]
 
         Timber.d("first source: ${firstSource.url}")
         val uri = Uri.parse(firstSource.url)

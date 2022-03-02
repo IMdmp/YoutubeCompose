@@ -33,6 +33,8 @@ import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.features.ui.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentModel
+import com.imdmp.youtubecompose.features.videoplayer.comments.CommentState
+import com.imdmp.youtubecompose.features.videoplayer.comments.Comments
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlState
 import com.imdmp.youtubecompose.features.videoplayer.controls.Controls
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
@@ -85,7 +87,7 @@ fun VideoPlayerScreen(
 
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (videoPlayer, pager, pagerTabs, controls, progressIndicator, titleBar, iconActionsBar, videoAuthorInfoBar) = createRefs()
+        val (videoPlayer, pager, pagerTabs, controls, progressIndicator, titleBar, iconActionsBar, videoAuthorInfoBar, comments) = createRefs()
         Playback(
             Modifier
                 .aspectRatio(16 / 9f)
@@ -147,17 +149,37 @@ fun VideoPlayerScreen(
             top.linkTo(videoPlayer.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
+            width = Dimension.fillToConstraints
         }, state = state)
         IconActionsBar(modifier = Modifier.constrainAs(iconActionsBar) {
             top.linkTo(titleBar.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
+            width = Dimension.fillToConstraints
         }, state = state)
         VideoAuthorInfoBar(modifier = Modifier.constrainAs(videoAuthorInfoBar) {
             top.linkTo(iconActionsBar.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
+            width = Dimension.fillToConstraints
         }, state = state)
+
+        Comments(
+            modifier = Modifier.constrainAs(
+                comments
+            ) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
+                top.linkTo(videoAuthorInfoBar.bottom, 4.dp)
+            },
+                commentState = CommentState(
+                commentModelList = state.commentList,
+                isLoading = false,
+                error = null
+            ),
+        )
+
 
 //        HorizontalPager(
 //            count = 2, state = pagerState, modifier = Modifier
@@ -225,7 +247,7 @@ fun VideoPlayerScreen(
 @Composable
 fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
 
-    ConstraintLayout(modifier = modifier) {
+    ConstraintLayout(modifier = modifier.padding(16.dp)) {
         val (profilePic, authorName, subs, subscribeButton) = createRefs()
 
         GlideImage(
@@ -244,18 +266,19 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerScreenSt
 
         Text(
             text = state.authorName,
-            fontSize = 24.sp,
+            fontSize = 16.sp,
             modifier = modifier.constrainAs(authorName) {
-                start.linkTo(profilePic.end, 16.dp)
                 top.linkTo(parent.top)
+                start.linkTo(profilePic.end)
             },
         )
 
         Text(
             text = "${state.numberOfSubs}M subscribers",
             modifier = Modifier.constrainAs(subs) {
-                top.linkTo(authorName.bottom, 4.dp)
                 start.linkTo(profilePic.end, 16.dp)
+                top.linkTo(authorName.bottom, 4.dp)
+                bottom.linkTo(parent.bottom)
             }
         )
 
@@ -299,7 +322,7 @@ fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState)
 fun VideoScreenActionIcon(modifier: Modifier = Modifier, iconDesc: String, icon: ImageVector) {
     Column(modifier = modifier) {
         IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = icon, contentDescription = null)
+            Icon(imageVector = icon, contentDescription = null, Modifier.size(16.dp))
         }
 
         Text(text = iconDesc)

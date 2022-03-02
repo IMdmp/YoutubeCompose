@@ -15,7 +15,6 @@ import com.google.android.exoplayer2.testutil.TestExoPlayerBuilder
 import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
-import com.imdmp.youtubecompose.features.videoplayer.model.PlayerStatus
 import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
 import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenState
 import org.junit.Before
@@ -59,10 +58,7 @@ class VideoPlayerScreenTest {
 
             VideoPlayerScreen(
                 player = mockedVideoPlayer,
-                state = VideoPlayerScreenState(
-                    playerStatus = PlayerStatus.IDLE,
-                    streamUrl = ""
-                ),
+                state = VideoPlayerScreenState.init(),
                 videoPlayerScreenCallbacks =videoPlayerScreenCallbacks,
                 lifecycleOwner =lifecycleOwner,
                 controlsCallback = mockedControlsCallback
@@ -80,10 +76,7 @@ class VideoPlayerScreenTest {
 
             VideoPlayerScreen(
                 player = mockedVideoPlayer,
-                state = VideoPlayerScreenState(
-                    playerStatus = PlayerStatus.IDLE,
-                    streamUrl = ""
-                ),
+                state = VideoPlayerScreenState.init(),
                 videoPlayerScreenCallbacks = videoPlayerScreenCallbacks,
                 lifecycleOwner = lifecycleOwner,
                 controlsCallback = mockedControlsCallback,
