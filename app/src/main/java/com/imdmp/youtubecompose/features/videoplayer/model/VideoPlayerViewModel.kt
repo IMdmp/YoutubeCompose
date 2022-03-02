@@ -6,6 +6,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import com.imdmp.youtubecompose.features.videoplayer.VideoEvent
+import com.imdmp.youtubecompose.features.videoplayer.comments.CommentModel
 import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +42,7 @@ class VideoPlayerViewModel @Inject constructor(
         )
     }
 
-    val uiState = MutableStateFlow(VideoPlayerScreenState())
+    val uiState = MutableStateFlow(VideoPlayerScreenState.init())
 
     override suspend fun getMediaSource(url: String): MediaSource {
         return getVideoStreamUrlUseCase(url)
@@ -90,7 +91,7 @@ class VideoPlayerViewModel @Inject constructor(
 
             }
 
-            VideoEvent.VideoLoading ->{
+            VideoEvent.VideoLoading -> {
                 uiState.value = uiState.value.copy(playerStatus = PlayerStatus.LOADING)
             }
 
@@ -124,8 +125,14 @@ class VideoPlayerViewModel @Inject constructor(
             Timber.d("test here. $comments ")
 
             uiState.value =
-                uiState.value.copy(commentList = comments.relatedItems.map {
-                    it.commentText
+                uiState.value.copy(commentList = comments.relatedItems.map { commentInfoItem ->
+                    CommentModel(
+                        authorName = commentInfoItem.uploaderName,
+                        commentText = commentInfoItem.commentText,
+                        profilePic = commentInfoItem.uploaderAvatarUrl,
+                        likeCount = commentInfoItem.likeCount,
+                        timeCommented = commentInfoItem.textualUploadDate
+                    )
                 })
 
         }

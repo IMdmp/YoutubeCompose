@@ -59,7 +59,7 @@ class VideoPlayerScreenTest {
 
             VideoPlayerScreen(
                 player = mockedVideoPlayer,
-                videoPlayerScreenState = VideoPlayerScreenState(
+                state = VideoPlayerScreenState(
                     playerStatus = PlayerStatus.IDLE,
                     streamUrl = ""
                 ),
@@ -80,7 +80,7 @@ class VideoPlayerScreenTest {
 
             VideoPlayerScreen(
                 player = mockedVideoPlayer,
-                videoPlayerScreenState = VideoPlayerScreenState(
+                state = VideoPlayerScreenState(
                     playerStatus = PlayerStatus.IDLE,
                     streamUrl = ""
                 ),
