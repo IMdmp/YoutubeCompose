@@ -2,6 +2,7 @@ package com.imdmp.youtubecompose.features.videoplayer
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -10,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -44,11 +46,11 @@ import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenStat
 import com.imdmp.youtubecompose.features.videoplayer.playback.Playback
 import com.skydoves.landscapist.glide.GlideImage
 import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.ArrowDown
-import compose.icons.fontawesomeicons.solid.Share
-import compose.icons.fontawesomeicons.solid.ThumbsDown
-import compose.icons.fontawesomeicons.solid.ThumbsUp
+import compose.icons.fontawesomeicons.Regular
+import compose.icons.fontawesomeicons.regular.ArrowAltCircleDown
+import compose.icons.fontawesomeicons.regular.ShareSquare
+import compose.icons.fontawesomeicons.regular.ThumbsDown
+import compose.icons.fontawesomeicons.regular.ThumbsUp
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -145,24 +147,31 @@ fun VideoPlayerScreen(
         )
 
 
-        TitleBar(modifier = Modifier.constrainAs(titleBar) {
-            top.linkTo(videoPlayer.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            width = Dimension.fillToConstraints
-        }, state = state)
-        IconActionsBar(modifier = Modifier.constrainAs(iconActionsBar) {
-            top.linkTo(titleBar.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            width = Dimension.fillToConstraints
-        }, state = state)
-        VideoAuthorInfoBar(modifier = Modifier.constrainAs(videoAuthorInfoBar) {
-            top.linkTo(iconActionsBar.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            width = Dimension.fillToConstraints
-        }, state = state)
+        TitleBar(
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 8.dp)
+                .constrainAs(titleBar) {
+                    top.linkTo(videoPlayer.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }, state = state
+        )
+        IconActionsBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(iconActionsBar) {
+                    top.linkTo(titleBar.bottom)
+                }, state = state
+        )
+        VideoAuthorInfoBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp,bottom = 4.dp)
+                .constrainAs(videoAuthorInfoBar) {
+                    top.linkTo(iconActionsBar.bottom)
+                }, state = state
+        )
 
         Comments(
             modifier = Modifier.constrainAs(
@@ -173,7 +182,7 @@ fun VideoPlayerScreen(
                 width = Dimension.fillToConstraints
                 top.linkTo(videoAuthorInfoBar.bottom, 4.dp)
             },
-                commentState = CommentState(
+            commentState = CommentState(
                 commentModelList = state.commentList,
                 isLoading = false,
                 error = null
@@ -247,8 +256,19 @@ fun VideoPlayerScreen(
 @Composable
 fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
 
-    ConstraintLayout(modifier = modifier.padding(16.dp)) {
-        val (profilePic, authorName, subs, subscribeButton) = createRefs()
+    ConstraintLayout(modifier = modifier) {
+        val (profilePic, authorName, subs, subscribeButton, topLine, bottomLine) = createRefs()
+
+        Box(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(Color.LightGray)
+                .constrainAs(topLine) {
+                    top.linkTo(parent.top)
+
+                }
+        )
 
         GlideImage(
             imageModel = state.authorUrl,
@@ -259,70 +279,182 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerScreenSt
                 )
                 .size(24.dp)
                 .constrainAs(profilePic) {
-                    start.linkTo(parent.start)
+                    start.linkTo(parent.start, 4.dp)
                     top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
                 }
         )
 
         Text(
             text = state.authorName,
             fontSize = 16.sp,
-            modifier = modifier.constrainAs(authorName) {
-                top.linkTo(parent.top)
-                start.linkTo(profilePic.end)
-            },
-        )
-
-        Text(
-            text = "${state.numberOfSubs}M subscribers",
-            modifier = Modifier.constrainAs(subs) {
-                start.linkTo(profilePic.end, 16.dp)
-                top.linkTo(authorName.bottom, 4.dp)
-                bottom.linkTo(parent.bottom)
+            modifier = Modifier.constrainAs(authorName) {
+                start.linkTo(profilePic.end, 8.dp)
+                top.linkTo(topLine.bottom, 4.dp)
             }
         )
 
+        Text(text = "${state.likeCount}m subs",
+            modifier = Modifier.constrainAs(subs) {
+                start.linkTo(profilePic.end, 8.dp)
+                top.linkTo(authorName.bottom)
+                bottom.linkTo(bottomLine.top, 4.dp)
+            }
+        )
+
+
         Text(
             text = "SUBSCRIBED",
-            fontSize = 32.sp,
+            fontSize = 18.sp,
             modifier = Modifier.constrainAs(subscribeButton) {
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
-                end.linkTo(parent.end)
+                end.linkTo(parent.end, 4.dp)
             })
+
+        Box(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(Color.LightGray)
+                .constrainAs(bottomLine) {
+                    bottom.linkTo(parent.bottom)
+                }
+        )
+    }
+
+}
+
+@Preview
+@Composable
+fun PreviewVideoAuthorInfoBar() {
+    val videoPlayerScreenState = getScreenStateForTest()
+
+    YoutubeComposeTheme {
+        VideoAuthorInfoBar(modifier = Modifier.fillMaxWidth(), state = videoPlayerScreenState)
     }
 }
 
 @Composable
 fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceEvenly) {
-        VideoScreenActionIcon(
-            iconDesc = "${state.likeCount} k",
-            icon = FontAwesomeIcons.Solid.ThumbsUp
+    ConstraintLayout(
+        modifier = modifier,
+    ) {
+        val (thumbsUp, thumbsDown, share, download) = createRefs()
+        val (thumbsUpLabel, thumbsDownLabel, shareLabel, downloadLabel) = createRefs()
+
+        IconButton(onClick = { /*TODO*/ },
+            modifier = Modifier.constrainAs(thumbsUp) {
+                start.linkTo(parent.start)
+                end.linkTo(thumbsDown.start)
+                top.linkTo(parent.top)
+            }
+        ) {
+            Icon(
+                imageVector = FontAwesomeIcons.Regular.ThumbsUp,
+                contentDescription = null,
+                Modifier.size(24.dp)
+            )
+        }
+
+        Text(text = "23k",
+            modifier = Modifier.constrainAs(thumbsUpLabel) {
+                start.linkTo(thumbsUp.start)
+                end.linkTo(thumbsUp.end)
+                top.linkTo(thumbsUp.bottom)
+            }
         )
 
-        VideoScreenActionIcon(
-            iconDesc = "Dislike",
-            icon = FontAwesomeIcons.Solid.ThumbsDown
+        IconButton(onClick = { /*TODO*/ },
+            modifier = Modifier.constrainAs(thumbsDown) {
+                start.linkTo(thumbsUp.end)
+                end.linkTo(share.start)
+                top.linkTo(parent.top)
+            }) {
+            Icon(
+                imageVector = FontAwesomeIcons.Regular.ThumbsDown,
+                contentDescription = null,
+                Modifier.size(24.dp)
+            )
+        }
+
+        Text(text = "Dislike",
+            modifier = Modifier.constrainAs(thumbsDownLabel) {
+                start.linkTo(thumbsDown.start)
+                end.linkTo(thumbsDown.end)
+                top.linkTo(thumbsDown.bottom)
+            }
         )
 
-        VideoScreenActionIcon(
-            iconDesc = "Share",
-            icon = FontAwesomeIcons.Solid.Share
+        IconButton(onClick = { /*TODO*/ },
+            modifier = Modifier.constrainAs(share) {
+                start.linkTo(thumbsDown.end)
+                end.linkTo(download.start)
+                top.linkTo(parent.top)
+            }) {
+            Icon(
+                imageVector = FontAwesomeIcons.Regular.ShareSquare,
+                contentDescription = null,
+                Modifier.size(24.dp)
+            )
+        }
+
+        Text(text = "Share",
+            modifier = Modifier.constrainAs(shareLabel) {
+                start.linkTo(share.start)
+                end.linkTo(share.end)
+                top.linkTo(share.bottom)
+            }
         )
 
-        VideoScreenActionIcon(
-            iconDesc = "Download",
-            icon = FontAwesomeIcons.Solid.ArrowDown
+        IconButton(onClick = { /*TODO*/ },
+            modifier = Modifier.constrainAs(download) {
+                start.linkTo(share.end)
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+            }) {
+            Icon(
+                imageVector = FontAwesomeIcons.Regular.ArrowAltCircleDown,
+                contentDescription = null,
+                Modifier.size(24.dp)
+            )
+        }
+
+        Text(text = "Download",
+            modifier = Modifier.constrainAs(downloadLabel) {
+                start.linkTo(download.start)
+                end.linkTo(download.end)
+                top.linkTo(download.bottom)
+            }
         )
+
+//        VideoScreenActionIcon(
+//            iconDesc = "${state.likeCount} k",
+//            icon = FontAwesomeIcons.Regular.ThumbsUp
+//        )
+//
+//        VideoScreenActionIcon(
+//            iconDesc = "Dislike",
+//            icon = FontAwesomeIcons.Regular.ThumbsDown
+//        )
+//
+//        VideoScreenActionIcon(
+//            iconDesc = "Share",
+//            icon = FontAwesomeIcons.Regular.ShareSquare
+//        )
+//
+//        VideoScreenActionIcon(
+//            iconDesc = "Download",
+//            icon = FontAwesomeIcons.Regular.ArrowAltCircleDown
+//        )
     }
 }
 
 @Composable
 fun VideoScreenActionIcon(modifier: Modifier = Modifier, iconDesc: String, icon: ImageVector) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = icon, contentDescription = null, Modifier.size(16.dp))
+            Icon(imageVector = icon, contentDescription = null, Modifier.size(24.dp))
         }
 
         Text(text = iconDesc)
@@ -332,7 +464,7 @@ fun VideoScreenActionIcon(modifier: Modifier = Modifier, iconDesc: String, icon:
 @Composable
 fun TitleBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
 
-    ConstraintLayout(modifier = modifier.padding(16.dp)) {
+    ConstraintLayout(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
         val (title, viewCount, uploadDate) = createRefs()
 
         Text(
@@ -369,8 +501,8 @@ fun HandleLifecycleChanges(
 ) {
     Box(
         modifier = Modifier
+            .size(5.dp)
             .testTag(Tags.TAG_PLAYER_LIFECYCLER_HANDLER)
-            .fillMaxSize()
     ) {
 
     }
@@ -403,10 +535,24 @@ fun HandleLifecycleChanges(
 //
 //}
 
+
 @Preview
 @Composable
 fun PreviewVideoPlayerScreen() {
 
+    val videoPlayerScreenState = getScreenStateForTest()
+
+    YoutubeComposeTheme {
+        VideoPlayerScreen(
+            player = null,
+            state = videoPlayerScreenState,
+            videoPlayerScreenCallbacks = VideoPlayerScreenCallbacks.default(),
+            controlsCallback = ControlsCallback.default()
+        )
+    }
+}
+
+private fun getScreenStateForTest(): VideoPlayerScreenState {
     val commentModel = CommentModel(
         authorName = "RandomDude",
         commentText = "First.",
@@ -429,13 +575,5 @@ fun PreviewVideoPlayerScreen() {
         videoDescription = "This is a sample video description",
     )
 
-    YoutubeComposeTheme {
-        VideoPlayerScreen(
-            player = null,
-            state = videoPlayerScreenState,
-            videoPlayerScreenCallbacks = VideoPlayerScreenCallbacks.default(),
-            controlsCallback = ControlsCallback.default()
-        )
-    }
+    return videoPlayerScreenState
 }
-
