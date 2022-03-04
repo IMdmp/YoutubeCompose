@@ -59,6 +59,8 @@ class VideoPlayerViewModel @Inject constructor(
                     url
                 }
 
+            setUiState(getVideoInfo(urlToUse))
+
             val mediaSource = getMediaSource(urlToUse)
 
             withContext(Dispatchers.Main) {
@@ -69,12 +71,36 @@ class VideoPlayerViewModel @Inject constructor(
         }
     }
 
-//    fun getVideoInfo(url:String){
-//        val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), url)
-//
-//        val videoSchema = VideoDataSchema()
-//        streamInfo.name
-//    }
+    private fun setUiState(videoInfo: VideoDataSchema) {
+        uiState.value = uiState.value.copy(
+            videoTitle = videoInfo.title,
+            views = videoInfo.views,
+            datePosted = "2 weeks ago",
+            likeCount = videoInfo.likeCount,
+            authorUrl = videoInfo.uploaderProfilePicUrl,
+            authorName = videoInfo.uploaderName,
+            numberOfSubs = 5,
+            videoDescription = videoInfo.videoDescription
+
+        )
+    }
+
+    fun getVideoInfo(url: String): VideoDataSchema {
+        val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), url)
+
+        val videoSchema = VideoDataSchema(
+            title = streamInfo.name,
+            views = streamInfo.viewCount,
+            uploadDate = streamInfo.uploadDate.offsetDateTime().toString(),
+            likeCount = streamInfo.likeCount,
+            uploaderName = streamInfo.uploaderName,
+            uploaderProfilePicUrl = streamInfo.uploaderAvatarUrl,
+            subscriberCount = 2,
+            videoDescription = streamInfo.description.content
+        )
+
+        return videoSchema
+    }
 
     override fun disposeVideoPlayer() {
         player.stop()

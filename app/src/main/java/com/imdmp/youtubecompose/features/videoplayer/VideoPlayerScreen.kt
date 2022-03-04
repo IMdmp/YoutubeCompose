@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -57,7 +58,7 @@ fun VideoPlayerScreen(
     ) {
 
     val pagerState = rememberPagerState()
-
+    val listState = rememberLazyListState()
     HandleLifecycleChanges(
         lifecycleOwner = lifecycleOwner,
         state = state.playerStatus,
@@ -172,12 +173,13 @@ fun VideoPlayerScreen(
                 .fillMaxWidth()
                 .background(Color.LightGray)
                 .constrainAs(commentSeparatorLine) {
-                    top.linkTo(iconActionsBar.bottom,8.dp)
+                    top.linkTo(iconActionsBar.bottom, 8.dp)
 
                 }
         )
 
         Comments(
+            listState = listState,
             modifier = Modifier
                 .constrainAs(
                 comments
