@@ -2,7 +2,7 @@ package com.imdmp.youtubecompose.features.videoplayer.model
 
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentModel
 
-data class VideoPlayerScreenState(
+data class VideoPlayerComposeScreenState(
     val playerStatus: PlayerStatus = PlayerStatus.LOADING,
     val streamUrl:String = "",
     val commentList:List<CommentModel> = listOf(),
@@ -16,8 +16,8 @@ data class VideoPlayerScreenState(
     val videoDescription:String,
 ) {
     companion object{
-        fun init():VideoPlayerScreenState{
-            return VideoPlayerScreenState(
+        fun init():VideoPlayerComposeScreenState{
+            return VideoPlayerComposeScreenState(
                 playerStatus =PlayerStatus.IDLE,
                 streamUrl = "",
                 commentList = listOf(),

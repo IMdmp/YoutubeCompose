@@ -16,7 +16,7 @@ import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
 import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
-import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenState
+import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerComposeScreenState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,7 +58,7 @@ class VideoPlayerScreenTest {
 
             VideoPlayerScreen(
                 player = mockedVideoPlayer,
-                state = VideoPlayerScreenState.init(),
+                state = VideoPlayerComposeScreenState.init(),
                 videoPlayerScreenCallbacks =videoPlayerScreenCallbacks,
                 lifecycleOwner =lifecycleOwner,
                 controlsCallback = mockedControlsCallback
@@ -76,7 +76,7 @@ class VideoPlayerScreenTest {
 
             VideoPlayerScreen(
                 player = mockedVideoPlayer,
-                state = VideoPlayerScreenState.init(),
+                state = VideoPlayerComposeScreenState.init(),
                 videoPlayerScreenCallbacks = videoPlayerScreenCallbacks,
                 lifecycleOwner = lifecycleOwner,
                 controlsCallback = mockedControlsCallback,

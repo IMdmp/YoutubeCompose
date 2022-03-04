@@ -35,7 +35,7 @@ import com.imdmp.youtubecompose.features.videoplayer.controls.Controls
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
 import com.imdmp.youtubecompose.features.videoplayer.model.PlayerStatus
 import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
-import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenState
+import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerComposeScreenState
 import com.imdmp.youtubecompose.features.videoplayer.playback.Playback
 import com.skydoves.landscapist.glide.GlideImage
 import compose.icons.FontAwesomeIcons
@@ -49,7 +49,7 @@ import compose.icons.fontawesomeicons.regular.ThumbsUp
 @Composable
 fun VideoPlayerScreen(
     player: ExoPlayer?,
-    state: VideoPlayerScreenState,
+    state: VideoPlayerComposeScreenState,
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     controlsCallback: ControlsCallback,
@@ -256,7 +256,7 @@ fun VideoPlayerScreen(
 }
 
 @Composable
-fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
+fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScreenState) {
     ConstraintLayout(modifier = modifier) {
         val (profilePic, authorName, subs, subscribeButton) = createRefs()
 
@@ -309,7 +309,7 @@ fun PreviewVideoAuthorInfoBar() {
 }
 
 @Composable
-fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
+fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScreenState) {
     ConstraintLayout(
         modifier = modifier,
     ) {
@@ -416,7 +416,7 @@ fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState)
 //}
 
 @Composable
-fun TitleBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
+fun TitleBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScreenState) {
 
     ConstraintLayout(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
         val (title, viewCount, uploadDate) = createRefs()
@@ -505,7 +505,7 @@ fun PreviewVideoPlayerScreen() {
     }
 }
 
-private fun getScreenStateForTest(): VideoPlayerScreenState {
+private fun getScreenStateForTest(): VideoPlayerComposeScreenState {
     val commentModel = CommentModel(
         authorName = "RandomDude",
         commentText = "First.",
@@ -514,7 +514,7 @@ private fun getScreenStateForTest(): VideoPlayerScreenState {
         timeCommented = "9 hours ago"
 
     )
-    val videoPlayerScreenState = VideoPlayerScreenState(
+    val videoPlayerScreenState = VideoPlayerComposeScreenState(
         commentList = listOf(commentModel),
         playerStatus = PlayerStatus.IDLE,
         streamUrl = "",

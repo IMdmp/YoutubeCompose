@@ -7,6 +7,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import com.imdmp.youtubecompose.features.videoplayer.VideoEvent
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentModel
+import com.imdmp.youtubecompose.repository.model.VideoDataSchema
 import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.comments.CommentsInfo
+import org.schabi.newpipe.extractor.stream.StreamInfo
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -42,7 +44,7 @@ class VideoPlayerViewModel @Inject constructor(
         )
     }
 
-    val uiState = MutableStateFlow(VideoPlayerScreenState.init())
+    val uiState = MutableStateFlow(VideoPlayerComposeScreenState.init())
 
     override suspend fun getMediaSource(url: String): MediaSource {
         return getVideoStreamUrlUseCase(url)
@@ -66,6 +68,13 @@ class VideoPlayerViewModel @Inject constructor(
             }
         }
     }
+
+//    fun getVideoInfo(url:String){
+//        val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), url)
+//
+//        val videoSchema = VideoDataSchema()
+//        streamInfo.name
+//    }
 
     override fun disposeVideoPlayer() {
         player.stop()
