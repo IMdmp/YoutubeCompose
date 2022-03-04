@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.features.ui.theme
+package com.imdmp.youtubecompose.base.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

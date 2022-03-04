@@ -3,7 +3,7 @@ package com.imdmp.youtubecompose.features.splash
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import com.imdmp.youtubecompose.base.di.SharedPreferencesKeys
-import com.imdmp.youtubecompose.features.ui.navigation.model.Destination
+import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

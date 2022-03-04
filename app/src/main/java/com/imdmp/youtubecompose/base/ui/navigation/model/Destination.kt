@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.features.ui.navigation.model
+package com.imdmp.youtubecompose.base.ui.navigation.model
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

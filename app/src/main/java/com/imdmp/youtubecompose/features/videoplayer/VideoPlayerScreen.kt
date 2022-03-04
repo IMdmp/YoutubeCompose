@@ -6,23 +6,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.Lifecycle
@@ -33,7 +26,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.base.Tags
-import com.imdmp.youtubecompose.features.ui.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentModel
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentState
 import com.imdmp.youtubecompose.features.videoplayer.comments.Comments
@@ -89,7 +82,7 @@ fun VideoPlayerScreen(
 
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (videoPlayer, pager, pagerTabs, controls, progressIndicator, titleBar, iconActionsBar, videoAuthorInfoBar, comments) = createRefs()
+        val (videoPlayer, pager, pagerTabs, controls, progressIndicator, titleBar, iconActionsBar, videoAuthorInfoBar, commentSeparatorLine,comments) = createRefs()
         Playback(
             Modifier
                 .aspectRatio(16 / 9f)
@@ -157,30 +150,39 @@ fun VideoPlayerScreen(
                     width = Dimension.fillToConstraints
                 }, state = state
         )
+        VideoAuthorInfoBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, bottom = 4.dp)
+                .constrainAs(videoAuthorInfoBar) {
+                    top.linkTo(titleBar.bottom)
+                }, state = state
+        )
         IconActionsBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .constrainAs(iconActionsBar) {
-                    top.linkTo(titleBar.bottom)
-                }, state = state
-        )
-        VideoAuthorInfoBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp,bottom = 4.dp)
-                .constrainAs(videoAuthorInfoBar) {
-                    top.linkTo(iconActionsBar.bottom)
+                    top.linkTo(videoAuthorInfoBar.bottom)
                 }, state = state
         )
 
+        Box(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(Color.LightGray)
+                .constrainAs(commentSeparatorLine) {
+                    top.linkTo(iconActionsBar.bottom,8.dp)
+
+                }
+        )
+
         Comments(
-            modifier = Modifier.constrainAs(
+            modifier = Modifier
+                .constrainAs(
                 comments
             ) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-                top.linkTo(videoAuthorInfoBar.bottom, 4.dp)
+                top.linkTo(commentSeparatorLine.bottom, 4.dp)
             },
             commentState = CommentState(
                 commentModelList = state.commentList,
@@ -255,20 +257,8 @@ fun VideoPlayerScreen(
 
 @Composable
 fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
-
     ConstraintLayout(modifier = modifier) {
-        val (profilePic, authorName, subs, subscribeButton, topLine, bottomLine) = createRefs()
-
-        Box(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .background(Color.LightGray)
-                .constrainAs(topLine) {
-                    top.linkTo(parent.top)
-
-                }
-        )
+        val (profilePic, authorName, subs, subscribeButton) = createRefs()
 
         GlideImage(
             imageModel = state.authorUrl,
@@ -287,43 +277,26 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerScreenSt
 
         Text(
             text = state.authorName,
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.h2,
             modifier = Modifier.constrainAs(authorName) {
                 start.linkTo(profilePic.end, 8.dp)
-                top.linkTo(topLine.bottom, 4.dp)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
             }
         )
 
         Text(text = "${state.likeCount}m subs",
             modifier = Modifier.constrainAs(subs) {
-                start.linkTo(profilePic.end, 8.dp)
-                top.linkTo(authorName.bottom)
-                bottom.linkTo(bottomLine.top, 4.dp)
+                top.linkTo(parent.top, 16.dp)
+                end.linkTo(parent.end, 8.dp)
+                bottom.linkTo(parent.bottom, 16.dp)
             }
         )
 
 
-        Text(
-            text = "SUBSCRIBED",
-            fontSize = 18.sp,
-            modifier = Modifier.constrainAs(subscribeButton) {
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-                end.linkTo(parent.end, 4.dp)
-            })
-
-        Box(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .background(Color.LightGray)
-                .constrainAs(bottomLine) {
-                    bottom.linkTo(parent.bottom)
-                }
-        )
     }
-
 }
+
 
 @Preview
 @Composable
@@ -428,38 +401,19 @@ fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState)
             }
         )
 
-//        VideoScreenActionIcon(
-//            iconDesc = "${state.likeCount} k",
-//            icon = FontAwesomeIcons.Regular.ThumbsUp
-//        )
-//
-//        VideoScreenActionIcon(
-//            iconDesc = "Dislike",
-//            icon = FontAwesomeIcons.Regular.ThumbsDown
-//        )
-//
-//        VideoScreenActionIcon(
-//            iconDesc = "Share",
-//            icon = FontAwesomeIcons.Regular.ShareSquare
-//        )
-//
-//        VideoScreenActionIcon(
-//            iconDesc = "Download",
-//            icon = FontAwesomeIcons.Regular.ArrowAltCircleDown
-//        )
     }
 }
 
-@Composable
-fun VideoScreenActionIcon(modifier: Modifier = Modifier, iconDesc: String, icon: ImageVector) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = icon, contentDescription = null, Modifier.size(24.dp))
-        }
-
-        Text(text = iconDesc)
-    }
-}
+//@Composable
+//fun VideoScreenActionIcon(modifier: Modifier = Modifier, iconDesc: String, icon: ImageVector) {
+//    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+//        IconButton(onClick = { /*TODO*/ }) {
+//            Icon(imageVector = icon, contentDescription = null, Modifier.size(24.dp))
+//        }
+//
+//        Text(text = iconDesc)
+//    }
+//}
 
 @Composable
 fun TitleBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
@@ -469,8 +423,7 @@ fun TitleBar(modifier: Modifier = Modifier, state: VideoPlayerScreenState) {
 
         Text(
             text = state.videoTitle,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.h1,
             modifier = Modifier.constrainAs(title) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
