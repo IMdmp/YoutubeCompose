@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.base.Tags
-import com.imdmp.youtubecompose.features.ui.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.skydoves.landscapist.glide.GlideImage
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -25,11 +24,13 @@ import compose.icons.fontawesomeicons.solid.ThumbsUp
 
 @Composable
 fun Comments(modifier: Modifier = Modifier, commentState: CommentState) {
-    Surface(modifier = modifier) {
-        LazyColumn(modifier = modifier.testTag(Tags.TAG_COMMENTS_LIST)) {
-            items(commentState.commentModelList) {
-                Comment(commentModel = it)
-            }
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag(Tags.TAG_COMMENTS_LIST)
+    ) {
+        items(commentState.commentModelList) {
+            Comment(commentModel = it)
         }
     }
 }
@@ -87,7 +88,7 @@ private fun Comment(modifier: Modifier = Modifier, commentModel: CommentModel) {
                 })
 
         Text(
-            text = "${commentModel.timeCommented} hours ago",
+            text = "${commentModel.timeCommented}",
             modifier = Modifier.constrainAs(timeCommented) {
                 start.linkTo(likeCount.end, 16.dp)
                 top.linkTo(commentText.bottom, 8.dp)
@@ -108,7 +109,7 @@ fun PreviewComment() {
                 commentText = "Efficient trains solves a lot of city problems",
                 profilePic = "",
                 likeCount = 2,
-                timeCommented = "8"
+                timeCommented = "8 hours ago"
             )
         )
     }

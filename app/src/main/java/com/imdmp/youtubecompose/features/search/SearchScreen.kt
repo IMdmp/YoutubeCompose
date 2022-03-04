@@ -18,9 +18,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import com.imdmp.youtubecompose.features.search.model.SearchState
 import com.imdmp.youtubecompose.features.search.model.SearchViewModel
-import com.imdmp.youtubecompose.features.ui.navigation.model.Destination
 import timber.log.Timber
 
 @Composable

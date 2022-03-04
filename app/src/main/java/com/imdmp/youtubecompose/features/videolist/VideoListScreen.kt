@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.imdmp.youtubecompose.features.ui.navigation.model.Destination
-import com.imdmp.youtubecompose.features.ui.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
+import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
 import com.imdmp.youtubecompose.features.videolist.model.VideoListScreenActions
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel

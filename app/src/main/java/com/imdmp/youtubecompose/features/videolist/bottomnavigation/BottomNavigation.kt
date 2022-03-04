@@ -4,8 +4,8 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.imdmp.youtubecompose.features.ui.navigation.model.Destination
-import com.imdmp.youtubecompose.features.ui.navigation.model.NavigationBarItem.Companion.buildNavigationItems
+import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
+import com.imdmp.youtubecompose.base.ui.navigation.model.NavigationBarItem.Companion.buildNavigationItems
 
 @Composable
 fun BottomNavigationBar(
