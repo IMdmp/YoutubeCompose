@@ -12,6 +12,6 @@ data class CommentModel(
     val authorName: String,
     val commentText: String,
     val profilePic: String,
-    val likeCount: Long,
+    val likeCount: Int,
     val timeCommented: String,
 )

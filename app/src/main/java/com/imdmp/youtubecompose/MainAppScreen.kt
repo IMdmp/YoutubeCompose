@@ -80,7 +80,7 @@ fun MainAppScreen(
 
             VideoPlayerScreen(
                 player = videoPlayerViewModel.player,
-                videoPlayerScreenState = videoPlayerViewModel.uiState.collectAsState().value,
+                state = videoPlayerViewModel.uiState.collectAsState().value,
                 videoPlayerScreenCallbacks = videoPlayerViewModel,
                 lifecycleOwner = LocalLifecycleOwner.current,
                 controlsCallback = object : ControlsCallback {
