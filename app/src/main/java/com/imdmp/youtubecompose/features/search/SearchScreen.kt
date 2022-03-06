@@ -15,6 +15,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -30,9 +31,14 @@ fun SearchScreen(
 ) {
 
     SearchScreen(
-        searchViewModel = searchViewModel,
-        navController = navController,
-        searchState = searchViewModel.searchState.collectAsState(),
+        searchState = searchViewModel.searchState.collectAsState().value,
+        onSearchTextValueChanged = {
+            searchViewModel.updateSearchText(it)
+            searchViewModel.getSuggestions(it)
+        },
+        searchSelected = {
+            navController.navigate(Destination.VideoList.createRoute(it))
+        },
         suggestionSelected = {
             searchViewModel.updateSearchText(it)
             navController.navigate(Destination.VideoList.createRoute(it))
@@ -43,26 +49,21 @@ fun SearchScreen(
 
 @Composable
 private fun SearchScreen(
-    searchViewModel: SearchViewModel,
-    navController: NavController,
-    searchState: State<SearchState>,
-    suggestionSelected: (String) -> Unit,
+    searchState: SearchState,
+    onSearchTextValueChanged: (String) -> Unit = {},
+    searchSelected: KeyboardActionScope.(String) -> Unit = {},
+    suggestionSelected: (String) -> Unit = {},
 ) {
     LazyColumn {
         item {
             SimpleOutlinedTextFieldSample(
-                textValue = searchState.value.searchText,
-                onValueChange = {
-                    searchViewModel.updateSearchText(it)
-                    searchViewModel.getSuggestions(it)
-                },
-                imeActionSelected = {
-                    navController.navigate(Destination.VideoList.createRoute(it))
-                }
+                textValue = searchState.searchText,
+                onValueChange = onSearchTextValueChanged,
+                imeActionSelected = searchSelected
             )
         }
-        Timber.d("search suggestions; ${searchState.value}")
-        items(searchState.value.suggestionList) {
+
+        items(searchState.suggestionList) {
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .selectable(true) {
@@ -103,4 +104,11 @@ private fun SimpleOutlinedTextFieldSample(
         }),
         label = { Text("Label") }
     )
+}
+
+@Preview
+@Composable
+fun PreviewSearchScreen() {
+    val searchState = SearchState()
+    SearchScreen(searchState = searchState)
 }
