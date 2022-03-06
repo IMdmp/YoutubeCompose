@@ -279,7 +279,7 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerComposeS
 
         Text(
             text = state.authorName,
-            style = MaterialTheme.typography.h3,
+            style = MaterialTheme.typography.h2,
             modifier = Modifier.constrainAs(authorName) {
                 start.linkTo(profilePic.end, 8.dp)
                 top.linkTo(parent.top)
