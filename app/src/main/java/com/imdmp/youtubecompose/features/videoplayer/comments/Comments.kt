@@ -3,7 +3,9 @@ package com.imdmp.youtubecompose.features.videoplayer.comments
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -23,8 +25,11 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ThumbsUp
 
 @Composable
-fun Comments(modifier: Modifier = Modifier, commentState: CommentState) {
+fun Comments(
+    listState : LazyListState = rememberLazyListState(),
+    modifier: Modifier = Modifier, commentState: CommentState) {
     LazyColumn(
+        state = listState,
         modifier = modifier
             .fillMaxWidth()
             .testTag(Tags.TAG_COMMENTS_LIST)
