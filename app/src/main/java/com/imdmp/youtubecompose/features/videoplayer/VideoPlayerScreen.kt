@@ -35,8 +35,8 @@ import com.imdmp.youtubecompose.features.videoplayer.controls.ControlState
 import com.imdmp.youtubecompose.features.videoplayer.controls.Controls
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
 import com.imdmp.youtubecompose.features.videoplayer.model.PlayerStatus
-import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
 import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerComposeScreenState
+import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
 import com.imdmp.youtubecompose.features.videoplayer.playback.Playback
 import com.skydoves.landscapist.glide.GlideImage
 import compose.icons.FontAwesomeIcons
@@ -516,8 +516,17 @@ private fun getScreenStateForTest(): VideoPlayerComposeScreenState {
         timeCommented = "9 hours ago"
 
     )
+    val commendModel2 = commentModel.copy(
+        authorName = "RandomDude2",
+        commentText = "Second"
+    )
+
+    val commendModel3 = commendModel2.copy(
+        authorName = "RandomPerson3",
+        commentText = "Third"
+    )
     val videoPlayerScreenState = VideoPlayerComposeScreenState(
-        commentList = listOf(commentModel),
+        commentList = listOf(commentModel,commendModel2,commendModel3),
         playerStatus = PlayerStatus.IDLE,
         streamUrl = "",
         videoTitle = "Sweet and Savory Babka",
