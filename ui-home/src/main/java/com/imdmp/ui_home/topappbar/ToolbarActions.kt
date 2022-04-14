@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.features.videolist.topappbar
+package com.imdmp.ui_home.topappbar
 
 interface ToolbarActions {
     fun searchClicked()

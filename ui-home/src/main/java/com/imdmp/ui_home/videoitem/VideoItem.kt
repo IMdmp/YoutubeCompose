@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.features.videolist.videoitem
+package com.imdmp.ui_home.videoitem
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,12 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.imdmp.ui_home.VideoItemActions
 import com.imdmp.youtubecompose.R
-import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
+import com.imdmp.ui_home.VideoListItem
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
+fun VideoItem(item: com.imdmp.ui_home.VideoListItem, videoItemActions: com.imdmp.ui_home.VideoItemActions) {
     Surface(
         contentColor = Color.Black
     ) {
@@ -120,7 +121,7 @@ fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
 @Composable
 @Preview
 fun PreviewVideoItem() {
-    val dataItem = VideoListItem.default().copy(
+    val dataItem = com.imdmp.ui_home.VideoListItem.default().copy(
         title = "Awesome Kurzgesagt Vid",
         author = "Kurzgesagt",
         viewCount = 10

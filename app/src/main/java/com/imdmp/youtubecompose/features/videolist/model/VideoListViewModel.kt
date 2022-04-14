@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.imdmp.youtubecompose.features.videolist.model.VideoListItem.Companion.mapToDataItems
+import com.imdmp.ui_home.VideoListItem.Companion.mapToDataItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class VideoListViewModel @Inject constructor(val sharedPreferences: SharedPreferences) :
     ViewModel() {
-    val videoList = MutableLiveData<List<VideoListItem>>()
+    val videoList = MutableLiveData<List<com.imdmp.ui_home.VideoListItem>>()
     var query = ""
     fun fetchVideoList() {
         viewModelScope.launch(Dispatchers.IO) {
