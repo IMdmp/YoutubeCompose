@@ -27,7 +27,6 @@ import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.videoplayer.controls.ControlsCallback
 import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerViewModel
 import timber.log.Timber
-import java.net.URLDecoder
 
 @Composable
 fun MainAppScreen(
@@ -58,7 +57,7 @@ fun MainAppScreen(
         composable(Destination.VideoList.path) { backStackEntry ->
             val query = backStackEntry.arguments?.getString(Destination.VIDEO_LIST, "")
             val videoListViewModel = hiltViewModel<VideoListViewModel>()
-            videoListViewModel.query = URLDecoder.decode(query, "utf-8")
+//            videoListViewModel.query = URLDecoder.decode(query, "utf-8")
 
             if (query.isNullOrEmpty()) {
                 VideoListScreen(navController = navController)

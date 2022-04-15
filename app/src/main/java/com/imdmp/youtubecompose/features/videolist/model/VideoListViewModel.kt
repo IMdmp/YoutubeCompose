@@ -1,41 +1,35 @@
 package com.imdmp.youtubecompose.features.videolist.model
 
-import android.content.SharedPreferences
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.imdmp.youtubecompose.features.videolist.model.VideoListItem.Companion.mapToDataItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.NewPipe
-import org.schabi.newpipe.extractor.kiosk.KioskInfo
 import org.schabi.newpipe.extractor.search.SearchInfo
-import org.schabi.newpipe.extractor.services.youtube.YoutubeService
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class VideoListViewModel @Inject constructor(val sharedPreferences: SharedPreferences) :
+class VideoListViewModel @Inject constructor() :
     ViewModel() {
-    val videoList = MutableLiveData<List<VideoListItem>>()
-    var query = ""
-    fun fetchVideoList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val info = KioskInfo.getInfo(YoutubeService(0), "https://www.youtube.com/feed/trending")
-
-
-            withContext(Dispatchers.Main) {
-                videoList.value =
-                    info.relatedItems.mapToDataItems()
-            }
-        }
-    }
+//    val videoList = MutableLiveData<List<VideoListItem>>()
+//    var query = ""
+//    fun fetchVideoList() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val info = KioskInfo.getInfo(YoutubeService(0), "https://www.youtube.com/feed/trending")
+//
+//
+//            withContext(Dispatchers.Main) {
+//                videoList.value =
+//                    info.relatedItems.mapToDataItems()
+//            }
+//        }
+//    }
 
     fun search(query: String) {
         if (query.isEmpty()) {
-            fetchVideoList()
+//            fetchVideoList()
             return
         }
         val contentFilter = listOf("")
@@ -48,10 +42,10 @@ class VideoListViewModel @Inject constructor(val sharedPreferences: SharedPrefer
                     .fromQuery(query, contentFilter, sortFilter)
             )
 
-            withContext(Dispatchers.Main) {
-                videoList.value =
-                    res.relatedItems.mapToDataItems()
-            }
+//            withContext(Dispatchers.Main) {
+//                videoList.value =
+//                    res.relatedItems.mapToDataItems()
+//            }
 
             Timber.d("check. $res")
         }
