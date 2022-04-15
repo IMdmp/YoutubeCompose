@@ -1,4 +1,4 @@
-package com.imdmp.ui_home
+package com.imdmp.uihome
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

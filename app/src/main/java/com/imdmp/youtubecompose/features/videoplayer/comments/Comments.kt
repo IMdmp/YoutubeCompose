@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.skydoves.landscapist.glide.GlideImage
@@ -53,7 +52,7 @@ private fun Comment(modifier: Modifier = Modifier, commentModel: CommentModel) {
         val (profilePic, authorName, commentText, likeCount, timeCommented, likeIcon) = createRefs()
 
         GlideImage(imageModel = commentModel.profilePic,
-            previewPlaceholder = R.drawable.eminem,
+//            previewPlaceholder = R.drawable.eminem,
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)

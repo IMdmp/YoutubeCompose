@@ -1,12 +1,11 @@
-package com.imdmp.ui_home
+package com.imdmp.uihome
 
-import com.imdmp.youtubecompose.features.videolist.topappbar.ToolbarActions
-import com.imdmp.youtubecompose.features.videolist.videoitem.VideoItemActions
+import com.imdmp.uihome.topappbar.ToolbarActions
 
 interface VideoListScreenActions : VideoItemActions, ToolbarActions {
     companion object {
         fun default(): VideoListScreenActions = object : VideoListScreenActions {
-            override fun videoItemSelected(videoListItem: com.imdmp.ui_home.VideoListItem) {
+            override fun videoItemSelected(videoListItem: VideoListItem) {
                 TODO("Not yet implemented")
             }
 

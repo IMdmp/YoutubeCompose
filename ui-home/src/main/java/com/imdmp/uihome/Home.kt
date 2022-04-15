@@ -1,10 +1,11 @@
-package com.imdmp.ui_home
+package com.imdmp.uihome
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import com.imdmp.ui_home.topappbar.HomeTopAppBar
+import com.imdmp.uihome.topappbar.HomeTopAppBar
+import com.imdmp.uihome.videoitem.VideoItem
 
 @Composable
 fun HomeScreen() {

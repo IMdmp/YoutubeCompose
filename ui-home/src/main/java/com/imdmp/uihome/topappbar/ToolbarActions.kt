@@ -1,4 +1,4 @@
-package com.imdmp.ui_home.topappbar
+package com.imdmp.uihome.topappbar
 
 interface ToolbarActions {
     fun searchClicked()

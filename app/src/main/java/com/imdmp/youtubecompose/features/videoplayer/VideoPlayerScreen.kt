@@ -25,7 +25,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
-import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.base.Tags
 import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentModel
@@ -264,7 +263,7 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerComposeS
 
         GlideImage(
             imageModel = state.authorUrl,
-            previewPlaceholder = R.drawable.edsheeran,
+//            previewPlaceholder = R.drawable.edsheeran,
             modifier = Modifier
                 .clip(
                     CircleShape

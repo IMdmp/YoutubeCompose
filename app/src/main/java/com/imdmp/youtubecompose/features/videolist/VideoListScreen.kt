@@ -1,19 +1,9 @@
 package com.imdmp.youtubecompose.features.videolist
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
-import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
 
 @Composable
@@ -21,11 +11,11 @@ fun VideoListScreen(
     videoListViewModel: VideoListViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val videoListState = videoListViewModel.videoList.observeAsState().value
-
-    LaunchedEffect(videoListViewModel.query) {
-        videoListViewModel.search(videoListViewModel.query)
-    }
+//    val videoListState = videoListViewModel.videoList.observeAsState().value
+//
+//    LaunchedEffect(videoListViewModel.query) {
+//        videoListViewModel.search(videoListViewModel.query)
+//    }
 
 //    VideoListScreen(videoListState, object : com.imdmp.ui_home.VideoListScreenActions {
 //        override fun videoItemSelected(videoListItem: com.imdmp.ui_home.VideoListItem) {
@@ -40,15 +30,6 @@ fun VideoListScreen(
 //            navController.navigate(Destination.Profile.path)
 //        }
 //    })
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(
-            color = Color.Blue
-        )
-    }
 }
 
 @Preview
