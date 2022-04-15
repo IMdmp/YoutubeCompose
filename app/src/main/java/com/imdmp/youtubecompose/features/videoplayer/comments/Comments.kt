@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.imdmp.ui_core.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.base.Tags
-import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.skydoves.landscapist.glide.GlideImage
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular

@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.base.ui.theme
+package com.imdmp.ui_core.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.graphics.Color
@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.imdmp.youtubecompose.R
+import com.imdmp.ui_core.R
 
 val fonts = FontFamily(
     Font(R.font.roboto_regular),

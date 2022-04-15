@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.imdmp.ui_core.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
-import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.search.model.SearchState
 import com.imdmp.youtubecompose.features.search.model.SearchViewModel
 import compose.icons.FontAwesomeIcons

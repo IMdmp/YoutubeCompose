@@ -25,8 +25,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
+import com.imdmp.ui_core.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.base.Tags
-import com.imdmp.youtubecompose.base.ui.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentModel
 import com.imdmp.youtubecompose.features.videoplayer.comments.CommentState
 import com.imdmp.youtubecompose.features.videoplayer.comments.Comments
