@@ -11,6 +11,7 @@ data class VideoListItem(
     val author: String = "",
     val authorImageUrl: String? = null,
     val viewCount: Long = 0,
+    val uploadedDate:String,
     val streamUrl: String
 ) : Parcelable {
     companion object {
@@ -20,7 +21,8 @@ data class VideoListItem(
             author = "",
             viewCount = 0,
             streamUrl = "",
-            authorImageUrl = ""
+            authorImageUrl = "",
+            uploadedDate = ""
 
         )
 

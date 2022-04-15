@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
@@ -14,13 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.imdmp.ui_core.theme.typography
 import com.imdmp.uihome.R
 import com.imdmp.uihome.VideoItemActions
 import com.imdmp.uihome.VideoListItem
@@ -57,7 +59,7 @@ fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
                 contentDescription = null,
                 previewPlaceholder = R.drawable.eminem,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(36.dp)
                     .clip(CircleShape)
                     .constrainAs(authorImage) {
                         start.linkTo(parent.start, margin = 12.dp)
@@ -67,10 +69,7 @@ fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
             )
             Text(
                 text = item.title,
-                style = MaterialTheme.typography.h4.copy(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                ),
+                style = typography.h3,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.constrainAs(videoTitle) {
@@ -82,21 +81,21 @@ fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
             )
             Text(
                 text = "${item.author} . ",
-                style = MaterialTheme.typography.subtitle2,
+                style = typography.subtitle1,
                 modifier = Modifier
                     .constrainAs(authorName) {
-                        top.linkTo(videoTitle.bottom)
+                        top.linkTo(videoTitle.bottom,4.dp)
                         start.linkTo(videoTitle.start)
                         end.linkTo(views.start)
                     }
             )
 
             Text(
-                text = "${item.viewCount}m views . 6 hours ago",
-                style = MaterialTheme.typography.subtitle2,
+                text = "${item.viewCount} views . ${item.uploadedDate} ago",
+                style = typography.subtitle1,
                 modifier = Modifier
                     .constrainAs(views) {
-                        top.linkTo(videoTitle.bottom)
+                        top.linkTo(videoTitle.bottom,4.dp)
                         start.linkTo(authorName.end)
                         end.linkTo(parent.end, 16.dp)
                         width = Dimension.fillToConstraints

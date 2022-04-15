@@ -12,7 +12,8 @@ import com.imdmp.ui_core.R
 
 val fonts = FontFamily(
     Font(R.font.roboto_regular),
-    Font(R.font.roboto_bold, weight = FontWeight.Medium),
+    Font(R.font.roboto_bold, weight = FontWeight.Bold),
+    Font(R.font.roboto_medium,weight = FontWeight.Medium),
     Font(R.font.roboto_light, weight = FontWeight.Light),
     Font(R.font.roboto_thin, weight = FontWeight.Thin),
     Font(R.font.roboto_italic, weight = FontWeight.Normal, style = FontStyle.Italic)
@@ -21,7 +22,7 @@ val fonts = FontFamily(
 )
 
 // Set of Material typography styles to start with
-val Typography = Typography(
+val typography = Typography(
     body1 = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
@@ -34,8 +35,13 @@ val Typography = Typography(
     ),
     h2 = TextStyle(
         fontFamily = fonts,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp
+    ),
+    h3 = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp
     ),
     subtitle1 = TextStyle(
         fontFamily = fonts,

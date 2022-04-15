@@ -3,19 +3,12 @@ package com.imdmp.uihome
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
+import com.imdmp.ui_core.theme.YoutubeComposeTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sampleVideoListItem = VideoListItem(
-            imageUrl = "",
-            title = "",
-            author = "",
-            authorImageUrl = null,
-            viewCount = 0,
-            streamUrl = ""
-        )
+        val sampleVideoListItem = VideoListItem.default()
 
         val videoList = listOf(
             sampleVideoListItem.copy(title = "Title1", author = "Author1", viewCount = 2L),
@@ -25,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         )
         setContent {
-            MaterialTheme {
+            YoutubeComposeTheme {
                 VideoListScreen(
                     videoList = videoList,
                     videoListScreenActions = VideoListScreenActions.default()

@@ -1,5 +1,6 @@
 package com.imdmp.uihome.topappbar
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -7,11 +8,16 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.imdmp.ui_core.theme.YoutubeComposeTheme
+import com.imdmp.ui_core.theme.typography
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
@@ -27,18 +33,22 @@ fun HomeTopAppBar(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.surface,
         contentColor = MaterialTheme.colors.onSurface,
-        navigationIcon = {
-            Icon(
-                imageVector = FontAwesomeIcons.Brands.Youtube,
-                contentDescription = null,
-                tint = Color.Red,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(32.dp)
-            )
-        },
         title = {
-            Text(text = "Sample title", color = Color.Black)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = FontAwesomeIcons.Brands.Youtube,
+                    contentDescription = null,
+                    tint = Color.Red,
+                    modifier = Modifier
+                        .size(32.dp)
+                )
+                Text(
+                    text = "YouTubeCompose",
+                    color = Color.Black,
+                    style = typography.h1.copy(fontWeight = FontWeight.Medium, fontSize = 20.sp),
+                    modifier = Modifier.padding(start = 2.dp)
+                )
+            }
         },
 
         actions = {
@@ -71,5 +81,8 @@ fun HomeTopAppBar(
 @Preview
 @Composable
 fun PreviewHomeTopAppBar() {
-    HomeTopAppBar(toolbarActions = ToolbarActions.default())
+    YoutubeComposeTheme {
+        HomeTopAppBar(toolbarActions = ToolbarActions.default())
+    }
+
 }
