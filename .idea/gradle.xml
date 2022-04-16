@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/librarytester" />
             <option value="$PROJECT_DIR$/ui-core" />
             <option value="$PROJECT_DIR$/ui-home" />
+            <option value="$PROJECT_DIR$/ui-player" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
