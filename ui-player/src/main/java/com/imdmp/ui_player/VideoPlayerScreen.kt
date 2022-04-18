@@ -7,7 +7,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -15,8 +18,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.Lifecycle
@@ -25,13 +31,14 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
+import com.imdmp.ui_core.theme.BlackDarkColor1
 import com.imdmp.ui_core.theme.YoutubeComposeTheme
+import com.imdmp.ui_core.theme.typography
 import com.imdmp.ui_player.comments.CommentModel
 import com.imdmp.ui_player.comments.CommentState
 import com.imdmp.ui_player.comments.Comments
 import com.imdmp.ui_player.controls.ControlState
 import com.imdmp.ui_player.controls.Controls
-import com.imdmp.ui_player.controls.ControlsCallback
 import com.imdmp.ui_player.model.PlayerStatus
 import com.imdmp.ui_player.model.VideoPlayerComposeScreenState
 import com.imdmp.ui_player.model.VideoPlayerScreenCallbacks
@@ -51,12 +58,11 @@ fun VideoPlayerScreen(
     state: VideoPlayerComposeScreenState,
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    controlsCallback: ControlsCallback,
-
-    ) {
+) {
 
     val pagerState = rememberPagerState()
     val listState = rememberLazyListState()
+
     HandleLifecycleChanges(
         lifecycleOwner = lifecycleOwner,
         state = state.playerStatus,
@@ -81,7 +87,19 @@ fun VideoPlayerScreen(
 
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (videoPlayer, pager, pagerTabs, controls, progressIndicator, titleBar, iconActionsBar, videoAuthorInfoBar, commentSeparatorLine,comments) = createRefs()
+        val (
+            videoPlayer,
+            pager,
+            pagerTabs,
+            controls,
+            progressIndicator,
+            titleBar,
+            iconActionsBar,
+            videoAuthorInfoBar,
+            commentSeparatorLine,
+            commentRow,
+            comments,
+        ) = createRefs()
         Playback(
             Modifier
                 .aspectRatio(16 / 9f)
@@ -120,7 +138,7 @@ fun VideoPlayerScreen(
         }
 
         Controls(
-            controlsCallback = controlsCallback,
+            controlsCallback = videoPlayerScreenCallbacks,
             modifier = Modifier
                 .alpha(alphaAnimation)
                 .constrainAs(controls) {
@@ -176,14 +194,18 @@ fun VideoPlayerScreen(
                 }
         )
 
+        CommentHeaderRow(modifier = Modifier.constrainAs(commentRow) {
+            top.linkTo(commentSeparatorLine.bottom, 8.dp)
+        })
+
         Comments(
             listState = listState,
             modifier = Modifier
                 .constrainAs(
-                comments
-            ) {
-                top.linkTo(commentSeparatorLine.bottom, 4.dp)
-            },
+                    comments
+                ) {
+                    top.linkTo(commentRow.bottom, 8.dp)
+                },
             commentState = CommentState(
                 commentModelList = state.commentList,
                 isLoading = false,
@@ -256,18 +278,31 @@ fun VideoPlayerScreen(
 }
 
 @Composable
+fun CommentHeaderRow(modifier: Modifier = Modifier) {
+
+    Row(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
+        Text(text = "Comments", style = typography.h3.copy(fontWeight = FontWeight.Normal))
+        Spacer(modifier = Modifier.size(8.dp))
+        Text("123", style = typography.subtitle1.copy(fontSize = 14.sp))
+    }
+
+}
+
+@Composable
 fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScreenState) {
-    ConstraintLayout(modifier = modifier) {
+    ConstraintLayout(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
         val (profilePic, authorName, subs, subscribeButton) = createRefs()
 
         GlideImage(
             imageModel = state.authorUrl,
             previewPlaceholder = R.drawable.edsheeran,
+            placeHolder = painterResource(id = R.drawable.edsheeran),
+            error = painterResource(id = R.drawable.edsheeran),
             modifier = Modifier
                 .clip(
                     CircleShape
                 )
-                .size(24.dp)
+                .size(36.dp)
                 .constrainAs(profilePic) {
                     start.linkTo(parent.start, 4.dp)
                     top.linkTo(parent.top)
@@ -277,7 +312,7 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerComposeS
 
         Text(
             text = state.authorName,
-            style = MaterialTheme.typography.h2,
+            style = typography.h4,
             modifier = Modifier.constrainAs(authorName) {
                 start.linkTo(profilePic.end, 8.dp)
                 top.linkTo(parent.top)
@@ -286,6 +321,7 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerComposeS
         )
 
         Text(text = "${state.likeCount}m subs",
+            style = typography.subtitle2,
             modifier = Modifier.constrainAs(subs) {
                 top.linkTo(parent.top, 16.dp)
                 end.linkTo(parent.end, 8.dp)
@@ -325,12 +361,14 @@ fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScree
         ) {
             Icon(
                 imageVector = FontAwesomeIcons.Regular.ThumbsUp,
+                tint = BlackDarkColor1,
                 contentDescription = null,
-                Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
 
         Text(text = "23k",
+            style = typography.button,
             modifier = Modifier.constrainAs(thumbsUpLabel) {
                 start.linkTo(thumbsUp.start)
                 end.linkTo(thumbsUp.end)
@@ -346,12 +384,15 @@ fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScree
             }) {
             Icon(
                 imageVector = FontAwesomeIcons.Regular.ThumbsDown,
+                tint = BlackDarkColor1,
                 contentDescription = null,
-                Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
 
         Text(text = "Dislike",
+            style = typography.button,
+
             modifier = Modifier.constrainAs(thumbsDownLabel) {
                 start.linkTo(thumbsDown.start)
                 end.linkTo(thumbsDown.end)
@@ -367,12 +408,15 @@ fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScree
             }) {
             Icon(
                 imageVector = FontAwesomeIcons.Regular.ShareSquare,
+                tint = BlackDarkColor1,
                 contentDescription = null,
-                Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
 
         Text(text = "Share",
+            style = typography.button,
+
             modifier = Modifier.constrainAs(shareLabel) {
                 start.linkTo(share.start)
                 end.linkTo(share.end)
@@ -388,12 +432,14 @@ fun IconActionsBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScree
             }) {
             Icon(
                 imageVector = FontAwesomeIcons.Regular.ArrowAltCircleDown,
+                tint = BlackDarkColor1,
                 contentDescription = null,
-                Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
 
         Text(text = "Download",
+            style = typography.button,
             modifier = Modifier.constrainAs(downloadLabel) {
                 start.linkTo(download.start)
                 end.linkTo(download.end)
@@ -423,7 +469,7 @@ fun TitleBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScreenState
 
         Text(
             text = state.videoTitle,
-            style = MaterialTheme.typography.h1,
+            style = typography.h2,
             modifier = Modifier.constrainAs(title) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
@@ -432,13 +478,15 @@ fun TitleBar(modifier: Modifier = Modifier, state: VideoPlayerComposeScreenState
 
 
         Text(text = "${state.likeCount}k views . ",
+            style = typography.subtitle2,
             modifier = Modifier.constrainAs(viewCount) {
                 top.linkTo(title.bottom)
                 start.linkTo(parent.start)
             })
         Text(text = "${state.datePosted}",
+            style = typography.subtitle2,
             modifier = Modifier.constrainAs(uploadDate) {
-                start.linkTo(viewCount.end, 16.dp)
+                start.linkTo(viewCount.end, 2.dp)
                 top.linkTo(title.bottom)
             })
     }
@@ -500,7 +548,6 @@ fun PreviewVideoPlayerScreen() {
             player = null,
             state = videoPlayerScreenState,
             videoPlayerScreenCallbacks = VideoPlayerScreenCallbacks.default(),
-            controlsCallback = ControlsCallback.default()
         )
     }
 }
@@ -524,7 +571,7 @@ private fun getScreenStateForTest(): VideoPlayerComposeScreenState {
         commentText = "Third"
     )
     val videoPlayerScreenState = VideoPlayerComposeScreenState(
-        commentList = listOf(commentModel,commendModel2,commendModel3),
+        commentList = listOf(commentModel, commendModel2, commendModel3),
         playerStatus = PlayerStatus.IDLE,
         streamUrl = "",
         videoTitle = "Sweet and Savory Babka",

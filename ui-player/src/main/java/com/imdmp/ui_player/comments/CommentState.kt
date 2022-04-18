@@ -14,4 +14,21 @@ data class CommentModel(
     val profilePic: String,
     val likeCount: Int,
     val timeCommented: String,
-)
+) {
+
+    companion object {
+        fun forTesting(): CommentModel {
+
+            return CommentModel(
+                authorName = "RandomDude",
+                commentText = "First.",
+                profilePic = "",
+                likeCount = 97,
+                timeCommented = "9 hours ago"
+
+            )
+        }
+
+    }
+
+}

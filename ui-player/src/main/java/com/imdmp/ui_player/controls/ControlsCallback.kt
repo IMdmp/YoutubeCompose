@@ -4,7 +4,7 @@ interface ControlsCallback {
     fun fullScreenClicked()
     fun pauseOrPlayClicked()
 
-    companion object{
+    companion object {
         fun default(): ControlsCallback = object : ControlsCallback {
             override fun fullScreenClicked() {
                 TODO("Not yet implemented")

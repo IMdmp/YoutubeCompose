@@ -1,7 +1,6 @@
 package com.imdmp.ui_core.theme
 
 import androidx.compose.material.Typography
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -30,7 +29,7 @@ val typography = Typography(
     ),
     h1 = TextStyle(
         fontFamily = fonts,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Medium,
         fontSize = 18.sp
     ),
     h2 = TextStyle(
@@ -43,11 +42,27 @@ val typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp
     ),
+    h4 = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+    button = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+    ),
     subtitle1 = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        color = Color.DarkGray
+        color = BlackDarkColor1
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        color = BlackDarkColor2
     ),
     body2 = TextStyle(
         fontFamily = fonts,
