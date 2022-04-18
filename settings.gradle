@@ -11,4 +11,5 @@ rootProject.name = "YoutubeCompose"
 include ':app'
 include ':ui-home'
 include ':ui-core'
+include ':ui-player'
 include ':librarytester'

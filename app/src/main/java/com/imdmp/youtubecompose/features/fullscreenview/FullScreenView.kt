@@ -12,8 +12,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
-import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerScreenCallbacks
-import com.imdmp.youtubecompose.features.videoplayer.model.VideoPlayerViewModel
+import com.imdmp.ui_player.model.VideoPlayerScreenCallbacks
+import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
 
 @Composable
 fun FullScreenView(
