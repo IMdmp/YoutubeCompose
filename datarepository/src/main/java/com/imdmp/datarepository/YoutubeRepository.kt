@@ -6,6 +6,4 @@ interface YoutubeRepository {
 
     //YTData - corresponds to a video, short, community post or livestream
     fun getYTDataList(): YTDataSchema
-
-
 }

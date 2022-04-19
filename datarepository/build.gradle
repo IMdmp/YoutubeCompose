@@ -42,4 +42,6 @@ dependencies {
 
     implementation "com.github.TeamNewPipe:NewPipeExtractor:v0.21.13"
 
+//    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.0"
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 }
