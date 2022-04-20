@@ -18,7 +18,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.imdmp.ui_player.VideoPlayerScreen
-import com.imdmp.ui_player.controls.ControlsCallback
 import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import com.imdmp.youtubecompose.features.fullscreenview.FullScreenView
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
@@ -82,15 +81,6 @@ fun MainAppScreen(
                 state = videoPlayerViewModel.uiState.collectAsState().value,
                 videoPlayerScreenCallbacks = videoPlayerViewModel,
                 lifecycleOwner = LocalLifecycleOwner.current,
-                controlsCallback = object : ControlsCallback {
-                    override fun fullScreenClicked() {
-                        navController.navigate(Destination.FullScreenView.path)
-                    }
-
-                    override fun pauseOrPlayClicked() {
-                        videoPlayerViewModel.pauseOrPlayClicked()
-                    }
-                }
             )
         }
 
