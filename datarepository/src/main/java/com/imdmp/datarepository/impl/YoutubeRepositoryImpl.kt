@@ -1,19 +1,35 @@
 package com.imdmp.datarepository.impl
 
-import com.imdmp.datarepository.KioskInfoConverter
+import com.imdmp.datarepository.NewPipeDataModelConverter
 import com.imdmp.datarepository.NewPipeExtractorWrapper
 import com.imdmp.datarepository.YoutubeRepository
+import com.imdmp.datarepository.model.VideoDataCommentSchema
+import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataSchema
 
 class YoutubeRepositoryImpl(
     private val newPipeExtractorWrapper: NewPipeExtractorWrapper,
-    private val kioskInfoConverter: KioskInfoConverter
+    private val newPipeDataModelConverter: NewPipeDataModelConverter,
 ) : YoutubeRepository {
-    override fun getYTDataList(): YTDataSchema {
+    override suspend fun getYTDataList(): YTDataSchema {
 
         val info = newPipeExtractorWrapper.getInfo()
-        val ytDataList = kioskInfoConverter.mapToYtDataList(info.relatedItems)
+        val ytDataList =
+            newPipeDataModelConverter.mapStreamInfoItemListToYtDataList(info.relatedItems)
 
         return YTDataSchema(ytDataList)
+    }
+
+    override suspend fun getVideoDataInfo(encryptedUrl: String): VideoDataInfoSchema {
+        val streamInfo = newPipeExtractorWrapper.getVideoData(encryptedUrl)
+
+        return newPipeDataModelConverter.mapStreamInfoToVideoDataInfoSchema(streamInfo)
+
+    }
+
+    override suspend fun getVideoDataComments(url: String): List<VideoDataCommentSchema> {
+        val commentsInfo = newPipeExtractorWrapper.getComments(url)
+
+        return newPipeDataModelConverter.mapCommentsInfoToVideoDataCommentSchemaList(commentsInfo)
     }
 }
