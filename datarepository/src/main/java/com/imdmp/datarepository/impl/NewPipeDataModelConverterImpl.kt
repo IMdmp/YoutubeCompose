@@ -1,14 +1,18 @@
 package com.imdmp.datarepository.impl
 
-import com.imdmp.datarepository.KioskInfoConverter
+import com.imdmp.datarepository.NewPipeDataModelConverter
+import com.imdmp.datarepository.model.VideoDataCommentSchema
+import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataItem
 import org.schabi.newpipe.extractor.InfoItem
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem
+import org.schabi.newpipe.extractor.comments.CommentsInfo
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItem
+import org.schabi.newpipe.extractor.stream.StreamInfo
 import org.schabi.newpipe.extractor.stream.StreamInfoItem
 
-class KioskInfoConverterImpl : KioskInfoConverter {
-    override fun mapToYtDataList(relatedItems: MutableList<StreamInfoItem>): List<YTDataItem> {
+class NewPipeDataModelConverterImpl : NewPipeDataModelConverter {
+    override fun mapStreamInfoItemListToYtDataList(relatedItems: MutableList<StreamInfoItem>): List<YTDataItem> {
 
         return relatedItems.mapNotNull { infoItem ->
             when (infoItem.infoType) {
@@ -48,5 +52,20 @@ class KioskInfoConverterImpl : KioskInfoConverter {
                 }
             }
         }
+    }
+
+    override fun mapStreamInfoToVideoDataInfoSchema(streamInfo: StreamInfo): VideoDataInfoSchema {
+        return VideoDataInfoSchema(streamInfo.url, streamInfo.name)
+    }
+
+    override fun mapCommentsInfoToVideoDataCommentSchemaList(commentsInfo: CommentsInfo): List<VideoDataCommentSchema> {
+        return commentsInfo.relatedItems.map {
+            VideoDataCommentSchema(
+                name = it.uploaderName,
+                profilePicUrl = it.uploaderAvatarUrl,
+                comment = it.commentText
+            )
+        }
+
     }
 }

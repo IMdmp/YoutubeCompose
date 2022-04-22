@@ -44,4 +44,9 @@ dependencies {
 
 //    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.0"
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+    def coroutinesVersion = "1.5.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
 }
