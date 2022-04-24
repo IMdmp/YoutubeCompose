@@ -3,6 +3,7 @@ package com.imdmp.datarepository
 import com.imdmp.datarepository.model.VideoDataCommentSchema
 import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataSchema
+import java.util.concurrent.Flow
 
 interface YoutubeRepository {
 
@@ -12,4 +13,8 @@ interface YoutubeRepository {
     suspend fun getVideoDataInfo(encryptedUrl: String): VideoDataInfoSchema
 
     suspend fun getVideoDataComments(url: String): List<VideoDataCommentSchema>
+
+    suspend fun search(query:String): YTDataSchema
+
+    suspend fun searchAutoSuggestion(query:String) :Flow
 }

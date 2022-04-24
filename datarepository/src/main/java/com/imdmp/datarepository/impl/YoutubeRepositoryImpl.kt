@@ -6,6 +6,7 @@ import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.datarepository.model.VideoDataCommentSchema
 import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataSchema
+import java.util.concurrent.Flow
 
 class YoutubeRepositoryImpl(
     private val newPipeExtractorWrapper: NewPipeExtractorWrapper,
@@ -31,5 +32,13 @@ class YoutubeRepositoryImpl(
         val commentsInfo = newPipeExtractorWrapper.getComments(url)
 
         return newPipeDataModelConverter.mapCommentsInfoToVideoDataCommentSchemaList(commentsInfo)
+    }
+
+    override suspend fun search(query: String): YTDataSchema {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun searchAutoSuggestion(query: String): Flow {
+        TODO("Not yet implemented")
     }
 }
