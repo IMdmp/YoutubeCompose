@@ -128,4 +128,9 @@ class YoutubeRepositoryTest {
             Assert.assertEquals(expected, actual)
         }
     }
+
+    @Test
+    fun testSearchAutoSuggestion() {
+
+    }
 }
