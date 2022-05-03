@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MainActivity : ComponentActivity() {
+class MainTesterActivity : ComponentActivity() {
 
 
     val newPipeExtractorWrapperImpl = NewPipeExtractorWrapperImpl()
@@ -35,10 +35,8 @@ class MainActivity : ComponentActivity() {
             val list = youtubeRepository.searchAutoSuggestion("sample")
 
             list.collect {
-                Timber.d("test: suggestion: ")
-                it.forEach { item ->
-                    Timber.d("item: ${item}")
-                }
+                Timber.d("test: suggestion: $it")
+
             }
         }
 

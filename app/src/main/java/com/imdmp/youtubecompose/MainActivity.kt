@@ -26,10 +26,7 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
 
         lifecycleScope.launch(Dispatchers.IO) {
             youtubeRepository.searchAutoSuggestion("test").collect {
-                Timber.d("test: suggestion: ")
-                it.forEach { item ->
-                    Timber.d("item: ${item}")
-                }
+                    Timber.d("test: suggestion: $it")
             }
         }
     }

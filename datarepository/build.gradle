@@ -48,5 +48,6 @@ dependencies {
     def coroutinesVersion = "1.5.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    testImplementation 'app.cash.turbine:turbine:0.8.0'
 
 }

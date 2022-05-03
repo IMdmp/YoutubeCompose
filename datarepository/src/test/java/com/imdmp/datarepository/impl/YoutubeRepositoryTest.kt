@@ -1,5 +1,6 @@
 package com.imdmp.datarepository.impl
 
+import app.cash.turbine.test
 import com.imdmp.datarepository.NewPipeDataModelConverter
 import com.imdmp.datarepository.NewPipeExtractorWrapper
 import com.imdmp.datarepository.YoutubeRepository
@@ -8,8 +9,10 @@ import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataItem
 import com.imdmp.datarepository.model.YTDataSchema
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import net.bytebuddy.utility.RandomString
 import org.junit.Assert
 import org.junit.Before
@@ -28,7 +31,7 @@ import kotlin.random.Random
 class YoutubeRepositoryTest {
 
 
-    lateinit var youtubeRepositoryImpl: YoutubeRepository
+    lateinit var youtubeRepository: YoutubeRepository
 
     @Mock
     lateinit var newPipeExtractorWrapper: NewPipeExtractorWrapper
@@ -41,7 +44,7 @@ class YoutubeRepositoryTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        youtubeRepositoryImpl =
+        youtubeRepository =
             YoutubeRepositoryImpl(newPipeExtractorWrapper, newPipeDataModelConverter)
     }
 
@@ -71,7 +74,7 @@ class YoutubeRepositoryTest {
         )
 
         testDispatcher.runBlockingTest {
-            val actualYtDataSchema = youtubeRepositoryImpl.getYTDataList()
+            val actualYtDataSchema = youtubeRepository.getYTDataList()
             Assert.assertEquals(expectedYTDataSchema, actualYtDataSchema)
         }
     }
@@ -93,7 +96,7 @@ class YoutubeRepositoryTest {
         )
 
         testDispatcher.runBlockingTest {
-            val actual = youtubeRepositoryImpl.getVideoDataInfo(dummyUrl)
+            val actual = youtubeRepository.getVideoDataInfo(dummyUrl)
 
             Assert.assertEquals(expected, actual)
         }
@@ -122,15 +125,30 @@ class YoutubeRepositoryTest {
         )
             .thenReturn(expected)
 
-        testDispatcher.runBlockingTest {
-            val actual = youtubeRepositoryImpl.getVideoDataComments(dummyUrl)
+        runTest{
+            val actual = youtubeRepository.getVideoDataComments(dummyUrl)
 
             Assert.assertEquals(expected, actual)
         }
     }
 
     @Test
-    fun testSearchAutoSuggestion() {
+    fun `testSearchAutoSuggestion test flow`() {
+        val dummyQuery = RandomString.make(4)
 
+        val expectedList = listOf(RandomString.make(3), RandomString.make(5), RandomString.make(2))
+
+        whenever(newPipeExtractorWrapper.getSearchSuggestions(dummyQuery)).thenReturn(
+            expectedList as MutableList<String>
+        )
+
+        runTest {
+            youtubeRepository.searchAutoSuggestion(dummyQuery).test {
+                expectedList.forEach {
+                    Assert.assertEquals(awaitItem(),it)
+                }
+                awaitComplete()
+            }
+        }
     }
 }
