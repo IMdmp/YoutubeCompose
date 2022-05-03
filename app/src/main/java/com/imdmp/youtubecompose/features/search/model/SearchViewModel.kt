@@ -2,6 +2,7 @@ package com.imdmp.youtubecompose.features.search.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.imdmp.ui_search.SearchState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

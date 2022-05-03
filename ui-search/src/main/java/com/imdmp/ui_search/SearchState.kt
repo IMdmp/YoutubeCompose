@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.features.search.model
+package com.imdmp.ui_search
 
 data class SearchState(
     val suggestionList: List<String> = listOf(),
