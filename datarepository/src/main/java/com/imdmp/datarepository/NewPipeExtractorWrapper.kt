@@ -9,4 +9,5 @@ interface NewPipeExtractorWrapper {
     fun getInfo(): KioskInfo
     fun getVideoData(encryptedStreamUrl: String): StreamInfo
     fun getComments(url: String): CommentsInfo
+    fun getSearchSuggestions(query: String): MutableList<String>
 }

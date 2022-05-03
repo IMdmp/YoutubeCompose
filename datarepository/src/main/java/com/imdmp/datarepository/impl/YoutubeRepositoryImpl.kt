@@ -6,7 +6,8 @@ import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.datarepository.model.VideoDataCommentSchema
 import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataSchema
-import java.util.concurrent.Flow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class YoutubeRepositoryImpl(
     private val newPipeExtractorWrapper: NewPipeExtractorWrapper,
@@ -38,7 +39,12 @@ class YoutubeRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun searchAutoSuggestion(query: String): Flow {
-        TODO("Not yet implemented")
+    override suspend fun searchAutoSuggestion(query: String): Flow<String> {
+        return flow {
+            //todo: add local repo suggestions(previous searches)
+            newPipeExtractorWrapper.getSearchSuggestions(query).forEach {
+                emit(it)
+            }
+        }
     }
 }
