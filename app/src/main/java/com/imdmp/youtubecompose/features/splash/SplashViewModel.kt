@@ -13,7 +13,7 @@ class SplashViewModel @Inject constructor(val sharedPreferences: SharedPreferenc
     fun startingRoute(): String {
         return if (
             sharedPreferences.getBoolean(
-                SharedPreferencesKeys.PREFERENCE_FEED_ENABLED, false
+                SharedPreferencesKeys.PREFERENCE_FEED_ENABLED, true
             ).not()
         ) {
             Destination.Search.path

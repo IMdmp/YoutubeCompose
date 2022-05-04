@@ -1,7 +1,8 @@
 package com.imdmp.youtubecompose
 
-import SearchScreen
+import SearchCombinerScreen
 import android.content.pm.ActivityInfo
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,11 +23,13 @@ import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import com.imdmp.youtubecompose.features.fullscreenview.FullScreenView
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
 import com.imdmp.youtubecompose.features.splash.SplashScreen
-import com.imdmp.youtubecompose.features.videolist.VideoListScreen
+import com.imdmp.youtubecompose.features.videolist.HomeScreen
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
 import timber.log.Timber
+import java.net.URLDecoder
 
+@ExperimentalMaterialApi
 @Composable
 fun MainAppScreen(
     modifier: Modifier = Modifier,
@@ -56,12 +59,12 @@ fun MainAppScreen(
         composable(Destination.VideoList.path) { backStackEntry ->
             val query = backStackEntry.arguments?.getString(Destination.VIDEO_LIST, "")
             val videoListViewModel = hiltViewModel<VideoListViewModel>()
-//            videoListViewModel.query = URLDecoder.decode(query, "utf-8")
+            videoListViewModel.updateCurrentQuery(URLDecoder.decode(query, "utf-8"))
 
             if (query.isNullOrEmpty()) {
-                VideoListScreen(navController = navController)
+                HomeScreen(navController = navController)
             } else {
-                VideoListScreen(
+                HomeScreen(
                     videoListViewModel = videoListViewModel,
                     navController = navController
                 )
@@ -85,7 +88,7 @@ fun MainAppScreen(
         }
 
         composable(Destination.Search.path) {
-            SearchScreen(navController = navController)
+            SearchCombinerScreen(navController = navController)
         }
 
         composable(Destination.Profile.path) {
