@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/ui-core" />
             <option value="$PROJECT_DIR$/ui-home" />
             <option value="$PROJECT_DIR$/ui-player" />
+            <option value="$PROJECT_DIR$/ui-search" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
