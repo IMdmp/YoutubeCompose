@@ -3,6 +3,7 @@ package com.imdmp.youtubecompose
 import android.os.Bundle
 import android.view.View
 import androidx.activity.compose.setContent
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -12,6 +13,7 @@ import com.imdmp.ui_core.theme.YoutubeComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : FragmentActivity(), BaseActivityCallbacks {
 

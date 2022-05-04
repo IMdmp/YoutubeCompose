@@ -15,8 +15,8 @@ fun HomeScreen(
     videoListViewModel: VideoListViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    LaunchedEffect(key1 = Unit) {
-        videoListViewModel.search("")
+    LaunchedEffect(key1 = videoListViewModel.query.value) {
+        videoListViewModel.retrieveVideoList()
     }
     VideoListScreen(videoListViewModel.videoList.value, object : VideoListScreenActions {
         override fun videoItemSelected(videoListItem: VideoListItem) {

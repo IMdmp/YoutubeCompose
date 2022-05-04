@@ -15,9 +15,14 @@ class VideoListViewModel @Inject constructor(
     private val youtubeRepository: YoutubeRepository
 ) :
     ViewModel() {
+    val query = mutableStateOf("")
     val videoList = mutableStateOf<List<VideoListItem>>(listOf())
 
-    fun search(query: String) {
+    fun updateCurrentQuery(query: String) {
+        this.query.value = query
+    }
+
+    fun retrieveVideoList() {
         viewModelScope.launch(Dispatchers.IO) {
             videoList.value = youtubeRepository.getYTDataList().ytDataList.map {
                 VideoListItem(
