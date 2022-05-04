@@ -22,7 +22,7 @@ import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import com.imdmp.youtubecompose.features.fullscreenview.FullScreenView
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
 import com.imdmp.youtubecompose.features.splash.SplashScreen
-import com.imdmp.youtubecompose.features.videolist.VideoListScreen
+import com.imdmp.youtubecompose.features.videolist.HomeScreen
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
 import timber.log.Timber
@@ -59,9 +59,9 @@ fun MainAppScreen(
 //            videoListViewModel.query = URLDecoder.decode(query, "utf-8")
 
             if (query.isNullOrEmpty()) {
-                VideoListScreen(navController = navController)
+                HomeScreen(navController = navController)
             } else {
-                VideoListScreen(
+                HomeScreen(
                     videoListViewModel = videoListViewModel,
                     navController = navController
                 )
