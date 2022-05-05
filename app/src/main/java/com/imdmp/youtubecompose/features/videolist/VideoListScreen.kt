@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.imdmp.uihome.VideoListItem
-import com.imdmp.uihome.VideoListScreen
-import com.imdmp.uihome.VideoListScreenActions
 import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
+import com.imdmp.youtubecompose_ui.uihome.VideoListItem
+import com.imdmp.youtubecompose_ui.uihome.VideoListScreen
+import com.imdmp.youtubecompose_ui.uihome.VideoListScreenActions
 
 @Composable
 fun HomeScreen(

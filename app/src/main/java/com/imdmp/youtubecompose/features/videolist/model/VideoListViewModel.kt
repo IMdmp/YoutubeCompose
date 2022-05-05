@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imdmp.datarepository.YoutubeRepository
-import com.imdmp.uihome.VideoListItem
+import com.imdmp.youtubecompose_ui.uihome.VideoListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

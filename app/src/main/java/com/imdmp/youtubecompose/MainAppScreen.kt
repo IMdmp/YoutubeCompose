@@ -18,7 +18,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.imdmp.ui_player.VideoPlayerScreen
 import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import com.imdmp.youtubecompose.features.fullscreenview.FullScreenView
 import com.imdmp.youtubecompose.features.profile.ProfileScreen
@@ -26,6 +25,7 @@ import com.imdmp.youtubecompose.features.splash.SplashScreen
 import com.imdmp.youtubecompose.features.videolist.HomeScreen
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
+import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
 import timber.log.Timber
 import java.net.URLDecoder
 
