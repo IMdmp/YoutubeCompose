@@ -9,8 +9,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "YoutubeCompose"
 include ':app'
-include ':ui-home'
 include ':ui-core'
-include ':ui-player'
 include ':datarepository'
-include ':ui-search'
+include ':youtubecompose-ui'

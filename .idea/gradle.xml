@@ -14,9 +14,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/datarepository" />
             <option value="$PROJECT_DIR$/ui-core" />
-            <option value="$PROJECT_DIR$/ui-home" />
-            <option value="$PROJECT_DIR$/ui-player" />
-            <option value="$PROJECT_DIR$/ui-search" />
+            <option value="$PROJECT_DIR$/youtubecompose-ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

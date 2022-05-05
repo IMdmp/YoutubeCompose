@@ -25,7 +25,7 @@
         android:label="PlayerFragment" >
         <argument
             android:name="dataItem"
-            app:argType="com.imdmp.uihome.VideoListItem"
+            app:argType="com.imdmp.youtubecompose_ui.uihome.VideoListItem"
             app:nullable="true"
             android:defaultValue="@null"/>
     </fragment>
