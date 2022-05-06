@@ -60,7 +60,9 @@ fun VideoPlayerScreen(
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
-
+    LaunchedEffect(key1 = state.streamUrl) {
+        videoPlayerScreenCallbacks.prepareAndPlayVideoPlayer(state.streamUrl)
+    }
     val pagerState = rememberPagerState()
     val listState = rememberLazyListState()
 
@@ -82,10 +84,6 @@ fun VideoPlayerScreen(
             tween(delayMillis = 0)
         } else tween(delayMillis = 750)
     )
-    LaunchedEffect(key1 = Unit) {
-        videoPlayerScreenCallbacks.retrieveComments()
-    }
-
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (
