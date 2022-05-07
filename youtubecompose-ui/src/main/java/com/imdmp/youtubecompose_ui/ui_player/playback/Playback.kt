@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,9 +19,6 @@ fun Playback(
     onUpdate: (PlayerView) -> Unit = {}
 ) {
     val context = LocalContext.current
-    LaunchedEffect(player) {
-        playerScreenCallbacks.prepareAndPlayVideoPlayer()
-    }
 
     DisposableEffect(
         AndroidView(
