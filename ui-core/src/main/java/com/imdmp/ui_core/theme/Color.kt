@@ -10,3 +10,4 @@ val Teal200 = Color(0xFF03DAC5)
 val BlackDarkColor1 = Color.DarkGray
 val BlackDarkColor2 = Color(0xFF6C6C6C)
 val lighterGrey = Color(0xFFE4E4E4)
+val lighterGreyTransparent = Color(0xCC282828)

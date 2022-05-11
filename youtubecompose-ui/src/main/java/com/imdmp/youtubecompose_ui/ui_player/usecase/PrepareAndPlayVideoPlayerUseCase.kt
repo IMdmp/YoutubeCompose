@@ -13,8 +13,6 @@ class PrepareAndPlayVideoPlayerUseCaseImpl(
         streamUrl: String,
         player: ExoPlayer,
     ) {
-
-
         val mediaSource = mediaSourceFactory.createMediaSource(
             MediaItem.Builder()
                 .setUri(streamUrl)

@@ -13,7 +13,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -38,8 +37,6 @@ import com.imdmp.youtubecompose_ui.R
 import com.imdmp.youtubecompose_ui.ui_player.comments.CommentModel
 import com.imdmp.youtubecompose_ui.ui_player.comments.CommentState
 import com.imdmp.youtubecompose_ui.ui_player.comments.Comments
-import com.imdmp.youtubecompose_ui.ui_player.controls.ControlState
-import com.imdmp.youtubecompose_ui.ui_player.controls.Controls
 import com.imdmp.youtubecompose_ui.ui_player.model.PlayerStatus
 import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerComposeScreenState
 import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerScreenCallbacks
@@ -60,8 +57,8 @@ fun VideoPlayerScreen(
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
-    LaunchedEffect(key1 = state.streamUrl) {
-        videoPlayerScreenCallbacks.prepareAndPlayVideoPlayer(state.streamUrl)
+    LaunchedEffect(key1 = Unit) {
+        videoPlayerScreenCallbacks.prepareAndPlayVideoPlayer()
     }
     val pagerState = rememberPagerState()
     val listState = rememberLazyListState()
@@ -135,25 +132,25 @@ fun VideoPlayerScreen(
                         bottom.linkTo(videoPlayer.bottom)
                     })
         }
-
-        Controls(
-            controlsCallback = videoPlayerScreenCallbacks,
-            modifier = Modifier
-                .alpha(alphaAnimation)
-                .constrainAs(controls) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(videoPlayer.bottom)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                },
-            controlState = if (state.playerStatus == PlayerStatus.PAUSED) {
-                ControlState.PAUSED
-            } else {
-                ControlState.PLAYING
-            }
-        )
+//
+//        Controls(
+//            controlsCallback = videoPlayerScreenCallbacks,
+//            modifier = Modifier
+//                .alpha(alphaAnimation)
+//                .constrainAs(controls) {
+//                    top.linkTo(parent.top)
+//                    start.linkTo(parent.start)
+//                    end.linkTo(parent.end)
+//                    bottom.linkTo(videoPlayer.bottom)
+//                    width = Dimension.fillToConstraints
+//                    height = Dimension.fillToConstraints
+//                },
+//            controlState = if (state.playerStatus == PlayerStatus.PAUSED) {
+//                ControlState.PAUSED
+//            } else {
+//                ControlState.PLAYING
+//            }
+//        )
 
 
         TitleBar(
@@ -572,7 +569,6 @@ private fun getScreenStateForTest(): VideoPlayerComposeScreenState {
     val videoPlayerScreenState = VideoPlayerComposeScreenState(
         commentList = listOf(commentModel, commendModel2, commendModel3),
         playerStatus = PlayerStatus.IDLE,
-        streamUrl = "",
         videoTitle = "Sweet and Savory Babka",
         views = 865,
         datePosted = "2 weeks ago",
