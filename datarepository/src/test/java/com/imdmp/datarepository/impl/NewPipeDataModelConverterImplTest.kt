@@ -1,6 +1,5 @@
 package com.imdmp.datarepository.impl
 
-import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataItem
 import net.bytebuddy.utility.RandomString
 import org.junit.Assert
@@ -8,11 +7,10 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import org.schabi.newpipe.extractor.MediaFormat
 import org.schabi.newpipe.extractor.comments.CommentsInfo
 import org.schabi.newpipe.extractor.comments.CommentsInfoItem
-import org.schabi.newpipe.extractor.stream.StreamInfo
-import org.schabi.newpipe.extractor.stream.StreamInfoItem
-import org.schabi.newpipe.extractor.stream.StreamType
+import org.schabi.newpipe.extractor.stream.*
 import kotlin.random.Random
 
 class NewPipeDataModelConverterImplTest {
@@ -56,18 +54,29 @@ class NewPipeDataModelConverterImplTest {
     @Test
     fun mapStreamInfoToVideoDataInfoSchema() {
 
-        val expectedUrl = RandomString.make(3)
+        val expectedVideoStream = listOf(VideoStream("", MediaFormat.M4A, ""))
         val streamType = StreamType.VIDEO_STREAM
         val expectedName = RandomString.make(3)
+        val expectedDescription = RandomString.make(3)
+        val expectedViewCount = Random.nextLong()
+        val expectedLikeCount = Random.nextLong()
+        val expectedDate = RandomString.make(10)
 
-        val streamInfo = StreamInfo(0, expectedUrl, "", streamType, "", expectedName, 18)
-
-
-        val expected = VideoDataInfoSchema(streamUrl = expectedUrl, videoName = expectedName)
+        val streamInfo = StreamInfo(0, "", "", streamType, "", expectedName, 18)
+        streamInfo.textualUploadDate = expectedDate
+        streamInfo.description = Description(expectedDescription, 0)
+        streamInfo.viewCount = expectedViewCount
+        streamInfo.likeCount = expectedLikeCount
+        streamInfo.videoStreams = expectedVideoStream
         val actual = sut.mapStreamInfoToVideoDataInfoSchema(streamInfo)
 
-        Assert.assertEquals(expected.streamUrl, actual.streamUrl)
-        Assert.assertEquals(expected.videoName, actual.videoName)
+
+        Assert.assertEquals(expectedVideoStream, actual.streamList)
+        Assert.assertEquals(expectedViewCount, actual.views)
+        Assert.assertEquals(expectedDate, actual.uploadDate)
+        Assert.assertEquals(expectedLikeCount, actual.likeCount)
+        Assert.assertEquals(expectedDescription, actual.videoDescription)
+        Assert.assertEquals(expectedName, actual.title)
 
     }
 

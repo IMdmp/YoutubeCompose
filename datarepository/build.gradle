@@ -49,5 +49,10 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     testImplementation 'app.cash.turbine:turbine:0.8.0'
+    implementation "com.squareup.okhttp3:okhttp:3.12.13"
 
+    def exoPlayerVersion = '2.14.2'
+    implementation "com.google.android.exoplayer:exoplayer:${exoPlayerVersion}"
+    implementation "com.google.android.exoplayer:extension-mediasession:${exoPlayerVersion}"
+    androidTestImplementation "com.google.android.exoplayer:exoplayer-testutils:${exoPlayerVersion}"
 }

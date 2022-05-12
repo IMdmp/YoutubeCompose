@@ -1,7 +1,6 @@
-package com.imdmp.youtubecompose.usecases.extractor;
+package com.imdmp.datarepository.utils;
 
 
-import static com.imdmp.youtubecompose.BuildConfig.DEBUG;
 
 import android.content.Context;
 import android.os.Build;
@@ -9,7 +8,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.imdmp.youtubecompose.base.utils.CookieUtils;
+import com.imdmp.datarepository.BuildConfig;
 
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.downloader.Request;
@@ -124,7 +123,7 @@ public final class DownloaderImpl extends Downloader {
 
             builder.connectionSpecs(Arrays.asList(legacyTLS, ConnectionSpec.CLEARTEXT));
         } catch (final KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-            if (DEBUG) {
+            if (BuildConfig.DEBUG) {
                 e.printStackTrace();
             }
         }

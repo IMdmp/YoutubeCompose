@@ -9,7 +9,6 @@ import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataItem
 import com.imdmp.datarepository.model.YTDataSchema
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
@@ -83,7 +82,15 @@ class YoutubeRepositoryTest {
     fun `getVideoDataInfo returns VideoDataInfoSchema`() {
 
         val expected = VideoDataInfoSchema(
-            streamUrl = RandomString.make(3), videoName = RandomString.make(3)
+            title = RandomString.make(3),
+            views = 0,
+            uploadDate = "",
+            likeCount = 0,
+            uploaderName = "",
+            uploaderProfilePicUrl = "",
+            subscriberCount = 0,
+            videoDescription = "",
+            streamList = listOf()
         )
 
         val dummyUrl = RandomString.make(3)

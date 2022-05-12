@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.source.MediaSource
-import com.imdmp.youtubecompose.repository.model.VideoDataSchema
-import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
+import com.imdmp.datarepository.YoutubeRepository
+import com.imdmp.datarepository.model.VideoDataInfoSchema
+import com.imdmp.datarepository.usecase.GetVideoStreamUrlUseCase
 import com.imdmp.youtubecompose_ui.ui_player.VideoEvent
 import com.imdmp.youtubecompose_ui.ui_player.model.PlayerStatus
 import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerComposeScreenState
@@ -16,18 +16,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.schabi.newpipe.extractor.NewPipe
-import org.schabi.newpipe.extractor.stream.StreamInfo
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class VideoPlayerViewModel @Inject constructor(
     private val getVideoStreamUrlUseCase: GetVideoStreamUrlUseCase,
-    val player: ExoPlayer
+    val player: ExoPlayer,
+    val dataRepository: YoutubeRepository
 ) : ViewModel(), VideoPlayerScreenCallbacks {
 
     val uiState = MutableStateFlow(VideoPlayerComposeScreenState.init())
+
     init {
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
@@ -46,17 +46,12 @@ class VideoPlayerViewModel @Inject constructor(
         )
     }
 
-
-    override suspend fun getMediaSource(url: String): MediaSource {
-        return getVideoStreamUrlUseCase(url)
-    }
-
     override fun prepareAndPlayVideoPlayer(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val videoInfo = getVideoInfo(url)
+            val videoInfo = dataRepository.getVideoDataInfo(url)
             setUiState(videoInfo)
 
-            val mediaSource = getMediaSource(videoInfo.streamUrl)
+            val mediaSource = getVideoStreamUrlUseCase(videoInfo.streamList.last())
 
             withContext(Dispatchers.Main) {
                 player.setMediaSource(mediaSource)
@@ -66,36 +61,19 @@ class VideoPlayerViewModel @Inject constructor(
         }
     }
 
-    private fun setUiState(videoInfo: VideoDataSchema) {
+    private fun setUiState(videoInfo: VideoDataInfoSchema) {
         uiState.value = uiState.value.copy(
             videoTitle = videoInfo.title,
             views = videoInfo.views,
-            datePosted = "2 weeks ago",
+            datePosted = videoInfo.uploadDate,
             likeCount = videoInfo.likeCount,
             authorUrl = videoInfo.uploaderProfilePicUrl,
             authorName = videoInfo.uploaderName,
-            numberOfSubs = 5,
+            numberOfSubs = videoInfo.subscriberCount.toLong(),
             videoDescription = videoInfo.videoDescription
         )
     }
 
-    private fun getVideoInfo(url: String): VideoDataSchema {
-        val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), url)
-
-        val videoSchema = VideoDataSchema(
-            title = streamInfo.name,
-            views = streamInfo.viewCount,
-            uploadDate = streamInfo.uploadDate.offsetDateTime().toString(),
-            likeCount = streamInfo.likeCount,
-            uploaderName = streamInfo.uploaderName,
-            uploaderProfilePicUrl = streamInfo.uploaderAvatarUrl,
-            subscriberCount = 2,
-            videoDescription = streamInfo.description.content,
-            streamUrl = streamInfo.url
-        )
-
-        return videoSchema
-    }
 
     override fun disposeVideoPlayer() {
         player.stop()

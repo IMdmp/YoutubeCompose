@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.usecases.player;
+package com.imdmp.datarepository.utils;
 
 import android.content.Context;
 import android.util.Log;
