@@ -77,13 +77,13 @@ fun MainAppScreen(
             requireNotNull(streamUrl) { "streamUrl parameter wasn't found. Please make sure it's set!" }
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
-            videoPlayerViewModel.updateUrl(streamUrl)
 
             VideoPlayerScreen(
                 player = videoPlayerViewModel.player,
                 state = videoPlayerViewModel.uiState.collectAsState().value,
                 videoPlayerScreenCallbacks = videoPlayerViewModel,
                 lifecycleOwner = LocalLifecycleOwner.current,
+                streamUrl = streamUrl
             )
         }
 

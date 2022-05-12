@@ -56,9 +56,10 @@ fun VideoPlayerScreen(
     state: VideoPlayerComposeScreenState,
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    streamUrl: String
 ) {
     LaunchedEffect(key1 = Unit) {
-        videoPlayerScreenCallbacks.prepareAndPlayVideoPlayer()
+        videoPlayerScreenCallbacks.prepareAndPlayVideoPlayer(streamUrl)
     }
     val pagerState = rememberPagerState()
     val listState = rememberLazyListState()
@@ -544,6 +545,7 @@ fun PreviewVideoPlayerScreen() {
             player = null,
             state = videoPlayerScreenState,
             videoPlayerScreenCallbacks = VideoPlayerScreenCallbacks.default(),
+            streamUrl = ""
         )
     }
 }

@@ -27,6 +27,7 @@ class VideoPlayerViewModel @Inject constructor(
     val player: ExoPlayer
 ) : ViewModel(), VideoPlayerScreenCallbacks {
 
+    val uiState = MutableStateFlow(VideoPlayerComposeScreenState.init())
     init {
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
@@ -45,7 +46,6 @@ class VideoPlayerViewModel @Inject constructor(
         )
     }
 
-    val uiState = MutableStateFlow(VideoPlayerComposeScreenState.init())
 
     override suspend fun getMediaSource(url: String): MediaSource {
         return getVideoStreamUrlUseCase(url)
@@ -53,10 +53,10 @@ class VideoPlayerViewModel @Inject constructor(
 
     override fun prepareAndPlayVideoPlayer(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val urlToUse = url
-            setUiState(getVideoInfo(urlToUse))
+            val videoInfo = getVideoInfo(url)
+            setUiState(videoInfo)
 
-            val mediaSource = getMediaSource(urlToUse)
+            val mediaSource = getMediaSource(videoInfo.streamUrl)
 
             withContext(Dispatchers.Main) {
                 player.setMediaSource(mediaSource)
@@ -76,11 +76,10 @@ class VideoPlayerViewModel @Inject constructor(
             authorName = videoInfo.uploaderName,
             numberOfSubs = 5,
             videoDescription = videoInfo.videoDescription
-
         )
     }
 
-    fun getVideoInfo(url: String): VideoDataSchema {
+    private fun getVideoInfo(url: String): VideoDataSchema {
         val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), url)
 
         val videoSchema = VideoDataSchema(
@@ -91,7 +90,8 @@ class VideoPlayerViewModel @Inject constructor(
             uploaderName = streamInfo.uploaderName,
             uploaderProfilePicUrl = streamInfo.uploaderAvatarUrl,
             subscriberCount = 2,
-            videoDescription = streamInfo.description.content
+            videoDescription = streamInfo.description.content,
+            streamUrl = streamInfo.url
         )
 
         return videoSchema
@@ -141,10 +141,6 @@ class VideoPlayerViewModel @Inject constructor(
             PlayerStatus.PAUSED
 
         uiState.value = uiState.value.copy(playerStatus = newPlayerStatus)
-    }
-
-    fun updateUrl(streamUrl: String) {
-//        uiState.value = uiState.value.copy(streamUrl = streamUrl)
     }
 
     override fun retrieveComments() {

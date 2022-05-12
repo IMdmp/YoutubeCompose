@@ -26,7 +26,7 @@ data class VideoPlayerComposeScreenState(
                 authorUrl = "",
                 authorName = "",
                 numberOfSubs = 0,
-                videoDescription = ""
+                videoDescription = "",
             )
         }
 
