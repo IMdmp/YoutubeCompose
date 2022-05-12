@@ -55,7 +55,17 @@ class NewPipeDataModelConverterImpl : NewPipeDataModelConverter {
     }
 
     override fun mapStreamInfoToVideoDataInfoSchema(streamInfo: StreamInfo): VideoDataInfoSchema {
-        return VideoDataInfoSchema(streamInfo.url, streamInfo.name)
+        return VideoDataInfoSchema(
+            title = streamInfo.name,
+            views = streamInfo.viewCount,
+            uploadDate = streamInfo.textualUploadDate ?: "",
+            likeCount = streamInfo.likeCount,
+            uploaderName = streamInfo.uploaderName,
+            uploaderProfilePicUrl = streamInfo.uploaderAvatarUrl,
+            subscriberCount = 100000,
+            videoDescription = streamInfo.description?.content ?: "",
+            streamList = streamInfo.videoStreams
+        )
     }
 
     override fun mapCommentsInfoToVideoDataCommentSchemaList(commentsInfo: CommentsInfo): List<VideoDataCommentSchema> {

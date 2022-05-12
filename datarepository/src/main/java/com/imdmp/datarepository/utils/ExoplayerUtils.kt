@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.base.utils
+package com.imdmp.datarepository
 
 import android.net.Uri
 import android.text.TextUtils
@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.imdmp.youtubecompose.usecases.player.PlayerDataSource
+import com.imdmp.datarepository.utils.PlayerDataSource
 
 
 fun buildMediaSource(

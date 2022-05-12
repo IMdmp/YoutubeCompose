@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.usecases.impl
+package com.imdmp.datarepository.usecase
 
 import android.net.Uri
 import android.text.TextUtils
@@ -7,23 +7,16 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
-import com.imdmp.youtubecompose.usecases.player.PlayerDataSource
+import com.imdmp.datarepository.utils.PlayerDataSource
 import org.schabi.newpipe.extractor.MediaFormat
-import org.schabi.newpipe.extractor.NewPipe
-import org.schabi.newpipe.extractor.stream.StreamInfo
-import timber.log.Timber
+import org.schabi.newpipe.extractor.stream.VideoStream
 
 class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource) :
     GetVideoStreamUrlUseCase {
-    override suspend fun invoke(encryptedStreamUrl: String): MediaSource {
-        val streamInfo = StreamInfo.getInfo(NewPipe.getService(0), encryptedStreamUrl)
-        val firstSource = streamInfo.videoStreams!![1]
+    override suspend fun invoke(url: VideoStream): MediaSource {
+        val uri = Uri.parse(url.url)
 
-        Timber.d("first source: ${firstSource.url}")
-        val uri = Uri.parse(firstSource.url)
-
-        val overrideExtension = MediaFormat.getSuffixById(firstSource.formatId)
+        val overrideExtension = MediaFormat.getSuffixById(url.formatId)
         @C.ContentType val type: Int =
             if (TextUtils.isEmpty(overrideExtension)) Util.inferContentType(uri) else Util.inferContentType(
                 ".$overrideExtension"
@@ -43,7 +36,6 @@ class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource)
                 .setUri(uri)
                 .build()
         )
-        Timber.d("test here media Source : $mediaSource")
 
         return mediaSource
 
