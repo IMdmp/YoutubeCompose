@@ -9,6 +9,9 @@ Libraries:
 - Extractor from New pipe extractor: https://github.com/TeamNewPipe/NewPipeExtractor
 - Downloader from New pipe code: https://github.com/TeamNewPipe/NewPipe
 - initial youtube ui code from Compose Cookbook: https://github.com/Gurupreet/ComposeCookBook
+- Icons from: https://github.com/DevSrSouza/compose-icons
+- Seekbar from: https://github.com/rubensousa/PreviewSeekBar
+- xml icons from: https://github.com/mikepenz/Android-Iconics
 
 Clean Architecure - Multi module separation
 

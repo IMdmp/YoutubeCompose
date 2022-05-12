@@ -4,7 +4,6 @@ import com.imdmp.youtubecompose_ui.ui_player.comments.CommentModel
 
 data class VideoPlayerComposeScreenState(
     val playerStatus: PlayerStatus = PlayerStatus.LOADING,
-    val streamUrl: String = "",
     val commentList: List<CommentModel> = listOf(),
     val videoTitle: String,
     val views: Long,
@@ -19,7 +18,6 @@ data class VideoPlayerComposeScreenState(
         fun init(): VideoPlayerComposeScreenState {
             return VideoPlayerComposeScreenState(
                 playerStatus = PlayerStatus.IDLE,
-                streamUrl = "",
                 commentList = listOf(),
                 videoTitle = "",
                 views = 0,

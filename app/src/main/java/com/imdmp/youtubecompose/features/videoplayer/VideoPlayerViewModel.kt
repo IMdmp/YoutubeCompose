@@ -8,7 +8,6 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.imdmp.youtubecompose.repository.model.VideoDataSchema
 import com.imdmp.youtubecompose.usecases.GetVideoStreamUrlUseCase
 import com.imdmp.youtubecompose_ui.ui_player.VideoEvent
-import com.imdmp.youtubecompose_ui.ui_player.comments.CommentModel
 import com.imdmp.youtubecompose_ui.ui_player.model.PlayerStatus
 import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerComposeScreenState
 import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerScreenCallbacks
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.NewPipe
-import org.schabi.newpipe.extractor.comments.CommentsInfo
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import timber.log.Timber
 import javax.inject.Inject
@@ -55,13 +53,7 @@ class VideoPlayerViewModel @Inject constructor(
 
     override fun prepareAndPlayVideoPlayer(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val urlToUse =
-                if (url.isEmpty()) {
-                    uiState.value.streamUrl
-                } else {
-                    url
-                }
-
+            val urlToUse = url
             setUiState(getVideoInfo(urlToUse))
 
             val mediaSource = getMediaSource(urlToUse)
@@ -152,28 +144,27 @@ class VideoPlayerViewModel @Inject constructor(
     }
 
     fun updateUrl(streamUrl: String) {
-        uiState.value = uiState.value.copy(streamUrl = streamUrl)
+//        uiState.value = uiState.value.copy(streamUrl = streamUrl)
     }
 
     override fun retrieveComments() {
-        val url = uiState.value.streamUrl
-        viewModelScope.launch(Dispatchers.IO) {
-            val comments = CommentsInfo.getInfo(NewPipe.getService(0), url)
-
-            Timber.d("test here. $comments ")
-
-            uiState.value =
-                uiState.value.copy(commentList = comments.relatedItems.map { commentInfoItem ->
-                    CommentModel(
-                        authorName = commentInfoItem.uploaderName,
-                        commentText = commentInfoItem.commentText,
-                        profilePic = commentInfoItem.uploaderAvatarUrl,
-                        likeCount = commentInfoItem.likeCount,
-                        timeCommented = commentInfoItem.textualUploadDate
-                    )
-                })
-
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val comments = CommentsInfo.getInfo(NewPipe.getService(0), url)
+//
+//            Timber.d("test here. $comments ")
+//
+//            uiState.value =
+//                uiState.value.copy(commentList = comments.relatedItems.map { commentInfoItem ->
+//                    CommentModel(
+//                        authorName = commentInfoItem.uploaderName,
+//                        commentText = commentInfoItem.commentText,
+//                        profilePic = commentInfoItem.uploaderAvatarUrl,
+//                        likeCount = commentInfoItem.likeCount,
+//                        timeCommented = commentInfoItem.textualUploadDate
+//                    )
+//                })
+//
+//        }
+//    }
     }
-
 }
