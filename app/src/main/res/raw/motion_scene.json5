@@ -3,14 +3,89 @@
     start: {
       video_screen: {
         width: 'spread',
-        height: 'spread'
+        height: 'spread',
+        start: [
+          'parent',
+          'start'
+        ],
+        end: [
+          'parent',
+          'end'
+        ],
+        top: [
+          'parent',
+          'top'
+        ],
+        bottom: [
+          'parent',
+          'bottom'
+        ]
+      },
+      video_list: {
+        width: 'spread',
+        height: 'spread',
+        start: [
+          'parent',
+          'start'
+        ],
+        end: [
+          'parent',
+          'end'
+        ],
+        top: [
+          'parent',
+          'top'
+        ],
+        bottom: [
+          'parent',
+          'bottom'
+        ]
       }
     },
     end: {
       video_screen: {
         width: 'spread',
-        height: '100'
+        height: '400',
+        start: [
+          'parent',
+          'start'
+        ],
+        end: [
+          'parent',
+          'end'
+        ],
+        bottom: [
+          'parent',
+          'bottom'
+        ]
+      },
+      video_list: {
+        width: 'spread',
+        height: 'spread',
+        start: [
+          'parent',
+          'start'
+        ],
+        end: [
+          'parent',
+          'end'
+        ],
+        top: [
+          'parent',
+          'top'
+        ],
+        bottom: [
+          'parent',
+          'bottom'
+        ]
       }
+    }
+  },
+  Transitions: {
+    default: {
+      from: 'start',
+      to: 'end',
+      pathMotionArc: 'startHorizontal'
     }
   }
 }

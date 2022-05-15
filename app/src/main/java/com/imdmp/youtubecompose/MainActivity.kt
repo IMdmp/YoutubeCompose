@@ -27,7 +27,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
 import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.ui_core.theme.YoutubeComposeTheme
-import com.imdmp.youtubecompose_ui.uihome.HomeScreen
+import com.imdmp.youtubecompose_ui.uihome.VideoListItem
+import com.imdmp.youtubecompose_ui.uihome.VideoListScreen
+import com.imdmp.youtubecompose_ui.uihome.VideoListScreenActions
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
@@ -38,6 +40,23 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
+    val sampleVideoListItem = VideoListItem.default()
+
+    val videoList = listOf(
+        sampleVideoListItem.copy(
+            title = "Long title but probably only one line long",
+            author = "Author1",
+            viewCount = 2L
+        ),
+        sampleVideoListItem.copy(
+            title = "This is a sample of a long title that can probably take two lines long",
+            author = "Author2",
+            viewCount = 1L
+        ),
+        sampleVideoListItem.copy(title = "Title3", author = "Author3", viewCount = 5L),
+        sampleVideoListItem.copy(title = "Title4", author = "Author4", viewCount = 10L)
+
+    )
 
     @OptIn(ExperimentalMotionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,12 +65,14 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
             YoutubeComposeTheme {
 //                MainAppScreen(baseActivityCallbacks = this)
 //                HomeScreen()
-                var offsetX by remember { mutableStateOf(0f) }
+                var offsetY by remember { mutableStateOf(0f) }
                 val draggableState = rememberDraggableState {
-                    offsetX += it
-
-                    Timber.d("offset: $offsetX")
+                    offsetY += it
+                    Timber.d("it: ${it}")
                 }
+
+                val number = (offsetY / 1000).coerceAtLeast(0f).coerceAtMost(0.90f);
+                Timber.d("number: $number")
                 val context = LocalContext.current
                 val motionScene = remember {
                     context.resources
@@ -59,19 +80,18 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
                         .readBytes()
                         .decodeToString()
                 }
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .background(Color.Green)
-//                        .layoutId("video_screen")
-//                        .draggable(
-//                            orientation = Orientation.Vertical,
-//                            state = draggableState
-//                        )
-//                )
                 MotionLayout(
                     modifier = Modifier.fillMaxSize(),
-                    motionScene = MotionScene(content = motionScene), progress = 0.5f ) {
+                    motionScene = MotionScene(content = motionScene), progress = (number)
+                ) {
+
+                    VideoListScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .layoutId("video_list"),
+                        videoList = videoList,
+                        videoListScreenActions = VideoListScreenActions.default()
+                    )
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
