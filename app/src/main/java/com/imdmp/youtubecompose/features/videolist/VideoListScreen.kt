@@ -18,18 +18,20 @@ fun HomeScreen(
     LaunchedEffect(key1 = videoListViewModel.query.value) {
         videoListViewModel.retrieveVideoList()
     }
-    VideoListScreen(videoListViewModel.videoList.value, object : VideoListScreenActions {
-        override fun videoItemSelected(videoListItem: VideoListItem) {
-            navController.navigate(Destination.Player.createRoute(videoListItem.streamUrl))
-        }
+    VideoListScreen(
+        videoList = videoListViewModel.videoList.value,
+        videoListScreenActions = object : VideoListScreenActions {
+            override fun videoItemSelected(videoListItem: VideoListItem) {
+                navController.navigate(Destination.Player.createRoute(videoListItem.streamUrl))
+            }
 
-        override fun searchClicked() {
-            navController.navigate(Destination.Search.path)
-        }
+            override fun searchClicked() {
+                navController.navigate(Destination.Search.path)
+            }
 
-        override fun profileClicked() {
-            navController.navigate(Destination.Profile.path)
-        }
-    })
+            override fun profileClicked() {
+                navController.navigate(Destination.Profile.path)
+            }
+        })
 }
 

@@ -1,0 +1,16 @@
+{
+  ConstraintSets: {
+    start: {
+      video_screen: {
+        width: 'spread',
+        height: 'spread'
+      }
+    },
+    end: {
+      video_screen: {
+        width: 'spread',
+        height: '100'
+      }
+    }
+  }
+}
