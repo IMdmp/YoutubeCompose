@@ -52,6 +52,7 @@ import compose.icons.fontawesomeicons.regular.ThumbsUp
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun VideoPlayerScreen(
+    modifier: Modifier = Modifier,
     player: ExoPlayer?,
     state: VideoPlayerComposeScreenState,
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
@@ -83,7 +84,7 @@ fun VideoPlayerScreen(
         } else tween(delayMillis = 750)
     )
 
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+    ConstraintLayout(modifier = modifier.fillMaxSize()) {
         val (
             videoPlayer,
             pager,

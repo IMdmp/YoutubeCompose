@@ -3,21 +3,16 @@ package com.imdmp.youtubecompose
 import android.os.Bundle
 import android.view.View
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionScene
@@ -25,8 +20,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.ui_core.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
+import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
 import com.imdmp.youtubecompose_ui.uihome.VideoListItem
 import com.imdmp.youtubecompose_ui.uihome.VideoListScreen
 import com.imdmp.youtubecompose_ui.uihome.VideoListScreenActions
@@ -57,6 +55,8 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
         sampleVideoListItem.copy(title = "Title4", author = "Author4", viewCount = 10L)
 
     )
+    val sampleUrl =
+        "https://www.youtube.com/watch?v=rvskMHn0sqQ&t=4s"
 
     @OptIn(ExperimentalMotionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +70,7 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
                     offsetY += it
                     Timber.d("it: ${it}")
                 }
+                val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
 
                 val number = (offsetY / 1000).coerceAtLeast(0f).coerceAtMost(0.90f);
                 Timber.d("number: $number")
@@ -92,15 +93,19 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
                         videoList = videoList,
                         videoListScreenActions = VideoListScreenActions.default()
                     )
-                    Box(
+
+                    VideoPlayerScreen(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Green)
                             .layoutId("video_screen")
                             .draggable(
                                 orientation = Orientation.Vertical,
                                 state = draggableState
-                            )
+                            ),
+                        player = videoPlayerViewModel.player,
+                        state = videoPlayerViewModel.uiState.collectAsState().value,
+                        videoPlayerScreenCallbacks = videoPlayerViewModel,
+                        lifecycleOwner = LocalLifecycleOwner.current,
+                        streamUrl = sampleUrl
                     )
                 }
             }
@@ -108,6 +113,7 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
         }
     }
 
+//    }
 
     override fun setOrientation(activityInfo: Int) {
         this.let {
