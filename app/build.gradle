@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
     buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.imdmp.youtubecompose"
         minSdk 21
-        targetSdk 30
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -125,12 +125,13 @@ dependencies {
 }
 
 android {
+
     packagingOptions {
-        exclude "**/attach_hotspot_windows.dll"
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-        exclude "META-INF/licenses/ASM"
+        resources {
+            excludes += ['**/attach_hotspot_windows.dll', 'META-INF/AL2.0', 'META-INF/LGPL2.1', 'META-INF/licenses/ASM']
+        }
     }
+    namespace 'com.imdmp.youtubecompose'
 }
 
 //tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
