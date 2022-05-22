@@ -85,7 +85,7 @@
     default: {
       from: 'start',
       to: 'end',
-      pathMotionArc: 'startHorizontal'
+      pathMotionArc: 'startVertical'
     }
   }
 }

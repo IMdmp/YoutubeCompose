@@ -3,13 +3,16 @@ package com.imdmp.youtubecompose
 import android.os.Bundle
 import android.view.View
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -25,6 +28,8 @@ import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.ui_core.theme.YoutubeComposeTheme
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
 import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
+import com.imdmp.youtubecompose_ui.ui_player.collapseVideoPlayerScreenConstraints
+import com.imdmp.youtubecompose_ui.ui_player.videoPlayerScreenConstraints
 import com.imdmp.youtubecompose_ui.uihome.VideoListItem
 import com.imdmp.youtubecompose_ui.uihome.VideoListScreen
 import com.imdmp.youtubecompose_ui.uihome.VideoListScreenActions
@@ -65,15 +70,10 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
             YoutubeComposeTheme {
 //                MainAppScreen(baseActivityCallbacks = this)
 //                HomeScreen()
-                var offsetY by remember { mutableStateOf(0f) }
-                val draggableState = rememberDraggableState {
-                    offsetY += it
-                    Timber.d("it: ${it}")
-                }
+
                 val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
 
-                val number = (offsetY / 1000).coerceAtLeast(0f).coerceAtMost(0.90f);
-                Timber.d("number: $number")
+
                 val context = LocalContext.current
                 val motionScene = remember {
                     context.resources
@@ -81,33 +81,28 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
                         .readBytes()
                         .decodeToString()
                 }
-                MotionLayout(
-                    modifier = Modifier.fillMaxSize(),
-                    motionScene = MotionScene(content = motionScene), progress = (number)
-                ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black)
+                ){
 
-                    VideoListScreen(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .layoutId("video_list"),
-                        videoList = videoList,
-                        videoListScreenActions = VideoListScreenActions.default()
-                    )
-
-                    VideoPlayerScreen(
-                        modifier = Modifier
-                            .layoutId("video_screen")
-                            .draggable(
-                                orientation = Orientation.Vertical,
-                                state = draggableState
-                            ),
-                        player = videoPlayerViewModel.player,
-                        state = videoPlayerViewModel.uiState.collectAsState().value,
-                        videoPlayerScreenCallbacks = videoPlayerViewModel,
-                        lifecycleOwner = LocalLifecycleOwner.current,
-                        streamUrl = sampleUrl
-                    )
                 }
+
+                VideoListScreen(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .layoutId("video_list"),
+                    videoList = videoList,
+                    videoListScreenActions = VideoListScreenActions.default()
+                )
+                VideoPlayerScreen(
+                    player = videoPlayerViewModel.player,
+                    state = videoPlayerViewModel.uiState.collectAsState().value,
+                    videoPlayerScreenCallbacks = videoPlayerViewModel,
+                    lifecycleOwner = LocalLifecycleOwner.current,
+                    streamUrl = sampleUrl
+                )
             }
 
         }
@@ -132,3 +127,32 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
     }
 }
+
+//iteration1
+
+//MotionLayout(
+//modifier = Modifier.fillMaxSize(),
+//motionScene = MotionScene(content = motionScene), progress = (number)
+//) {
+//    VideoListScreen(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .layoutId("video_list"),
+//        videoList = videoList,
+//        videoListScreenActions = VideoListScreenActions.default()
+//    )
+//
+//    VideoPlayerScreen(
+//        modifier = Modifier
+//            .layoutId("video_screen")
+//            .draggable(
+//                orientation = Orientation.Vertical,
+//                state = draggableState
+//            ),
+//        player = videoPlayerViewModel.player,
+//        state = videoPlayerViewModel.uiState.collectAsState().value,
+//        videoPlayerScreenCallbacks = videoPlayerViewModel,
+//        lifecycleOwner = LocalLifecycleOwner.current,
+//        streamUrl = sampleUrl
+//    )
+//}
