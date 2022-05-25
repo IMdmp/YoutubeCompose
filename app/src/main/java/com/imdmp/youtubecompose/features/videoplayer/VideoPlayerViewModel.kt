@@ -55,8 +55,8 @@ class VideoPlayerViewModel @Inject constructor(
 
             withContext(Dispatchers.Main) {
                 player.setMediaSource(mediaSource)
-//                player.prepare()
-//                player.play()
+                player.prepare()
+                player.play()
             }
         }
     }
