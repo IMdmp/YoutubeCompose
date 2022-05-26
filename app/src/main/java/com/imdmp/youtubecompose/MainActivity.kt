@@ -3,38 +3,16 @@ package com.imdmp.youtubecompose
 import android.os.Bundle
 import android.view.View
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.constraintlayout.compose.ExperimentalMotionApi
-import androidx.constraintlayout.compose.MotionLayout
-import androidx.constraintlayout.compose.MotionScene
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.ui_core.theme.YoutubeComposeTheme
-import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
-import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
-import com.imdmp.youtubecompose_ui.ui_player.collapseVideoPlayerScreenConstraints
-import com.imdmp.youtubecompose_ui.ui_player.videoPlayerScreenConstraints
 import com.imdmp.youtubecompose_ui.uihome.VideoListItem
-import com.imdmp.youtubecompose_ui.uihome.VideoListScreen
-import com.imdmp.youtubecompose_ui.uihome.VideoListScreenActions
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalMaterialApi
@@ -68,41 +46,28 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
         super.onCreate(savedInstanceState)
         setContent {
             YoutubeComposeTheme {
-//                MainAppScreen(baseActivityCallbacks = this)
-//                HomeScreen()
-
-                val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
-
-
-                val context = LocalContext.current
-                val motionScene = remember {
-                    context.resources
-                        .openRawResource(R.raw.motion_scene)
-                        .readBytes()
-                        .decodeToString()
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black)
-                ){
-
-                }
-
-                VideoListScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .layoutId("video_list"),
-                    videoList = videoList,
-                    videoListScreenActions = VideoListScreenActions.default()
-                )
-                VideoPlayerScreen(
-                    player = videoPlayerViewModel.player,
-                    state = videoPlayerViewModel.uiState.collectAsState().value,
-                    videoPlayerScreenCallbacks = videoPlayerViewModel,
-                    lifecycleOwner = LocalLifecycleOwner.current,
-                    streamUrl = sampleUrl
-                )
+                MainAppScreen(baseActivityCallbacks = this)
+//                val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
+//
+//                VideoListScreen(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .layoutId("video_list"),
+//                    videoList = videoList,
+//                    videoListScreenActions = VideoListScreenActions.default()
+//                )
+//                val screenState = remember { mutableStateOf(true) }
+//                if (screenState.value) {
+//                    VideoPlayerScreen(
+//                        player = videoPlayerViewModel.player,
+//                        state = videoPlayerViewModel.uiState.collectAsState().value,
+//                        videoPlayerScreenCallbacks = videoPlayerViewModel,
+//                        lifecycleOwner = LocalLifecycleOwner.current,
+//                        streamUrl = sampleUrl
+//                    ) {
+//                        screenState.value = false
+//                    }
+//                }
             }
 
         }
