@@ -90,6 +90,7 @@
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/VideoPlayerScreen.kt" value="0.11" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/controls/Controls.kt" value="0.1358649789029536" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/playback/Playback.kt" value="0.290295358649789" />
+        <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/uihome/Home.kt" value="0.1" />
       </map>
     </option>
   </component>

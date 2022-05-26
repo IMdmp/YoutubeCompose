@@ -37,7 +37,8 @@ fun MainAppScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = Destination.Splash.path,
-    baseActivityCallbacks: BaseActivityCallbacks? = null
+    baseActivityCallbacks: BaseActivityCallbacks? = null,
+    mainScreenCallback: MainScreenCallback
 ) {
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = MaterialTheme.colors.isLight
@@ -64,11 +65,12 @@ fun MainAppScreen(
             videoListViewModel.updateCurrentQuery(URLDecoder.decode(query, "utf-8"))
 
             if (query.isNullOrEmpty()) {
-                HomeScreen(navController = navController)
+                HomeScreen(navController = navController, mainScreenCallback = mainScreenCallback)
             } else {
                 HomeScreen(
                     videoListViewModel = videoListViewModel,
-                    navController = navController
+                    navController = navController,
+                    mainScreenCallback = mainScreenCallback
                 )
             }
         }

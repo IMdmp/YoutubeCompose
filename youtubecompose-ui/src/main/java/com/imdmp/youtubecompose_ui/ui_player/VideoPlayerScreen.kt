@@ -229,8 +229,6 @@ fun collapseVideoPlayerScreenConstraints(): ConstraintSet {
             top.linkTo(commentRow.bottom, 8.dp)
             visibility = Visibility.Gone
         }
-
-
     }
 }
 
