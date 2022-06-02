@@ -24,6 +24,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -38,6 +39,7 @@ import androidx.constraintlayout.compose.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.transition.TransitionSet
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
@@ -70,17 +72,17 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
-const val VIDEO_PLAYER = "videoPlayer"
-const val PROGRESS_INDICATOR = "pi"
-const val TITLE_BAR = "tb"
-const val ICON_ACTION_BAR = "iconActionsBar"
-const val VIDEO_AUTHOR_INFO_BAR = "videoAuthorInfoBar"
-const val COMMENT_SEPARATOR_LINE = "commentSeparatorLine"
-const val COMMENT_ROW = "commentRow"
+const val VIDEO_PLAYER = "video_player"
+const val PROGRESS_INDICATOR = "progress_indicator"
+const val TITLE_BAR = "title_bar"
+const val ICON_ACTION_BAR = "icon_actions_bar"
+const val VIDEO_AUTHOR_INFO_BAR = "video_author_info_bar"
+const val COMMENT_SEPARATOR_LINE = "comment_separator_line"
+const val COMMENT_ROW = "comment_row"
 const val COMMENTS = "comments"
 const val SURFACE = "surface"
-const val PAUSE_PLAY_BUTTON = "ppb"
-const val CLOSE_BUTTON = "cb"
+const val PAUSE_PLAY_BUTTON = "pause_play_button"
+const val CLOSE_BUTTON = "close_button"
 fun videoPlayerScreenConstraints(): ConstraintSet {
 
     return ConstraintSet {
@@ -106,8 +108,8 @@ fun videoPlayerScreenConstraints(): ConstraintSet {
         }
 
         constrain(videoPlayer) {
-            top.linkTo(parent.top)
             start.linkTo(parent.start)
+            top.linkTo(parent.top)
         }
         constrain(progressIndicator) {
             start.linkTo(videoPlayer.start)
@@ -291,14 +293,15 @@ fun VideoPlayerScreen(
 
         }
     }
+    val context = LocalContext.current
+    val transition = remember {
+        context.resources
+            .openRawResource(R.raw.transition)
+            .readBytes()
+            .decodeToString()
+    }
 
-    MotionLayout(
-        modifier = modifier.fillMaxSize(),
-        start = videoPlayerScreenConstraints(),
-        end = collapseVideoPlayerScreenConstraints(),
-        progress = screenMotionProgress.value,
-    ) {
-
+    MotionLayout(motionScene = MotionScene(content = transition), progress = screenMotionProgress.value) {
         Box(
             Modifier
                 .layoutId(SURFACE)

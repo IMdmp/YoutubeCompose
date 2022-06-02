@@ -1,0 +1,95 @@
+{
+  ConstraintSets: {
+    start: {
+      video_player: {
+        start: ['parent', 'start'],
+        top: ['parent', 'top']
+      },
+      progress_indicator: {
+        start: ['video_player', 'start'],
+        end: ['video_player', 'end'],
+        top: ['videoPlayer', 'top'],
+        bottom: ['videoPlayer', 'top']
+      },
+      title_bar: {
+        top: ['videoPlayer', 'bottom'],
+        start: ['parent', 'start'],
+        end: ['parent', 'end']
+      },
+      video_author_info_bar: {
+        top: ['titleBar', 'bottom']
+      },
+      icon_actions_bar: {
+        top: ['videoAuthorInfoBar', 'bottom']
+      },
+      comment_separator_line: {
+        top: ['icon_actions_bar', 'bottom']
+      },
+      comment_row: {
+        top: ['comment_separator_line', 'bottom']
+
+      },
+      comments: {
+        top: ['comment_row', 'bottom']
+      },
+      surface: {
+        bottom: ['parent','bottom'],
+        start: ['parent','start'],
+        end: ['parent','end']
+      },
+      pause_play_button: {
+        start: ['title_bar','end'],
+        end: ['close_button', 'start', 0],
+        bottom: ['surface', 'bottom', 0],
+      },
+      close_button: {
+        start: ['pause_play_button', 'end', 0],
+        end: ['parent', 'end', 0],
+        top: ['surface', 'top', 0],
+        bottom: ['surface', 'bottom', 0],
+      }
+    },
+    end: {
+    }
+  },
+  Transitions: {
+    default: {
+      from: 'start',
+      to: 'end',
+      pathMotionArc: 'startVertical',
+      KeyFrames: {
+        KeyAttributes: [
+          {
+            target: [
+              'videoPlayer'
+            ],
+            frames: [
+              0,
+              100
+            ]
+          },
+          {
+            target: [
+              'titleBar'
+            ],
+            frames: [
+              0,
+              50,
+              100
+            ],
+            translationX: [
+              0,
+              70,
+              0
+            ],
+            rotationZ: [
+              0,
+              70,
+              0
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
