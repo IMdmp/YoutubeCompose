@@ -96,13 +96,13 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
                     videoList = videoList,
                     videoListScreenActions = VideoListScreenActions.default()
                 )
-//                VideoPlayerScreen(
-//                    player = videoPlayerViewModel.player,
-//                    state = videoPlayerViewModel.uiState.collectAsState().value,
-//                    videoPlayerScreenCallbacks = videoPlayerViewModel,
-//                    lifecycleOwner = LocalLifecycleOwner.current,
-//                    streamUrl = sampleUrl
-//                )
+                VideoPlayerScreen(
+                    player = videoPlayerViewModel.player,
+                    state = videoPlayerViewModel.uiState.collectAsState().value,
+                    videoPlayerScreenCallbacks = videoPlayerViewModel,
+                    lifecycleOwner = LocalLifecycleOwner.current,
+                    streamUrl = sampleUrl
+                )
             }
 
         }
