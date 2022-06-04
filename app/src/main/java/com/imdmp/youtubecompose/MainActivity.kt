@@ -20,11 +20,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : FragmentActivity(), BaseActivityCallbacks {
-
+    var showVideoScreen = mutableStateOf(false)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val videoScreen = remember { mutableStateOf(false) }
             val url = remember { mutableStateOf("") }
 
             YoutubeComposeTheme {
@@ -32,20 +31,21 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
                     baseActivityCallbacks = this,
                     mainScreenCallback = object : MainScreenCallback {
                         override fun openVideoScreen(streamUrl: String) {
-                            videoScreen.value = true
+                            showVideoScreen.value = true
                             url.value = streamUrl
                         }
                     })
 
-                if (videoScreen.value) {
-                    OpenVideoScreen(streamUrl = url.value, videoScreenClosedCallback = videoScreen)
+                if (showVideoScreen.value) {
+                    OpenVideoScreen(
+                        streamUrl = url.value,
+                        videoScreenClosedCallback = showVideoScreen
+                    )
                 }
             }
 
         }
     }
-
-//    }
 
     override fun setOrientation(activityInfo: Int) {
         this.let {
@@ -62,6 +62,13 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         // Hide both the status bar and the navigation bar
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (showVideoScreen.value) {
+            showVideoScreen.value = false
+        }
     }
 }
 
@@ -84,3 +91,4 @@ fun OpenVideoScreen(streamUrl: String, videoScreenClosedCallback: MutableState<B
         videoScreenClosedCallback.value = false
     }
 }
+

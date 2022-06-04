@@ -36,7 +36,13 @@ class YoutubeRepositoryImpl(
     }
 
     override suspend fun search(query: String): YTDataSchema {
-        TODO("Not yet implemented")
+        val searchInfo = newPipeExtractorWrapper.search(query)
+
+        return YTDataSchema(
+            newPipeDataModelConverter.mapSearchInfoToVideoDataCommentSchemaList(
+                searchInfo
+            )
+        )
     }
 
     override suspend fun searchAutoSuggestion(query: String): Flow<String> {

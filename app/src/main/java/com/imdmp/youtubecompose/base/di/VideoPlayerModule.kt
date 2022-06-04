@@ -15,7 +15,6 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 @InstallIn(ActivityRetainedComponent::class)
 class VideoPlayerModule {
 
-
     @Provides
     @ActivityRetainedScoped
     fun providesVideoPlayer(@ApplicationContext context: Context): ExoPlayer {

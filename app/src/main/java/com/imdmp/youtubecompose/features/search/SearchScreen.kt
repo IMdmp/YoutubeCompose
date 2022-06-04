@@ -10,7 +10,7 @@ import com.imdmp.youtubecompose_ui.search.SearchScreen
 @ExperimentalMaterialApi
 @Composable
 fun SearchCombinerScreen(
-    searchViewModel: SearchViewModel = hiltViewModel<SearchViewModel>(),
+    searchViewModel: SearchViewModel = hiltViewModel(),
     navController: NavController
 ) {
 

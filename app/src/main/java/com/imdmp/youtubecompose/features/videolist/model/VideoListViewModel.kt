@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imdmp.datarepository.YoutubeRepository
+import com.imdmp.youtubecompose.base.mapToVideoListItem
 import com.imdmp.youtubecompose_ui.uihome.VideoListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,17 +25,12 @@ class VideoListViewModel @Inject constructor(
 
     fun retrieveVideoList() {
         viewModelScope.launch(Dispatchers.IO) {
-            videoList.value = youtubeRepository.getYTDataList().ytDataList.map {
-                VideoListItem(
-                    imageUrl = it.thumbnail,
-                    title = it.name,
-                    author = it.uploaderName,
-                    authorImageUrl = it.uploaderThumbnail,
-                    viewCount = it.viewCount,
-                    uploadedDate = "",
-                    streamUrl = it.url
-                )
+            videoList.value = if (query.value.isNotEmpty()) {
+                youtubeRepository.search(query.value).mapToVideoListItem()
+            } else {
+                youtubeRepository.getYTDataList().mapToVideoListItem()
             }
         }
     }
 }
+

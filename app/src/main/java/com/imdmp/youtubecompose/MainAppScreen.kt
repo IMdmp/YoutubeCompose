@@ -64,6 +64,9 @@ fun MainAppScreen(
             val videoListViewModel = hiltViewModel<VideoListViewModel>()
             videoListViewModel.updateCurrentQuery(URLDecoder.decode(query, "utf-8"))
 
+            query?.let {
+                videoListViewModel.updateCurrentQuery(it)
+            }
             if (query.isNullOrEmpty()) {
                 HomeScreen(navController = navController, mainScreenCallback = mainScreenCallback)
             } else {
