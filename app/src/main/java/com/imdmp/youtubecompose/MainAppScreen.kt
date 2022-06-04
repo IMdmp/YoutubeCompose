@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -29,13 +30,15 @@ import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
 import timber.log.Timber
 import java.net.URLDecoder
 
+@OptIn(ExperimentalMotionApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun MainAppScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = Destination.Splash.path,
-    baseActivityCallbacks: BaseActivityCallbacks? = null
+    baseActivityCallbacks: BaseActivityCallbacks? = null,
+    mainScreenCallback: MainScreenCallback
 ) {
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = MaterialTheme.colors.isLight
@@ -62,11 +65,12 @@ fun MainAppScreen(
             videoListViewModel.updateCurrentQuery(URLDecoder.decode(query, "utf-8"))
 
             if (query.isNullOrEmpty()) {
-                HomeScreen(navController = navController)
+                HomeScreen(navController = navController, mainScreenCallback = mainScreenCallback)
             } else {
                 HomeScreen(
                     videoListViewModel = videoListViewModel,
-                    navController = navController
+                    navController = navController,
+                    mainScreenCallback = mainScreenCallback
                 )
             }
         }

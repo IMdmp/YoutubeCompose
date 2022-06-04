@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.imdmp.youtubecompose.MainScreenCallback
 import com.imdmp.youtubecompose.base.ui.navigation.model.Destination
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
 import com.imdmp.youtubecompose_ui.uihome.VideoListItem
@@ -14,22 +15,25 @@ import com.imdmp.youtubecompose_ui.uihome.VideoListScreenActions
 fun HomeScreen(
     videoListViewModel: VideoListViewModel = hiltViewModel(),
     navController: NavController,
+    mainScreenCallback: MainScreenCallback
 ) {
+
     LaunchedEffect(key1 = videoListViewModel.query.value) {
         videoListViewModel.retrieveVideoList()
     }
-    VideoListScreen(videoListViewModel.videoList.value, object : VideoListScreenActions {
-        override fun videoItemSelected(videoListItem: VideoListItem) {
-            navController.navigate(Destination.Player.createRoute(videoListItem.streamUrl))
-        }
+    VideoListScreen(
+        videoList = videoListViewModel.videoList.value,
+        videoListScreenActions = object : VideoListScreenActions {
+            override fun videoItemSelected(videoListItem: VideoListItem) {
+                mainScreenCallback.openVideoScreen(videoListItem.streamUrl)
+            }
 
-        override fun searchClicked() {
-            navController.navigate(Destination.Search.path)
-        }
+            override fun searchClicked() {
+                navController.navigate(Destination.Search.path)
+            }
 
-        override fun profileClicked() {
-            navController.navigate(Destination.Profile.path)
-        }
-    })
+            override fun profileClicked() {
+                navController.navigate(Destination.Profile.path)
+            }
+        })
 }
-

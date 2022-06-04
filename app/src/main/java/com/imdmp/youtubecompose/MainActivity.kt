@@ -4,31 +4,48 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.compose.setContent
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
-import com.imdmp.datarepository.YoutubeRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.imdmp.ui_core.theme.YoutubeComposeTheme
+import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
+import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : FragmentActivity(), BaseActivityCallbacks {
 
-    @Inject
-    lateinit var youtubeRepository: YoutubeRepository
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val videoScreen = remember { mutableStateOf(false) }
+            val url = remember { mutableStateOf("") }
+
             YoutubeComposeTheme {
-                MainAppScreen(baseActivityCallbacks = this)
+                MainAppScreen(
+                    baseActivityCallbacks = this,
+                    mainScreenCallback = object : MainScreenCallback {
+                        override fun openVideoScreen(streamUrl: String) {
+                            videoScreen.value = true
+                            url.value = streamUrl
+                        }
+                    })
+
+                if (videoScreen.value) {
+                    OpenVideoScreen(streamUrl = url.value, videoScreenClosedCallback = videoScreen)
+                }
             }
 
         }
     }
+
+//    }
 
     override fun setOrientation(activityInfo: Int) {
         this.let {
@@ -45,5 +62,25 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         // Hide both the status bar and the navigation bar
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+    }
+}
+
+interface MainScreenCallback {
+    fun openVideoScreen(streamUrl: String)
+}
+
+@OptIn(ExperimentalMotionApi::class)
+@Composable
+fun OpenVideoScreen(streamUrl: String, videoScreenClosedCallback: MutableState<Boolean>) {
+    val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
+
+    VideoPlayerScreen(
+        player = videoPlayerViewModel.player,
+        state = videoPlayerViewModel.uiState.collectAsState().value,
+        videoPlayerScreenCallbacks = videoPlayerViewModel,
+        lifecycleOwner = LocalLifecycleOwner.current,
+        streamUrl = streamUrl
+    ) {
+        videoScreenClosedCallback.value = false
     }
 }

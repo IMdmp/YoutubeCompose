@@ -1,9 +1,13 @@
 package com.imdmp.youtubecompose_ui.ui_player
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -15,18 +19,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
+import androidx.constraintlayout.compose.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.transition.TransitionSet
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.exoplayer2.ExoPlayer
@@ -40,27 +48,208 @@ import com.imdmp.youtubecompose_ui.ui_player.comments.Comments
 import com.imdmp.youtubecompose_ui.ui_player.model.PlayerStatus
 import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerComposeScreenState
 import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerScreenCallbacks
+import com.imdmp.youtubecompose_ui.ui_player.model.WindowState
 import com.imdmp.youtubecompose_ui.ui_player.playback.Playback
 import com.skydoves.landscapist.glide.GlideImage
 import compose.icons.FontAwesomeIcons
+import compose.icons.Octicons
 import compose.icons.fontawesomeicons.Regular
+import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.regular.ArrowAltCircleDown
 import compose.icons.fontawesomeicons.regular.ShareSquare
 import compose.icons.fontawesomeicons.regular.ThumbsDown
 import compose.icons.fontawesomeicons.regular.ThumbsUp
+import compose.icons.fontawesomeicons.solid.Pause
+import compose.icons.octicons.X24
+import kotlinx.coroutines.launch
 
+
+const val VIDEO_PLAYER = "video_player"
+const val PROGRESS_INDICATOR = "progress_indicator"
+const val TITLE_BAR = "title_bar"
+const val ICON_ACTION_BAR = "icon_actions_bar"
+const val VIDEO_AUTHOR_INFO_BAR = "video_author_info_bar"
+const val COMMENT_SEPARATOR_LINE = "comment_separator_line"
+const val COMMENT_ROW = "comment_row"
+const val COMMENTS = "comments"
+const val SURFACE = "surface"
+const val PAUSE_PLAY_BUTTON = "pause_play_button"
+const val CLOSE_BUTTON = "close_button"
+fun videoPlayerScreenConstraints(): ConstraintSet {
+
+    return ConstraintSet {
+        val videoPlayer = createRefFor(VIDEO_PLAYER)
+        val progressIndicator = createRefFor(PROGRESS_INDICATOR)
+        val titleBar = createRefFor(TITLE_BAR)
+        val iconActionBar = createRefFor(ICON_ACTION_BAR)
+        val videoAuthorInfoBar = createRefFor(VIDEO_AUTHOR_INFO_BAR)
+        val commentSeparatorLine = createRefFor(COMMENT_SEPARATOR_LINE)
+        val commentRow = createRefFor(COMMENT_ROW)
+        val comments = createRefFor(COMMENTS)
+        val surface = createRefFor(SURFACE)
+        val closeButton = createRefFor(CLOSE_BUTTON)
+        val pausePlayButton = createRefFor(PAUSE_PLAY_BUTTON)
+
+        constrain(surface) {
+            height = Dimension.matchParent
+            width = Dimension.matchParent
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+
+        constrain(videoPlayer) {
+            start.linkTo(parent.start)
+            top.linkTo(parent.top)
+        }
+        constrain(progressIndicator) {
+            start.linkTo(videoPlayer.start)
+            end.linkTo(videoPlayer.end)
+            top.linkTo(videoPlayer.top)
+            bottom.linkTo(videoPlayer.bottom)
+        }
+
+        constrain(titleBar) {
+            top.linkTo(videoPlayer.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            width = Dimension.fillToConstraints
+        }
+
+        constrain(videoAuthorInfoBar) {
+            top.linkTo(titleBar.bottom)
+        }
+
+        constrain(iconActionBar) {
+            top.linkTo(videoAuthorInfoBar.bottom)
+        }
+
+        constrain(commentSeparatorLine) {
+            top.linkTo(iconActionBar.bottom, 8.dp)
+
+        }
+
+        constrain(commentRow) {
+            top.linkTo(commentSeparatorLine.bottom, 8.dp)
+        }
+        constrain(
+            comments
+        ) {
+            top.linkTo(commentRow.bottom, 8.dp)
+        }
+
+        constrain(pausePlayButton) {
+            visibility = Visibility.Gone
+        }
+        constrain(closeButton) {
+            visibility = Visibility.Gone
+        }
+    }
+
+}
+
+fun collapseVideoPlayerScreenConstraints(): ConstraintSet {
+    return ConstraintSet {
+        val videoPlayer = createRefFor(VIDEO_PLAYER)
+        val progressIndicator = createRefFor(PROGRESS_INDICATOR)
+        val titleBar = createRefFor(TITLE_BAR)
+        val iconActionBar = createRefFor(ICON_ACTION_BAR)
+        val videoAuthorInfoBar = createRefFor(VIDEO_AUTHOR_INFO_BAR)
+        val commentSeparatorLine = createRefFor(COMMENT_SEPARATOR_LINE)
+        val commentRow = createRefFor(COMMENT_ROW)
+        val comments = createRefFor(COMMENTS)
+        val surface = createRefFor(SURFACE)
+        val closeButton = createRefFor(CLOSE_BUTTON)
+        val pausePlayButton = createRefFor(PAUSE_PLAY_BUTTON)
+
+        constrain(surface) {
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            bottom.linkTo(parent.bottom)
+            height = Dimension.preferredValue(100.dp)
+            width = Dimension.matchParent
+
+        }
+
+        constrain(videoPlayer) {
+            start.linkTo(parent.start)
+            bottom.linkTo(parent.bottom)
+            height = Dimension.preferredValue(100.dp)
+        }
+
+        constrain(titleBar) {
+            start.linkTo(videoPlayer.end, 2.dp)
+            end.linkTo(pausePlayButton.start, 2.dp)
+            top.linkTo(surface.top)
+            bottom.linkTo(surface.bottom)
+            width = Dimension.fillToConstraints
+        }
+
+        constrain(pausePlayButton) {
+            start.linkTo(titleBar.end)
+            end.linkTo(closeButton.start)
+            top.linkTo(surface.top)
+            bottom.linkTo(surface.bottom)
+            height = Dimension.preferredValue(16.dp)
+            width = Dimension.preferredValue(16.dp)
+
+        }
+
+        constrain(closeButton) {
+            start.linkTo(pausePlayButton.end)
+            end.linkTo(parent.end)
+            top.linkTo(surface.top)
+            bottom.linkTo(surface.bottom)
+            height = Dimension.preferredValue(16.dp)
+            width = Dimension.preferredValue(16.dp)
+
+        }
+
+        constrain(progressIndicator) {
+            visibility = Visibility.Gone
+            bottom.linkTo(parent.bottom)
+        }
+        constrain(iconActionBar) {
+            top.linkTo(videoAuthorInfoBar.bottom)
+            visibility = Visibility.Gone
+        }
+        constrain(videoAuthorInfoBar) {
+            top.linkTo(titleBar.bottom)
+            visibility = Visibility.Gone
+        }
+        constrain(commentSeparatorLine) {
+            top.linkTo(iconActionBar.bottom, 8.dp)
+            visibility = Visibility.Gone
+        }
+        constrain(commentRow) {
+            top.linkTo(commentSeparatorLine.bottom, 8.dp)
+            visibility = Visibility.Gone
+        }
+        constrain(comments) {
+            top.linkTo(commentRow.bottom, 8.dp)
+            visibility = Visibility.Gone
+        }
+    }
+}
+
+@ExperimentalMotionApi
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun VideoPlayerScreen(
+    modifier: Modifier = Modifier,
     player: ExoPlayer?,
     state: VideoPlayerComposeScreenState,
     videoPlayerScreenCallbacks: VideoPlayerScreenCallbacks,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    streamUrl: String
+    streamUrl: String,
+    closeButtonClicked: () -> Unit = {}
 ) {
+
     LaunchedEffect(key1 = Unit) {
         videoPlayerScreenCallbacks.prepareAndPlayVideoPlayer(streamUrl)
     }
+
     val pagerState = rememberPagerState()
     val listState = rememberLazyListState()
 
@@ -83,30 +272,69 @@ fun VideoPlayerScreen(
         } else tween(delayMillis = 750)
     )
 
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (
-            videoPlayer,
-            pager,
-            pagerTabs,
-            controls,
-            progressIndicator,
-            titleBar,
-            iconActionsBar,
-            videoAuthorInfoBar,
-            commentSeparatorLine,
-            commentRow,
-            comments,
-        ) = createRefs()
+    var offsetY by remember { mutableStateOf(0f) }
+    val screenMotionProgress = remember {
+        Animatable(0f)
+    }
+    val scope = rememberCoroutineScope()
+    val windowState = remember { mutableStateOf(WindowState.NORMAL) }
+    val draggableState = rememberDraggableState {
+        offsetY += it
+        scope.launch {
+            screenMotionProgress.snapTo((offsetY / 1000).coerceAtLeast(0f).coerceAtMost(1f))
+
+        }
+    }
+    val context = LocalContext.current
+    val transition = remember {
+        context.resources
+            .openRawResource(R.raw.transition)
+            .readBytes()
+            .decodeToString()
+    }
+
+    MotionLayout(motionScene = MotionScene(content = transition), progress = screenMotionProgress.value) {
+        Box(
+            Modifier
+                .layoutId(SURFACE)
+                .background(Color.White)
+                .fillMaxSize()
+        ) {
+
+        }
+
         Playback(
             Modifier
                 .aspectRatio(16 / 9f)
-                .constrainAs(videoPlayer) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                }
+                .layoutId(VIDEO_PLAYER)
                 .clickable {
                     controlsVisible = !controlsVisible
                 }
+                .draggable(
+                    orientation = Orientation.Vertical,
+                    state = draggableState,
+                    onDragStopped = {
+                        if (windowState.value == WindowState.NORMAL) {
+                            offsetY = if (screenMotionProgress.value > 0.1f) {
+                                screenMotionProgress.animateTo(1f).endState.value
+                                windowState.value = WindowState.COLLAPSED
+                                1000f
+                            } else {
+                                screenMotionProgress.animateTo(0f)
+                                0f
+                            }
+                        } else {
+                            offsetY = if (screenMotionProgress.value < 0.9f) {
+                                screenMotionProgress.animateTo(0f)
+                                windowState.value = WindowState.NORMAL
+                                0f
+                            } else {
+                                screenMotionProgress.animateTo(1f)
+                                1000f
+                            }
+                        }
+                    }
+                )
                 .testTag(Tags.TEST),
             player = player,
             playerScreenCallbacks = videoPlayerScreenCallbacks,
@@ -126,58 +354,64 @@ fun VideoPlayerScreen(
             CircularProgressIndicator(
                 color = Color.Blue,
                 modifier = Modifier
-                    .constrainAs(progressIndicator) {
-                        start.linkTo(videoPlayer.start)
-                        end.linkTo(videoPlayer.end)
-                        top.linkTo(videoPlayer.top)
-                        bottom.linkTo(videoPlayer.bottom)
-                    })
+                    .layoutId(PROGRESS_INDICATOR)
+            )
         }
-//
-//        Controls(
-//            controlsCallback = videoPlayerScreenCallbacks,
-//            modifier = Modifier
-//                .alpha(alphaAnimation)
-//                .constrainAs(controls) {
-//                    top.linkTo(parent.top)
-//                    start.linkTo(parent.start)
-//                    end.linkTo(parent.end)
-//                    bottom.linkTo(videoPlayer.bottom)
-//                    width = Dimension.fillToConstraints
-//                    height = Dimension.fillToConstraints
-//                },
-//            controlState = if (state.playerStatus == PlayerStatus.PAUSED) {
-//                ControlState.PAUSED
-//            } else {
-//                ControlState.PLAYING
-//            }
-//        )
 
 
-        TitleBar(
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 8.dp)
-                .constrainAs(titleBar) {
-                    top.linkTo(videoPlayer.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    width = Dimension.fillToConstraints
-                }, state = state
-        )
+        if (windowState.value == WindowState.NORMAL) {
+            TitleBar(
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .layoutId(TITLE_BAR), state = state
+            )
+        } else {
+            Text(
+                text = state.videoTitle,
+                fontSize = 10.sp,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.layoutId(TITLE_BAR)
+            )
+
+            IconButton(
+                modifier = modifier
+                    .layoutId(PAUSE_PLAY_BUTTON)
+                    .testTag(Tags.TAG_PAUSE_PLAY_BUTTON),
+                onClick = { })
+            {
+                Icon(
+                    tint = Color.Black,
+                    imageVector = FontAwesomeIcons.Solid.Pause,
+                    contentDescription = stringResource(R.string.pause)
+                )
+            }
+
+            IconButton(
+                modifier = modifier
+                    .size(16.dp)
+                    .layoutId(CLOSE_BUTTON),
+                onClick = { closeButtonClicked() })
+            {
+                Icon(
+                    tint = Color.Black,
+                    imageVector = Octicons.X24,
+                    contentDescription = stringResource(R.string.close)
+                )
+            }
+        }
+
         VideoAuthorInfoBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, bottom = 4.dp)
-                .constrainAs(videoAuthorInfoBar) {
-                    top.linkTo(titleBar.bottom)
-                }, state = state
+                .layoutId(VIDEO_AUTHOR_INFO_BAR), state = state
         )
+
         IconActionsBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .constrainAs(iconActionsBar) {
-                    top.linkTo(videoAuthorInfoBar.bottom)
-                }, state = state
+                .layoutId(ICON_ACTION_BAR), state = state
         )
 
         Box(
@@ -185,31 +419,21 @@ fun VideoPlayerScreen(
                 .height(1.dp)
                 .fillMaxWidth()
                 .background(Color.LightGray)
-                .constrainAs(commentSeparatorLine) {
-                    top.linkTo(iconActionsBar.bottom, 8.dp)
-
-                }
+                .layoutId(COMMENT_SEPARATOR_LINE)
         )
 
-        CommentHeaderRow(modifier = Modifier.constrainAs(commentRow) {
-            top.linkTo(commentSeparatorLine.bottom, 8.dp)
-        })
+        CommentHeaderRow(modifier = Modifier.layoutId(COMMENT_ROW))
 
         Comments(
             listState = listState,
             modifier = Modifier
-                .constrainAs(
-                    comments
-                ) {
-                    top.linkTo(commentRow.bottom, 8.dp)
-                },
+                .layoutId(COMMENTS),
             commentState = CommentState(
                 commentModelList = state.commentList,
                 isLoading = false,
                 error = null
             ),
         )
-
 
 //        HorizontalPager(
 //            count = 2, state = pagerState, modifier = Modifier
@@ -272,17 +496,16 @@ fun VideoPlayerScreen(
 //            }
 //        }
     }
+
 }
 
 @Composable
 fun CommentHeaderRow(modifier: Modifier = Modifier) {
-
     Row(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
         Text(text = "Comments", style = typography.h3.copy(fontWeight = FontWeight.Normal))
         Spacer(modifier = Modifier.size(8.dp))
         Text("123", style = typography.subtitle1.copy(fontSize = 14.sp))
     }
-
 }
 
 @Composable
@@ -329,7 +552,6 @@ fun VideoAuthorInfoBar(modifier: Modifier = Modifier, state: VideoPlayerComposeS
 
     }
 }
-
 
 @Preview
 @Composable
@@ -534,6 +756,7 @@ fun HandleLifecycleChanges(
 //}
 
 
+@OptIn(ExperimentalMotionApi::class)
 @Preview
 @Composable
 fun PreviewVideoPlayerScreen() {

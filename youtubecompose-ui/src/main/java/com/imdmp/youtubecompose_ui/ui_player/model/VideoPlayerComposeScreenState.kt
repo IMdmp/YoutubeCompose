@@ -55,3 +55,7 @@ data class VideoPlayerComposeScreenState(
 enum class PlayerStatus {
     PLAYING, PAUSED, LOADING, IDLE, ERROR
 }
+
+enum class WindowState {
+    NORMAL, COLLAPSED
+}
