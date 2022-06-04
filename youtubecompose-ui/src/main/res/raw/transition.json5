@@ -39,57 +39,79 @@
       },
       pause_play_button: {
         start: ['title_bar','end'],
-        end: ['close_button', 'start', 0],
-        bottom: ['surface', 'bottom', 0],
+        end: [
+          'close_button',
+          'start',
+          0
+        ],
+        bottom: [
+          'surface',
+          'bottom',
+          0
+        ]
       },
       close_button: {
-        start: ['pause_play_button', 'end', 0],
-        end: ['parent', 'end', 0],
-        top: ['surface', 'top', 0],
-        bottom: ['surface', 'bottom', 0],
+        start: [
+          'pause_play_button',
+          'end',
+          0
+        ],
+        end: [
+          'parent',
+          'end',
+          0
+        ],
+        top: [
+          'surface',
+          'top',
+          0
+        ],
+        bottom: [
+          'surface',
+          'bottom',
+          0
+        ]
+      }
+    },
+    middle: {
+      video_player: {
+        bottom: [
+          'parent',
+          'bottom',
+          100
+        ],
+        start: [
+          'parent',
+          'start',
+          50
+        ]
       }
     },
     end: {
+      video_player: {
+        top: [
+          'parent',
+          'top',
+          0
+        ],
+        start: [
+          'parent',
+          'start',
+          0
+        ]
+      }
     }
   },
   Transitions: {
-    default: {
+    first: {
       from: 'start',
+      to: 'middle',
+      pathMotionArc: 'startVertical'
+    },
+    next: {
+      from: 'middle',
       to: 'end',
-      pathMotionArc: 'startVertical',
-      KeyFrames: {
-        KeyAttributes: [
-          {
-            target: [
-              'videoPlayer'
-            ],
-            frames: [
-              0,
-              100
-            ]
-          },
-          {
-            target: [
-              'titleBar'
-            ],
-            frames: [
-              0,
-              50,
-              100
-            ],
-            translationX: [
-              0,
-              70,
-              0
-            ],
-            rotationZ: [
-              0,
-              70,
-              0
-            ]
-          }
-        ]
-      }
+      pathMotionArc: 'startVertical'
     }
   }
 }
