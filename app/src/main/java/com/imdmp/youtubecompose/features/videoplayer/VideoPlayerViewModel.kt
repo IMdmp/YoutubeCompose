@@ -48,15 +48,15 @@ class VideoPlayerViewModel @Inject constructor(
 
     override fun prepareAndPlayVideoPlayer(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val videoInfo = dataRepository.getVideoDataInfo(url)
-            setUiState(videoInfo)
+//            val videoInfo = dataRepository.getVideoDataInfo(url)
+//            setUiState(videoInfo)
 
-            val mediaSource = getVideoStreamUrlUseCase(videoInfo.streamList.last())
+//            val mediaSource = getVideoStreamUrlUseCase(videoInfo.streamList.last())
 
             withContext(Dispatchers.Main) {
-                player.setMediaSource(mediaSource)
-                player.prepare()
-                player.play()
+//                player.setMediaSource(mediaSource)
+//                player.prepare()
+//                player.play()
             }
         }
     }

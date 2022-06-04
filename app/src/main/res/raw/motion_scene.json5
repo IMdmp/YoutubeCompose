@@ -84,7 +84,7 @@
   Transitions: {
     default: {
       from: 'start',
-      to: 'end',
+      to: 'middle',
       pathMotionArc: 'startVertical'
     }
   }
