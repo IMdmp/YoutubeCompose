@@ -86,11 +86,15 @@
         <entry key="../../../../layout/compose-model-1652256636019.xml" value="0.21210838272650295" />
         <entry key="../../../../layout/compose-model-1652373125607.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_main.xml" value="0.11820652173913043" />
+        <entry key="videoplayer/src/main/res/layout/custom_player_controller.xml" value="0.1" />
+        <entry key="videoplayer/src/main/res/layout/exo_player_control_view.xml" value="0.19610507246376813" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/search/SearchScreen.kt" value="0.32037037037037036" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/VideoPlayerScreen.kt" value="0.11" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/controls/Controls.kt" value="0.1358649789029536" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/playback/Playback.kt" value="0.290295358649789" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/uihome/Home.kt" value="0.1" />
+        <entry key="youtubecompose-ui/src/main/res/drawable/video_frame.xml" value="0.1" />
+        <entry key="youtubecompose-ui/src/main/res/drawable/video_frame_alternative.xml" value="0.1" />
       </map>
     </option>
   </component>

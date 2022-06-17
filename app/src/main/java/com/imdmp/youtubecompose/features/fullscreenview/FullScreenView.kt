@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
-import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerScreenCallbacks
 
 @Composable
 fun FullScreenView(
@@ -21,7 +20,7 @@ fun FullScreenView(
     navController: NavController,
     videoPlayerViewModel: VideoPlayerViewModel,
     player: ExoPlayer,
-    playerScreenCallbacks: VideoPlayerScreenCallbacks
+    playerScreenCallbacks: com.imdmp.videoplayer.model.VideoPlayerScreenCallbacks
 ) {
 
     MaterialTheme {

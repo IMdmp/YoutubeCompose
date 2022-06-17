@@ -13,8 +13,8 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.imdmp.ui_core.theme.YoutubeComposeTheme
+import com.imdmp.videoplayer.VideoPlayerScreen
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
-import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalMaterialApi

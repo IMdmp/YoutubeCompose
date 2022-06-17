@@ -26,7 +26,6 @@ import com.imdmp.youtubecompose.features.splash.SplashScreen
 import com.imdmp.youtubecompose.features.videolist.HomeScreen
 import com.imdmp.youtubecompose.features.videolist.model.VideoListViewModel
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
-import com.imdmp.youtubecompose_ui.ui_player.VideoPlayerScreen
 import timber.log.Timber
 import java.net.URLDecoder
 
@@ -85,7 +84,7 @@ fun MainAppScreen(
 
             val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
 
-            VideoPlayerScreen(
+            com.imdmp.videoplayer.VideoPlayerScreen(
                 player = videoPlayerViewModel.player,
                 state = videoPlayerViewModel.uiState.collectAsState().value,
                 videoPlayerScreenCallbacks = videoPlayerViewModel,

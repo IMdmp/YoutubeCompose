@@ -7,10 +7,6 @@ import com.google.android.exoplayer2.Player
 import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.usecase.GetVideoStreamUrlUseCase
-import com.imdmp.youtubecompose_ui.ui_player.VideoEvent
-import com.imdmp.youtubecompose_ui.ui_player.model.PlayerStatus
-import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerComposeScreenState
-import com.imdmp.youtubecompose_ui.ui_player.model.VideoPlayerScreenCallbacks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +20,9 @@ class VideoPlayerViewModel @Inject constructor(
     private val getVideoStreamUrlUseCase: GetVideoStreamUrlUseCase,
     val player: ExoPlayer,
     val dataRepository: YoutubeRepository
-) : ViewModel(), VideoPlayerScreenCallbacks {
+) : ViewModel(), com.imdmp.videoplayer.model.VideoPlayerScreenCallbacks {
 
-    val uiState = MutableStateFlow(VideoPlayerComposeScreenState.init())
+    val uiState = MutableStateFlow(com.imdmp.videoplayer.model.VideoPlayerComposeScreenState.init())
 
     init {
         player.addListener(object : Player.Listener {
@@ -35,10 +31,10 @@ class VideoPlayerViewModel @Inject constructor(
 
                 when (state) {
                     Player.STATE_READY -> {
-                        handleEvent(VideoEvent.VideoLoaded)
+                        handleEvent(com.imdmp.videoplayer.VideoEvent.VideoLoaded)
                     }
                     Player.STATE_BUFFERING -> {
-                        handleEvent(VideoEvent.VideoLoading)
+                        handleEvent(com.imdmp.videoplayer.VideoEvent.VideoLoading)
                     }
                 }
             }
@@ -84,26 +80,29 @@ class VideoPlayerViewModel @Inject constructor(
     }
 
     override fun pauseOrPlayClicked() {
-        handleEvent(VideoEvent.ToggleStatus)
+        handleEvent(com.imdmp.videoplayer.VideoEvent.ToggleStatus)
     }
 
-    fun handleEvent(videoEvent: VideoEvent) {
+    fun handleEvent(videoEvent: com.imdmp.videoplayer.VideoEvent) {
         when (videoEvent) {
-            VideoEvent.VideoError -> {
+            com.imdmp.videoplayer.VideoEvent.VideoError -> {
                 Timber.d("video error!")
-                uiState.value = uiState.value.copy(playerStatus = PlayerStatus.ERROR)
+                uiState.value =
+                    uiState.value.copy(playerStatus = com.imdmp.videoplayer.model.PlayerStatus.ERROR)
             }
-            VideoEvent.VideoLoaded -> {
+            com.imdmp.videoplayer.VideoEvent.VideoLoaded -> {
                 Timber.d("video loaded!")
-                uiState.value = uiState.value.copy(playerStatus = PlayerStatus.IDLE)
+                uiState.value =
+                    uiState.value.copy(playerStatus = com.imdmp.videoplayer.model.PlayerStatus.IDLE)
 
             }
 
-            VideoEvent.VideoLoading -> {
-                uiState.value = uiState.value.copy(playerStatus = PlayerStatus.LOADING)
+            com.imdmp.videoplayer.VideoEvent.VideoLoading -> {
+                uiState.value =
+                    uiState.value.copy(playerStatus = com.imdmp.videoplayer.model.PlayerStatus.LOADING)
             }
 
-            VideoEvent.ToggleStatus -> {
+            com.imdmp.videoplayer.VideoEvent.ToggleStatus -> {
                 togglePlayerStatus()
             }
         }
@@ -113,10 +112,10 @@ class VideoPlayerViewModel @Inject constructor(
         val playerStatus = uiState.value.playerStatus
 
         val newPlayerStatus = if (
-            playerStatus != PlayerStatus.PLAYING) {
-            PlayerStatus.PLAYING
+            playerStatus != com.imdmp.videoplayer.model.PlayerStatus.PLAYING) {
+            com.imdmp.videoplayer.model.PlayerStatus.PLAYING
         } else
-            PlayerStatus.PAUSED
+            com.imdmp.videoplayer.model.PlayerStatus.PAUSED
 
         uiState.value = uiState.value.copy(playerStatus = newPlayerStatus)
     }
