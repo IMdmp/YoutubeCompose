@@ -9,7 +9,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
 import com.imdmp.datarepository.YoutubeRepository
-import com.imdmp.ui_core.theme.YoutubeComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,9 +22,6 @@ class MainActivity : FragmentActivity(), BaseActivityCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            YoutubeComposeTheme {
-                MainAppScreen(baseActivityCallbacks = this)
-            }
 
         }
     }
