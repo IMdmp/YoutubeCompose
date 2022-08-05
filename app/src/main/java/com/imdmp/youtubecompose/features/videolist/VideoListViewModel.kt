@@ -1,33 +1,37 @@
 package com.imdmp.youtubecompose.features.videolist
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.youtubecompose.base.BaseViewModel
 import com.imdmp.youtubecompose.features.videolist.events.VideoListEvents
-import com.imdmp.youtubecompose.features.videolist.model.DummyDataProvider
 import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
 import com.imdmp.youtubecompose.features.videolist.model.VideoListScreenCallbacks
 import com.imdmp.youtubecompose.features.videolist.search.SearchScreenCallbacks
 
 import com.imdmp.youtubecompose.features.videolist.search.SearchState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class VideoListViewModel @Inject constructor() : BaseViewModel() {
+@HiltViewModel
+class VideoListViewModel @Inject constructor(
+    private var youtubeRepository: YoutubeRepository
+) : BaseViewModel() {
     private val searchState = mutableStateOf(SearchState())
     private val screenState = mutableStateOf(VideoListScreenState.DEFAULT)
-
+    private val videoListState = mutableStateListOf<VideoListItem>()
 
     private val searchScreenCallbacks = object : SearchScreenCallbacks {
         override fun onSearchClicked(query: String) {
             viewModelScope.launch {
-                searchState.value =
-                    searchState.value.copy(searchNetworkState = SearchState.SearchNetworkState.LOADING)
                 screenState.value = VideoListScreenState.DEFAULT
+                setSearchStateLoading()
                 delay(500L) // simulate network call
-                searchState.value =
-                    searchState.value.copy(searchNetworkState = SearchState.SearchNetworkState.DATA_AVAILABLE)
+                setSearchStateDataAvailable()
             }
         }
 
@@ -110,7 +114,7 @@ class VideoListViewModel @Inject constructor() : BaseViewModel() {
     }
 
     fun provideVideoList(): List<VideoListItem> {
-        return DummyDataProvider.provideData()
+        return videoListState
     }
 
     fun searchScreenCallbacks(): SearchScreenCallbacks {
@@ -119,6 +123,46 @@ class VideoListViewModel @Inject constructor() : BaseViewModel() {
 
     fun videoListDefaultScreenCallbacks(): VideoListScreenCallbacks {
         return videoListDefaultScreenCallbacks
+    }
+
+    fun loadQuery() {
+        videoListState.clear()
+        viewModelScope.launch(Dispatchers.IO) {
+            setSearchStateLoading()
+            val query = searchState.value.searchText
+            val newList = if (query.isEmpty())
+                youtubeRepository.getYTDataList().ytDataList.map {
+                    VideoListItem(
+                        it.thumbnail,
+                        it.name,
+                        it.uploaderName,
+                        it.uploaderThumbnail, 0, streamUrl = it.url, uploadedDate = ""
+                    )
+                } else {
+                youtubeRepository.search(query = query).ytDataList.map {
+                    VideoListItem(
+                        it.thumbnail,
+                        it.name,
+                        it.uploaderName,
+                        it.uploaderThumbnail, 0, streamUrl = it.url, uploadedDate = ""
+                    )
+                }
+            }
+            videoListState.addAll(newList)
+            setSearchStateDataAvailable()
+        }
+
+    }
+
+    fun setSearchStateLoading() {
+        searchState.value =
+            searchState.value.copy(searchNetworkState = SearchState.SearchNetworkState.LOADING)
+    }
+
+    fun setSearchStateDataAvailable() {
+        searchState.value =
+            searchState.value.copy(searchNetworkState = SearchState.SearchNetworkState.DATA_AVAILABLE)
+
     }
 
 
