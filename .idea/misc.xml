@@ -85,7 +85,16 @@
         <entry key="../../../../layout/compose-model-1652256628255.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1652256636019.xml" value="0.21210838272650295" />
         <entry key="../../../../layout/compose-model-1652373125607.xml" value="0.1" />
+        <entry key="app/src/main/java/com/imdmp/youtubecompose/features/splash/SplashScreen.kt" value="0.26815878378378377" />
+        <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/VideoListDefaultScreen.kt" value="0.1" />
+        <entry key="app/src/main/res/drawable/video_frame.xml" value="0.1825" />
+        <entry key="app/src/main/res/layout/custom_player_controller.xml" value="0.1234375" />
         <entry key="app/src/main/res/layout/layout_main.xml" value="0.11820652173913043" />
+        <entry key="app/src/main/res/layout/sample.xml" value="0.24895833333333334" />
+        <entry key="app/src/main/res/layout/video_player.xml" value="0.24895833333333334" />
+        <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/VideoPlayerScreen.kt" value="0.26472868217054263" />
+        <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/comments/Comments.kt" value="0.37222222222222223" />
+        <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/playback/Playback.kt" value="0.2712962962962963" />
         <entry key="videoplayer/src/main/res/drawable/video_frame.xml" value="0.1025" />
         <entry key="videoplayer/src/main/res/layout/custom_player_controller.xml" value="0.1" />
         <entry key="videoplayer/src/main/res/layout/exo_player_control_view.xml" value="0.19610507246376813" />
@@ -94,6 +103,7 @@
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/controls/Controls.kt" value="0.1358649789029536" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/ui_player/playback/Playback.kt" value="0.290295358649789" />
         <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/uihome/Home.kt" value="0.1" />
+        <entry key="youtubecompose-ui/src/main/java/com/imdmp/youtubecompose_ui/uihome/topappbar/HomeTopAppBar.kt" value="0.6601851851851852" />
         <entry key="youtubecompose-ui/src/main/res/drawable/video_frame.xml" value="0.1" />
         <entry key="youtubecompose-ui/src/main/res/drawable/video_frame_alternative.xml" value="0.1" />
       </map>

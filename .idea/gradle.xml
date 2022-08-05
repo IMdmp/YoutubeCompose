@@ -13,9 +13,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/datarepository" />
-            <option value="$PROJECT_DIR$/ui-core" />
-            <option value="$PROJECT_DIR$/videoplayer" />
-            <option value="$PROJECT_DIR$/youtubecompose-ui" />
           </set>
         </option>
       </GradleProjectSettings>
