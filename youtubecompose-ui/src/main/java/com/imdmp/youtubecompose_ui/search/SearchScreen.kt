@@ -209,7 +209,7 @@ fun PreviewSearchText() {
 @Composable
 fun PreviewSearchScreen() {
     val searchState = SearchState().copy(
-        suggestionList = listOf(
+        suggestionList = mutableListOf(
             "search text 1",
             "quite a long search query that might not fit in exactly one line"
         )

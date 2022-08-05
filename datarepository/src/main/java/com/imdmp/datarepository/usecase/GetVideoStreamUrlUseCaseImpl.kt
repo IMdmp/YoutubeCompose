@@ -11,7 +11,9 @@ import com.imdmp.datarepository.utils.PlayerDataSource
 import org.schabi.newpipe.extractor.MediaFormat
 import org.schabi.newpipe.extractor.stream.VideoStream
 
-class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource) :
+class GetVideoStreamUrlUseCaseImpl constructor(
+    private val dataSource: PlayerDataSource,
+) :
     GetVideoStreamUrlUseCase {
     override suspend fun invoke(url: VideoStream): MediaSource {
         val uri = Uri.parse(url.url)
@@ -22,7 +24,6 @@ class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource)
                 ".$overrideExtension"
             )
 
-
         val factory: MediaSourceFactory = when (type) {
             C.TYPE_SS -> dataSource.liveSsMediaSourceFactory
             C.TYPE_DASH -> dataSource.dashMediaSourceFactory
@@ -31,13 +32,11 @@ class GetVideoStreamUrlUseCaseImpl constructor(val dataSource: PlayerDataSource)
             else -> throw IllegalStateException("Unsupported type: $type")
         }
 
-        val mediaSource = factory.createMediaSource(
+        return factory.createMediaSource(
             MediaItem.Builder()
                 .setUri(uri)
                 .build()
         )
-
-        return mediaSource
 
     }
 }
