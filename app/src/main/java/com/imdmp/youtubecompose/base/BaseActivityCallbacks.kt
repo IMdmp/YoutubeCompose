@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose
+package com.imdmp.youtubecompose.base
 
 interface BaseActivityCallbacks {
 

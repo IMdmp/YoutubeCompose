@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root"
+    tools:background="@color/black_overlay"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layoutDescription="@xml/video_player_scene">
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <View
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="#FFF" />
+
+    <com.google.android.exoplayer2.ui.StyledPlayerView
+        android:id="@+id/player_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:animateLayoutChanges="true"
+        app:auto_show="false"
+        app:controller_layout_id="@layout/custom_player_controller"
+        app:show_buffering="always" />
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

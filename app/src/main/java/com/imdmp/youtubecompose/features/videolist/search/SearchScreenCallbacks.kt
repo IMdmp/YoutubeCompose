@@ -1,0 +1,39 @@
+package com.imdmp.youtubecompose.features.videolist.search
+
+import com.imdmp.videolist.search.CustomTextFieldCallbacks
+
+interface SearchScreenCallbacks : CustomTextFieldCallbacks {
+    fun onSearchClicked(query: String)
+    fun onBackButtonClicked()
+    fun suggestionSelected()
+
+    companion object {
+        fun default(): SearchScreenCallbacks = object : SearchScreenCallbacks {
+            override fun onSearchClicked(query: String) {
+                TODO("Not yet implemented")
+            }
+
+            override fun textBoxClicked() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onBackButtonClicked() {
+                TODO("Not yet implemented")
+            }
+
+            override fun suggestionSelected() {
+                TODO("Not yet implemented")
+            }
+
+            override fun textBoxCancelClicked() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onSearchTextValueChanged(newValue: String) {
+                TODO("Not yet implemented")
+            }
+
+
+        }
+    }
+}
