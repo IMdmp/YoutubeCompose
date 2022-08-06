@@ -1,7 +1,5 @@
 package com.imdmp.youtubecompose.features.videolist.search
 
-import com.imdmp.videolist.search.CustomTextFieldCallbacks
-
 interface SearchScreenCallbacks : CustomTextFieldCallbacks {
     fun onSearchClicked(query: String)
     fun onBackButtonClicked()

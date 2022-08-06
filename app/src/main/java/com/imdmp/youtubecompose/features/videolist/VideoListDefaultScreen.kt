@@ -10,10 +10,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.imdmp.videolist.search.SearchResultBar
 import com.imdmp.youtubecompose.features.videolist.model.DummyDataProvider
 import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
 import com.imdmp.youtubecompose.features.videolist.model.VideoListScreenCallbacks
+import com.imdmp.youtubecompose.features.videolist.search.SearchResultBar
 import com.imdmp.youtubecompose.features.videolist.search.SearchScreenViewModel
 import com.imdmp.youtubecompose.features.videolist.search.SearchState
 import com.imdmp.youtubecompose.features.videolist.topappbar.HomeTopAppBar

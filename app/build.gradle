@@ -44,14 +44,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
-
-}
-android {
-    defaultConfig {
-        testInstrumentationRunner "com.imdmp.youtubecompose.CustomTestRunner"
+    kotlinOptions {
+        freeCompilerArgs += [
+                "-Xopt-in=kotlin.RequiresOptIn"
+        ]
     }
 }
-
 
 dependencies {
 

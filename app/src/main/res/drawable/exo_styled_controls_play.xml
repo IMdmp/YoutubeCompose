@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mikepenz.iconics.IconicsDrawable xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:ico_icon="gmd-play-arrow"
+    app:ico_color="@android:color/white"
+    app:ico_size="32dp" />

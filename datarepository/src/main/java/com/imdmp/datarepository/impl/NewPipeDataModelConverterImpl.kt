@@ -13,7 +13,7 @@ import org.schabi.newpipe.extractor.stream.StreamInfo
 import org.schabi.newpipe.extractor.stream.StreamInfoItem
 
 class NewPipeDataModelConverterImpl : NewPipeDataModelConverter {
-    override fun mapStreamInfoItemListToYtDataList(relatedItems: MutableList<StreamInfoItem>): List<YTDataItem> {
+    override fun mapStreamInfoItemListToYtDataList(relatedItems: MutableList<InfoItem>): List<YTDataItem> {
 
         return relatedItems.mapNotNull { infoItem ->
             when (infoItem.infoType) {

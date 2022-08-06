@@ -1,4 +1,4 @@
-package com.imdmp.videolist.search
+package com.imdmp.youtubecompose.features.videolist.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,8 +26,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.imdmp.youtubecompose.features.videolist.search.SearchScreenCallbacks
-import com.imdmp.youtubecompose.features.videolist.search.SearchState
 import com.imdmp.ytcore.BlackDarkColor2
 import com.imdmp.ytcore.YTCoreTheme
 import com.imdmp.ytcore.typography
