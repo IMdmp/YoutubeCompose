@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.android.exoplayer2.ui.PlayerView
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.databinding.VideoPlayerBinding
 import com.mikepenz.iconics.view.IconicsImageView
@@ -44,7 +44,7 @@ fun DraggableVidPlayer(
     videoPlayerViewCallbacks: VideoPlayerViewCallbacks? = null,
     content: @Composable () -> Unit = { Surface {} }
 ) {
-    var playerView1: StyledPlayerView? = null
+    var playerView1: PlayerView? = null
     val screenMotionProgress = remember {
         Animatable(0f)
     }

@@ -74,7 +74,7 @@ dependencies {
 
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
     implementation "com.github.skydoves:landscapist-glide:1.4.8"
-    implementation "com.github.TeamNewPipe:NewPipeExtractor:v0.21.13"
+    implementation "com.github.TeamNewPipe:NewPipeExtractor:LOCAL_SNAPSHOT2"
 
     debugImplementation 'com.facebook.flipper:flipper:0.145.0'
     debugImplementation 'com.facebook.soloader:soloader:0.10.3'
@@ -83,12 +83,13 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:3.12.13"
     implementation 'androidx.preference:preference:1.1.1'
 
-    def exoPlayerVersion = '2.14.2'
+    def exoPlayerVersion = '2.18.1'
     implementation "com.google.android.exoplayer:exoplayer:${exoPlayerVersion}"
     implementation "com.google.android.exoplayer:extension-mediasession:${exoPlayerVersion}"
     androidTestImplementation "com.google.android.exoplayer:exoplayer-testutils:${exoPlayerVersion}"
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha02")
+    implementation "com.google.android.exoplayer:exoplayer-ui:${exoPlayerVersion}"
 
+    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha02")
     implementation 'androidx.fragment:fragment-ktx:1.4.0'
     // Kotlin
     def nav_version = "2.4.0"
