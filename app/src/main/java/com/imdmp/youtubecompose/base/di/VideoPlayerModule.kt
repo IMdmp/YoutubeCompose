@@ -2,7 +2,6 @@ package com.imdmp.youtubecompose.base.di
 
 import android.content.Context
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.SimpleExoPlayer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +17,6 @@ class VideoPlayerModule {
     @Provides
     @ViewModelScoped
     fun providesVideoPlayer(@ApplicationContext context: Context): ExoPlayer {
-        return SimpleExoPlayer.Builder(context).build()
+        return ExoPlayer.Builder(context).build()
     }
 }

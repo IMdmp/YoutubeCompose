@@ -8,6 +8,7 @@ import com.imdmp.datarepository.model.VideoDataInfoSchema
 import com.imdmp.datarepository.model.YTDataSchema
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.schabi.newpipe.extractor.InfoItem
 
 class YoutubeRepositoryImpl(
     private val newPipeExtractorWrapper: NewPipeExtractorWrapper,
@@ -17,7 +18,7 @@ class YoutubeRepositoryImpl(
 
         val info = newPipeExtractorWrapper.getInfo()
         val ytDataList =
-            newPipeDataModelConverter.mapStreamInfoItemListToYtDataList(info.relatedItems)
+            newPipeDataModelConverter.mapStreamInfoItemListToYtDataList(info.relatedItems as MutableList<InfoItem>)
 
         return YTDataSchema(ytDataList)
     }

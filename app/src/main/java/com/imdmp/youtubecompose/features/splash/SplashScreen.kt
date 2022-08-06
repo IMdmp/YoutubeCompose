@@ -11,13 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-
-@Composable
-fun SplashScreen(navController: NavController, splashViewModel: SplashViewModel = hiltViewModel()) {
-
-}
 
 @Composable
 fun SplashScreen() {

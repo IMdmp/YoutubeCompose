@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.imdmp.videolist.search.SearchResultBar
 import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
 import com.imdmp.ytcore.YTCoreTheme
 import com.imdmp.ytcore.typography
