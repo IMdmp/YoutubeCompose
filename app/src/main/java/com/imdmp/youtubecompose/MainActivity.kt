@@ -118,4 +118,10 @@ class MainActivity : ComponentActivity(), BaseActivityCallbacks {
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
     }
 
+    override fun onBackPressed() {
+        if (mainViewModel.backPressedHandled().not()) {
+            super.onBackPressed()
+        }
+
+    }
 }

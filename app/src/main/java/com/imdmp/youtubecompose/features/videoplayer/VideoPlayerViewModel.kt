@@ -19,7 +19,6 @@ class VideoPlayerViewModel @Inject constructor(
     val youtubeRepository: YoutubeRepository
 ) : BaseViewModel(),
     VideoPlayerViewCallbacks {
-    val videoMode = mutableStateOf(VideoMode.NORMAL)
     val url = mutableStateOf("")
 
     fun initVideoPlayer(url: String) {
@@ -47,6 +46,13 @@ class VideoPlayerViewModel @Inject constructor(
 
     fun updateUrl(streamUrl: String) {
         url.value = streamUrl
+    }
+
+    fun onStart() {
+    }
+
+    fun onStop() {
+        videoPlayer.stop()
     }
 }
 

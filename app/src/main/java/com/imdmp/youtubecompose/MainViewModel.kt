@@ -9,6 +9,15 @@ class MainViewModel @Inject constructor() : ViewModel() {
         mainScreenState.value = mainState
     }
 
+    //return true if handled
+    fun backPressedHandled(): Boolean {
+        if (mainScreenState.value == MainState.PLAYER) {
+            updateMainScreenState(MainState.DEFAULT)
+            return true
+        }
+        return false
+    }
+
     val mainScreenState = mutableStateOf(MainState.DEFAULT)
 
 }
