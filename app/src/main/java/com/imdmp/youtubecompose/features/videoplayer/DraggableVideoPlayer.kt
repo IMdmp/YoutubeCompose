@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.lifecycle.LifecycleOwner
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.imdmp.youtubecompose.R
@@ -22,15 +24,27 @@ import kotlinx.coroutines.launch
 fun DraggableVideoPlayer(
     modifier: Modifier = Modifier,
     videoPlayerViewModel: VideoPlayerViewModel,
-    content: @Composable () -> Unit = { Surface {} }
-) {
+    content: @Composable () -> Unit = { Surface {} },
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+
+    ) {
     LaunchedEffect(videoPlayerViewModel.url.value) {
         videoPlayerViewModel.initVideoPlayer(videoPlayerViewModel.url.value)
     }
+
+    DisposableEffect(key1 = videoPlayerViewModel) {
+        videoPlayerViewModel.onStart()
+        onDispose { videoPlayerViewModel.onStop() }
+    }
+
+    HandleLifecycleChanges(
+        lifecycleOwner = lifecycleOwner,
+        exoPlayer = videoPlayerViewModel.videoPlayer
+    )
+
     DraggableVidPlayer(
         modifier = modifier,
         exoPlayer = videoPlayerViewModel.videoPlayer,
-        videoMode = videoPlayerViewModel.videoMode,
         videoPlayerViewCallbacks = videoPlayerViewModel,
         content = content
     )
@@ -40,7 +54,6 @@ fun DraggableVideoPlayer(
 fun DraggableVidPlayer(
     modifier: Modifier = Modifier,
     exoPlayer: ExoPlayer,
-    videoMode: MutableState<VideoMode>,
     videoPlayerViewCallbacks: VideoPlayerViewCallbacks? = null,
     content: @Composable () -> Unit = { Surface {} }
 ) {
@@ -106,9 +119,4 @@ fun DraggableVidPlayer(
             }
         }
     }
-}
-
-
-enum class VideoMode {
-    NORMAL, FULLSCREEN
 }
