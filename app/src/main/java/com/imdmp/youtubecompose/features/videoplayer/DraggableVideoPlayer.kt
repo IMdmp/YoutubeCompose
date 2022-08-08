@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.databinding.VideoPlayerBinding
 import com.mikepenz.iconics.view.IconicsImageView
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -25,6 +26,7 @@ fun DraggableVideoPlayer(
     modifier: Modifier = Modifier,
     videoPlayerViewModel: VideoPlayerViewModel,
     content: @Composable () -> Unit = { Surface {} },
+    callback: (progress: Float) -> Unit = {},
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 
     ) {
@@ -44,6 +46,7 @@ fun DraggableVideoPlayer(
 
     DraggableVidPlayer(
         modifier = modifier,
+        callback = callback,
         exoPlayer = videoPlayerViewModel.videoPlayer,
         videoPlayerViewCallbacks = videoPlayerViewModel,
         content = content
@@ -55,6 +58,7 @@ fun DraggableVidPlayer(
     modifier: Modifier = Modifier,
     exoPlayer: ExoPlayer,
     videoPlayerViewCallbacks: VideoPlayerViewCallbacks? = null,
+    callback: (progress: Float) -> Unit = {},
     content: @Composable () -> Unit = { Surface {} }
 ) {
     var playerView1: StyledPlayerView? = null
@@ -68,8 +72,16 @@ fun DraggableVidPlayer(
     val draggableState = rememberDraggableState {
         offsetY += it
         scope.launch {
-            screenMotionProgress.snapTo((offsetY / 1000).coerceAtLeast(0f).coerceAtMost(1f))
+            val result = (offsetY / 1000).coerceAtLeast(0f).coerceAtMost(1f)
+            screenMotionProgress.snapTo(result)
+        }
+    }
 
+    LaunchedEffect(key1 = screenMotionProgress.value) {
+        snapshotFlow {
+            screenMotionProgress
+        }.collect {
+            callback(it.value)
         }
     }
 
