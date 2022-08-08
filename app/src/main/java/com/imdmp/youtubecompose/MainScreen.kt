@@ -17,8 +17,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.imdmp.youtubecompose.features.navigation.bottombar.BottomNavigationBar
 import com.imdmp.youtubecompose.features.navigation.model.Destination
-import com.imdmp.youtubecompose.features.videolist.VideoListScreen
-import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
 import com.imdmp.youtubecompose.features.videoplayer.DraggableVideoPlayer
 import com.imdmp.youtubecompose.features.videoplayer.VideoPlayerViewModel
 import kotlin.math.roundToInt
@@ -27,7 +25,6 @@ import kotlin.math.roundToInt
 fun MainScreen(
     navController: NavHostController = rememberNavController(),
 ) {
-    val videoListViewModel = hiltViewModel<VideoListViewModel>()
     val mainViewModel = hiltViewModel<MainViewModel>()
     val videoPlayerViewModel = hiltViewModel<VideoPlayerViewModel>()
     val mainScreenState = mainViewModel.mainScreenState
@@ -70,9 +67,9 @@ fun MainScreen(
             }
         )
 
-        VideoListScreen(videoListViewModel = videoListViewModel)
-        if (mainScreenState.value == MainState.PLAYER) {
+        MainNavScreen(navController = navController)
 
+        if (mainScreenState.value == MainState.PLAYER) {
             DraggableVideoPlayer(
                 callback = {
                     val newOffset = (-150 + (150 * it))

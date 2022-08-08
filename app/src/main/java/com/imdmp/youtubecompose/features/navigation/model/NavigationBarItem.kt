@@ -17,6 +17,7 @@ class NavigationBarItem(
             onNavigate: (destination: Destination) -> Unit
         ): List<NavigationBarItem> {
             return listOf(
+                Destination.VideoList,
                 Destination.Search,
                 Destination.Profile,
             ).map { destination ->
