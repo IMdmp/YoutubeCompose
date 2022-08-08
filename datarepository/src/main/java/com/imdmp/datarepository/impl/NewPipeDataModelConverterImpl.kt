@@ -3,6 +3,7 @@ package com.imdmp.datarepository.impl
 import com.imdmp.datarepository.NewPipeDataModelConverter
 import com.imdmp.datarepository.model.VideoDataCommentSchema
 import com.imdmp.datarepository.model.VideoDataInfoSchema
+import com.imdmp.datarepository.model.VideoStreamSchema
 import com.imdmp.datarepository.model.YTDataItem
 import org.schabi.newpipe.extractor.InfoItem
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem
@@ -65,7 +66,15 @@ class NewPipeDataModelConverterImpl : NewPipeDataModelConverter {
             uploaderProfilePicUrl = streamInfo.uploaderAvatarUrl,
             subscriberCount = 100000,
             videoDescription = streamInfo.description?.content ?: "",
-            streamList = streamInfo.videoStreams
+            streamList = streamInfo.videoStreams.map {
+                VideoStreamSchema(
+                    it.resolution,
+                    it.isVideoOnly,
+                    it.quality,
+                    it.codec,
+                    it.url
+                )
+            }
         )
     }
 
