@@ -1,7 +1,5 @@
 package com.imdmp.datarepository.model
 
-import org.schabi.newpipe.extractor.stream.VideoStream
-
 class VideoDataInfoSchema(
     val title: String,
     val views: Long,
@@ -11,7 +9,16 @@ class VideoDataInfoSchema(
     val uploaderProfilePicUrl: String,
     val subscriberCount: Int,
     val videoDescription: String,
-    val streamList: List<VideoStream>
+    val streamList: List<VideoStreamSchema>
 ) {
 
 }
+
+
+data class VideoStreamSchema(
+    val resolution: String,
+    val isVideoOnly: Boolean,
+    val quality: String,
+    val codec: String,
+    val url: String
+)
