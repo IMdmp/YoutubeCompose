@@ -73,7 +73,11 @@ private fun VideoListDefaultScreen(
             ErrorScreen()
         } else {
             LazyColumn {
-                items(videoList) { data ->
+                items(videoList,
+                    key = { item: VideoListItem ->
+                        item.streamUrl
+                    }
+                ) { data ->
                     VideoItem(item = data, videoListScreenActions)
                 }
             }

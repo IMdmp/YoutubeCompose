@@ -89,6 +89,7 @@
         <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/VideoItem.kt" value="0.33796296296296297" />
         <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/VideoListDefaultScreen.kt" value="0.1" />
         <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/search/SearchResultBar.kt" value="0.1" />
+        <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/topappbar/HomeTopAppBar.kt" value="0.5055555555555555" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/exo_styled_controls_pause.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/exo_styled_controls_play.xml" value="0.1825" />

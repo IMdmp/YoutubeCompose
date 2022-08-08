@@ -63,7 +63,7 @@ class VideoListViewModel @Inject constructor(
         }
 
         override fun profileClicked() {
-            TODO("Not yet implemented")
+//            TODO("Not yet implemented")
         }
 
         override fun onSearchClicked(query: String) {
