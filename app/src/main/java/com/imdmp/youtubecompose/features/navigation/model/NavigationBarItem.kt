@@ -3,6 +3,7 @@ package com.imdmp.youtubecompose.features.navigation.model
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import com.imdmp.ytcore.typography
 
 class NavigationBarItem(
     val selected: Boolean,
@@ -21,24 +22,36 @@ class NavigationBarItem(
                 Destination.Search,
                 Destination.Profile,
             ).map { destination ->
-                NavigationBarItem(
-                    selected = currentDestination == destination,
-                    label = {
-                        Text(text = destination.title)
-                    },
-                    icon = {
-                        destination.icon?.let { image ->
-                            Icon(
-                                imageVector = image,
-                                contentDescription = destination.path
-                            )
-                        }
-                    },
-                    onClick = {
-                        onNavigate(destination)
-                    }
+                NavigationItem(
+                    currentDestination = currentDestination,
+                    destination = destination,
+                    onNavigate = onNavigate
                 )
             }
         }
     }
+}
+
+private fun NavigationItem(
+    currentDestination: Destination,
+    destination: Destination,
+    onNavigate: (destination: Destination) -> Unit
+): NavigationBarItem {
+    return NavigationBarItem(
+        selected = currentDestination == destination,
+        label = {
+            Text(text = destination.title, style = typography.button)
+        },
+        icon = {
+            destination.icon?.let { image ->
+                Icon(
+                    imageVector = image,
+                    contentDescription = destination.path
+                )
+            }
+        },
+        onClick = {
+            onNavigate(destination)
+        }
+    )
 }

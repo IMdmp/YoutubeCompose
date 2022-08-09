@@ -60,7 +60,7 @@ private fun VideoListDefaultScreen(
                 )
             } else {
                 SearchResultBar(
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier.padding(top = 8.dp, bottom = 12.dp),
                     searchState = searchState,
                     searchScreenCallbacks = videoListScreenActions
                 )

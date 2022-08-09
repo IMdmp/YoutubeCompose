@@ -10,6 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +28,6 @@ fun SearchScreenViewModel(modifier: Modifier = Modifier, videoListViewModel: Vid
     SearchScreen(
         modifier = modifier,
         searchState = videoListViewModel.searchState(),
-        suggestionSelected = {},
         searchScreenCallbacks = videoListViewModel.searchScreenCallbacks()
     )
 }
@@ -38,7 +39,6 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     searchState: SearchState,
     lazyListState: LazyListState = rememberLazyListState(),
-    suggestionSelected: (String) -> Unit,
     searchScreenCallbacks: SearchScreenCallbacks = SearchScreenCallbacks.default(),
 ) {
 
@@ -54,7 +54,7 @@ fun SearchScreen(
                     .fillMaxWidth()
                     .padding(start = 8.dp, end = 8.dp)
                     .selectable(true) {
-                        suggestionSelected(text)
+                        searchScreenCallbacks.suggestionSelected(text)
                     }) {
                     SearchItem(text)
                 }
@@ -78,8 +78,8 @@ fun SearchItem(searchText: String) {
             .align(Alignment.CenterVertically),
             onClick = { /*TODO*/ }) {
             Image(
-                GoogleMaterial.Icon.gmd_access_alarm,
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
+                GoogleMaterial.Icon.gmd_access_time,
+                colorFilter = ColorFilter.tint(Color.DarkGray),
             )
         }
         Text(
@@ -96,8 +96,9 @@ fun SearchItem(searchText: String) {
                 .align(Alignment.CenterVertically),
             onClick = { /*TODO*/ }) {
             Image(
-                GoogleMaterial.Icon.gmd_access_alarm,
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary),
+                modifier = Modifier.scale(scaleX = -1f, scaleY = 1f),
+                asset = GoogleMaterial.Icon.gmd_call_made,
+                colorFilter = ColorFilter.tint(Color.DarkGray),
             )
         }
     }
@@ -120,7 +121,7 @@ fun PreviewSearchText() {
 fun PreviewSearchScreen() {
 
     MaterialTheme {
-        SearchScreen(searchState = SearchState.provideSample(), suggestionSelected = {})
+        SearchScreen(searchState = SearchState.provideSample())
     }
 }
 

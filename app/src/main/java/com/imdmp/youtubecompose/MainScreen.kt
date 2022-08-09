@@ -3,9 +3,11 @@ package com.imdmp.youtubecompose
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -15,6 +17,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.imdmp.youtubecompose.features.navigation.bottombar.BottomNavigationBar
 import com.imdmp.youtubecompose.features.navigation.model.Destination
 import com.imdmp.youtubecompose.features.videoplayer.DraggableVideoPlayer
@@ -36,6 +39,19 @@ fun MainScreen(
     }
     val bottomBarOffsetHeightPx = remember { mutableStateOf(0f) }
     val isFullScreen = remember { mutableStateOf(false) }
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = MaterialTheme.colors.isLight
+
+    SideEffect {
+        // Update all of the system bar colors to be transparent, and use
+        // dark icons if we're in light theme
+        systemUiController.setStatusBarColor(
+            color = Color.Transparent,
+            darkIcons = useDarkIcons
+        )
+
+        // setStatusBarsColor() and setNavigationBarColor() also exist
+    }
 
     Scaffold(
         bottomBar = {

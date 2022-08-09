@@ -3,7 +3,7 @@ package com.imdmp.youtubecompose.features.videolist.search
 interface SearchScreenCallbacks : CustomTextFieldCallbacks {
     fun onSearchClicked(query: String)
     fun onBackButtonClicked()
-    fun suggestionSelected()
+    fun suggestionSelected(suggestion: String)
 
     companion object {
         fun default(): SearchScreenCallbacks = object : SearchScreenCallbacks {
@@ -19,7 +19,7 @@ interface SearchScreenCallbacks : CustomTextFieldCallbacks {
                 TODO("Not yet implemented")
             }
 
-            override fun suggestionSelected() {
+            override fun suggestionSelected(suggestion: String) {
                 TODO("Not yet implemented")
             }
 

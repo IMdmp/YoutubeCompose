@@ -38,7 +38,7 @@ interface VideoListScreenCallbacks : VideoItemActions, ToolbarActions, SearchScr
                 TODO("Not yet implemented")
             }
 
-            override fun suggestionSelected() {
+            override fun suggestionSelected(suggestion: String) {
                 TODO("Not yet implemented")
             }
 
