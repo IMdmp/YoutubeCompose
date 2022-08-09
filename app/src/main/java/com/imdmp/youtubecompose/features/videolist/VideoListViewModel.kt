@@ -9,11 +9,10 @@ import com.imdmp.youtubecompose.features.videolist.events.VideoListEvents
 import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
 import com.imdmp.youtubecompose.features.videolist.model.VideoListScreenCallbacks
 import com.imdmp.youtubecompose.features.videolist.search.SearchScreenCallbacks
-
 import com.imdmp.youtubecompose.features.videolist.search.SearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,9 +28,6 @@ class VideoListViewModel @Inject constructor(
         override fun onSearchClicked(query: String) {
             viewModelScope.launch {
                 screenState.value = VideoListScreenState.DEFAULT
-                setSearchStateLoading()
-                delay(500L) // simulate network call
-                setSearchStateDataAvailable()
             }
         }
 
@@ -48,9 +44,18 @@ class VideoListViewModel @Inject constructor(
 
         override fun onSearchTextValueChanged(newValue: String) {
             searchState.value = searchState.value.copy(searchText = newValue)
+            viewModelScope.launch(Dispatchers.IO) {
+                youtubeRepository.searchAutoSuggestion(newValue).collectLatest {
+                    searchState.value = searchState.value.copy(suggestionList = it)
+
+                }
+            }
         }
 
-        override fun suggestionSelected() {}
+        override fun suggestionSelected(suggestion: String) {
+            searchState.value = searchState.value.copy(searchText = suggestion)
+            onSearchClicked(suggestion)
+        }
     }
 
     private val videoListDefaultScreenCallbacks = object : VideoListScreenCallbacks {
@@ -75,7 +80,7 @@ class VideoListViewModel @Inject constructor(
             )
         }
 
-        override fun suggestionSelected() {
+        override fun suggestionSelected(suggestion: String) {
         }
 
         override fun textBoxClicked() {
@@ -91,10 +96,6 @@ class VideoListViewModel @Inject constructor(
         override fun onSearchTextValueChanged(newValue: String) {
         }
 
-    }
-
-    fun updateQuery(query: String) {
-        searchState.value = searchState.value.copy(searchText = query)
     }
 
     fun updateScreenIsRoot(isRoot: Boolean) {

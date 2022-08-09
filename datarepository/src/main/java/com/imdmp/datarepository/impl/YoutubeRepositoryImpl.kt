@@ -46,12 +46,11 @@ class YoutubeRepositoryImpl(
         )
     }
 
-    override suspend fun searchAutoSuggestion(query: String): Flow<String> {
+    override suspend fun searchAutoSuggestion(query: String): Flow<List<String>> {
         return flow {
             //todo: add local repo suggestions(previous searches)
-            newPipeExtractorWrapper.getSearchSuggestions(query).forEach {
-                emit(it)
-            }
+            emit(newPipeExtractorWrapper.getSearchSuggestions(query))
+
         }
     }
 }

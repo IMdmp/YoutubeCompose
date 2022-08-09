@@ -133,7 +133,7 @@ private fun CustomTextField(
                 value = textValue,
                 onValueChange = { customTextFieldCallbacks.onSearchTextValueChanged(it) },
                 visualTransformation = visualTransformation,
-                cursorBrush = SolidColor(colors.cursorColor(false).value),
+                cursorBrush = SolidColor(Color.Red),
                 interactionSource = interactionSource,
                 enabled = true,
                 singleLine = true,
