@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
@@ -53,9 +54,8 @@ fun DraggableVideoPlayer(
         exoPlayer = videoPlayerViewModel.videoPlayer,
         videoPlayerViewCallbacks = videoPlayerViewModel,
         content = {
-            Surface(modifier = Modifier.fillMaxSize()) {
-                VideoPlayerDesc(videoPlayerViewModel.getState())
-            }
+            VideoPlayerDesc(videoPlayerViewModel.getState())
+
         }
     )
 }
@@ -98,32 +98,7 @@ fun DraggableVidPlayer(
 
     AndroidViewBinding(
         modifier = modifier
-            .fillMaxSize()
-            .draggable(
-                orientation = Orientation.Vertical,
-                state = draggableState,
-                onDragStopped = {
-                    if (windowState.value == PlayerWindowState.NORMAL) {
-                        offsetY = if (screenMotionProgress.value > 0.1f) {
-                            screenMotionProgress.animateTo(1f).endState.value
-                            windowState.value = PlayerWindowState.COLLAPSED
-                            1000f
-                        } else {
-                            screenMotionProgress.animateTo(0f)
-                            0f
-                        }
-                    } else {
-                        offsetY = if (screenMotionProgress.value < 0.9f) {
-                            screenMotionProgress.animateTo(0f)
-                            windowState.value = PlayerWindowState.NORMAL
-                            0f
-                        } else {
-                            screenMotionProgress.animateTo(1f)
-                            1000f
-                        }
-                    }
-                }
-            ),
+            .fillMaxSize(),
         factory = VideoPlayerBinding::inflate) {
         playerView1 = this.playerView
         this.playerView.player = exoPlayer
@@ -135,6 +110,44 @@ fun DraggableVidPlayer(
         this.closeButton.setOnClickListener {
             videoPlayerViewCallbacks?.closeButtonClicked()
         }
+
+        this.dragger.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .draggable(
+                        orientation = Orientation.Vertical,
+                        state = draggableState,
+                        onDragStopped = {
+                            if (windowState.value == PlayerWindowState.NORMAL) {
+                                offsetY = if (screenMotionProgress.value > 0.1f) {
+                                    screenMotionProgress.animateTo(1f).endState.value
+                                    windowState.value = PlayerWindowState.COLLAPSED
+                                    1000f
+                                } else {
+                                    screenMotionProgress.animateTo(0f)
+                                    0f
+                                }
+                            } else {
+                                offsetY = if (screenMotionProgress.value < 0.9f) {
+                                    screenMotionProgress.animateTo(0f)
+                                    windowState.value = PlayerWindowState.NORMAL
+                                    0f
+                                } else {
+                                    screenMotionProgress.animateTo(1f)
+                                    1000f
+                                }
+                            }
+                        }
+                    )
+
+                ) {
+
+                }
+            }
+        }
+
         this.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {

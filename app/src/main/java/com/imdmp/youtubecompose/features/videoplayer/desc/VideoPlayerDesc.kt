@@ -4,14 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -33,59 +31,68 @@ import compose.icons.fontawesomeicons.regular.ThumbsUp
 @Composable
 fun VideoPlayerDesc(state: VideoPlayerComposeScreenState) {
     val listState = rememberLazyListState()
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (titleBar, iconActionsBar, videoAuthorInfoBar, commentSeparatorLine, comments) = createRefs()
-        TitleBar(
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 8.dp)
-                .constrainAs(titleBar) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    width = Dimension.fillToConstraints
-                }, state = state
-        )
-        VideoAuthorInfoBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, bottom = 4.dp)
-                .constrainAs(videoAuthorInfoBar) {
-                    top.linkTo(titleBar.bottom)
-                }, state = state
-        )
-        IconActionsBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(iconActionsBar) {
-                    top.linkTo(videoAuthorInfoBar.bottom)
-                }, state = state
-        )
 
-        Box(
+    Surface(
+        modifier = Modifier.nestedScroll(rememberViewInteropNestedScrollConnection())
+    ) {
+        ConstraintLayout(
             modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .background(Color.LightGray)
-                .constrainAs(commentSeparatorLine) {
-                    top.linkTo(iconActionsBar.bottom, 8.dp)
+                .fillMaxSize()
+        ) {
+            val (titleBar, iconActionsBar, videoAuthorInfoBar, commentSeparatorLine, comments) = createRefs()
+            TitleBar(
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .constrainAs(titleBar) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
+                    }, state = state
+            )
+            VideoAuthorInfoBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, bottom = 4.dp)
+                    .constrainAs(videoAuthorInfoBar) {
+                        top.linkTo(titleBar.bottom)
+                    }, state = state
+            )
+            IconActionsBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(iconActionsBar) {
+                        top.linkTo(videoAuthorInfoBar.bottom)
+                    }, state = state
+            )
 
-                }
-        )
+            Box(
+                modifier = Modifier
+                    .height(1.dp)
+                    .fillMaxWidth()
+                    .background(Color.LightGray)
+                    .constrainAs(commentSeparatorLine) {
+                        top.linkTo(iconActionsBar.bottom, 8.dp)
 
-        Comments(
-            listState = listState,
-            modifier = Modifier
-                .constrainAs(
-                    comments
-                ) {
-                    top.linkTo(commentSeparatorLine.bottom, 4.dp)
-                },
-            commentState = CommentState(
-                commentModelList = state.commentList,
-                isLoading = false,
-                error = null
-            ),
-        )
+                    }
+            )
+
+            Comments(
+                listState = listState,
+                modifier = Modifier
+                    .constrainAs(
+                        comments
+                    ) {
+                        top.linkTo(commentSeparatorLine.bottom, 4.dp)
+                    },
+                commentState = CommentState(
+                    commentModelList = state.commentList,
+                    isLoading = false,
+                    error = null
+                ),
+            )
+        }
+
     }
 }
 
