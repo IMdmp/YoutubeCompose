@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.imdmp.youtubecompose.features.videolist.model.DummyDataProvider
 import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
 import com.imdmp.youtubecompose.features.videolist.model.VideoListScreenCallbacks
+import com.imdmp.youtubecompose.features.videolist.search.SearchOnSearchScreen
 import com.imdmp.youtubecompose.features.videolist.search.SearchResultBar
-import com.imdmp.youtubecompose.features.videolist.search.SearchScreenViewModel
 import com.imdmp.youtubecompose.features.videolist.search.SearchState
 import com.imdmp.youtubecompose.features.videolist.topappbar.HomeTopAppBar
 import com.imdmp.ytcore.YTCoreTheme
@@ -30,7 +30,7 @@ fun VideoListScreen(videoListViewModel: VideoListViewModel) {
             VideoListDefaultScreen(videoListViewModel)
         }
         VideoListScreenState.SEARCH_ON -> {
-            SearchScreenViewModel(videoListViewModel = videoListViewModel)
+            SearchOnSearchScreen(videoListViewModel = videoListViewModel)
         }
 
     }
@@ -54,7 +54,7 @@ private fun VideoListDefaultScreen(
 ) {
     Scaffold(
         topBar = {
-            if (searchState.searchText.isEmpty()) {
+            if (searchState.searchText.text.isEmpty()) {
                 HomeTopAppBar(
                     toolbarActions = videoListScreenActions
                 )
@@ -62,7 +62,8 @@ private fun VideoListDefaultScreen(
                 SearchResultBar(
                     modifier = Modifier.padding(top = 8.dp, bottom = 12.dp),
                     searchState = searchState,
-                    searchScreenCallbacks = videoListScreenActions
+                    searchScreenCallbacks = videoListScreenActions,
+                    screenState = VideoListScreenState.DEFAULT
                 )
             }
         }
@@ -97,7 +98,7 @@ fun PreviewVideoListScreen() {
     YTCoreTheme {
         VideoListDefaultScreen(
             videoList = DummyDataProvider.provideData(),
-            videoListScreenActions = VideoListScreenCallbacks.default()
+            videoListScreenActions = VideoListScreenCallbacks.default(),
         )
     }
 }
@@ -109,7 +110,7 @@ fun PreviewVideoListScreenWithSearch() {
         VideoListDefaultScreen(
             videoList = DummyDataProvider.provideData(),
             videoListScreenActions = VideoListScreenCallbacks.default(),
-            searchState = SearchState.provideSample()
+            searchState = SearchState.provideSample(),
         )
 
     }

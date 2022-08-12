@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.imdmp.youtubecompose.features.videolist.VideoListScreenState
 import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
 import com.imdmp.ytcore.YTCoreTheme
 import com.imdmp.ytcore.typography
@@ -24,7 +25,7 @@ import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 
 @ExperimentalMaterialApi
 @Composable
-fun SearchScreenViewModel(modifier: Modifier = Modifier, videoListViewModel: VideoListViewModel) {
+fun SearchOnSearchScreen(modifier: Modifier = Modifier, videoListViewModel: VideoListViewModel) {
     SearchScreen(
         modifier = modifier,
         searchState = videoListViewModel.searchState(),
@@ -44,18 +45,24 @@ fun SearchScreen(
 
     Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 8.dp)) {
 
-        SearchResultBar(modifier, searchState, searchScreenCallbacks = searchScreenCallbacks)
+        SearchResultBar(
+            modifier,
+            searchState,
+            searchScreenCallbacks = searchScreenCallbacks,
+            VideoListScreenState.SEARCH_ON
+        )
         LazyColumn(
             modifier = modifier.padding(top = 4.dp),
             state = lazyListState
         ) {
             items(searchState.suggestionList) { text ->
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp)
-                    .selectable(true) {
-                        searchScreenCallbacks.suggestionSelected(text)
-                    }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, end = 8.dp)
+                        .selectable(true) {
+                            searchScreenCallbacks.suggestionSelected(text)
+                        }) {
                     SearchItem(text)
                 }
 

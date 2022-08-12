@@ -2,6 +2,7 @@ package com.imdmp.youtubecompose.features.videolist
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.youtubecompose.base.BaseViewModel
@@ -39,13 +40,13 @@ class VideoListViewModel @Inject constructor(
         }
 
         override fun textBoxCancelClicked() {
-            searchState.value = searchState.value.copy(searchText = "")
+            searchState.value = searchState.value.copy(searchText = TextFieldValue(""))
         }
 
-        override fun onSearchTextValueChanged(newValue: String) {
+        override fun onSearchTextValueChanged(newValue: TextFieldValue) {
             searchState.value = searchState.value.copy(searchText = newValue)
             viewModelScope.launch(Dispatchers.IO) {
-                youtubeRepository.searchAutoSuggestion(newValue).collectLatest {
+                youtubeRepository.searchAutoSuggestion(newValue.text).collectLatest {
                     searchState.value = searchState.value.copy(suggestionList = it)
 
                 }
@@ -53,7 +54,7 @@ class VideoListViewModel @Inject constructor(
         }
 
         override fun suggestionSelected(suggestion: String) {
-            searchState.value = searchState.value.copy(searchText = suggestion)
+            searchState.value = searchState.value.copy(searchText = TextFieldValue(suggestion))
             onSearchClicked(suggestion)
         }
     }
@@ -76,7 +77,7 @@ class VideoListViewModel @Inject constructor(
 
         override fun onBackButtonClicked() {
             searchState.value = searchState().copy(
-                searchText = ""
+                searchText = TextFieldValue("")
             )
         }
 
@@ -88,12 +89,12 @@ class VideoListViewModel @Inject constructor(
         }
 
         override fun textBoxCancelClicked() {
-            searchState.value = searchState.value.copy(searchText = "")
+            searchState.value = searchState.value.copy(searchText = TextFieldValue(""))
             screenState.value = VideoListScreenState.SEARCH_ON
         }
 
 
-        override fun onSearchTextValueChanged(newValue: String) {
+        override fun onSearchTextValueChanged(newValue: TextFieldValue) {
         }
 
     }
@@ -130,7 +131,7 @@ class VideoListViewModel @Inject constructor(
         videoListState.clear()
         viewModelScope.launch(Dispatchers.IO) {
             setSearchStateLoading()
-            val query = searchState.value.searchText
+            val query = searchState.value.searchText.text
             val newList = if (query.isEmpty())
                 youtubeRepository.getYTDataList().ytDataList.map {
                     VideoListItem(

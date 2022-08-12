@@ -12,20 +12,26 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.imdmp.youtubecompose.features.videolist.VideoListScreenState
 import com.imdmp.ytcore.BlackDarkColor2
 import com.imdmp.ytcore.YTCoreTheme
 import com.imdmp.ytcore.typography
@@ -39,7 +45,17 @@ fun SearchResultBar(
     modifier: Modifier = Modifier,
     searchState: SearchState,
     searchScreenCallbacks: SearchScreenCallbacks,
+    screenState: VideoListScreenState,
 ) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
+
+    LaunchedEffect(key1 = Unit) {
+        if (screenState == VideoListScreenState.SEARCH_ON)
+            focusRequester.requestFocus()
+    }
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
@@ -59,10 +75,15 @@ fun SearchResultBar(
             )
         }
         CustomTextField(
-            modifier = Modifier,
+            modifier = Modifier
+                .focusRequester(focusRequester),
             textValue = searchState.searchText,
             customTextFieldCallbacks = searchScreenCallbacks,
-            imeActionSelected = { searchScreenCallbacks.onSearchClicked(searchState.searchText) }
+            imeActionSelected = {
+                searchScreenCallbacks.onSearchClicked(searchState.searchText.text)
+                focusManager.clearFocus()
+
+            }
         )
     }
 }
@@ -70,7 +91,7 @@ fun SearchResultBar(
 interface CustomTextFieldCallbacks {
     fun textBoxClicked()
     fun textBoxCancelClicked()
-    fun onSearchTextValueChanged(newValue: String)
+    fun onSearchTextValueChanged(newValue: TextFieldValue)
 }
 
 
@@ -82,7 +103,7 @@ private fun CustomTextField(
     imeAction: ImeAction = ImeAction.Search,
     customTextFieldCallbacks: CustomTextFieldCallbacks,
     imeActionSelected: KeyboardActionScope.(String) -> Unit = {},
-    textValue: String,
+    textValue: TextFieldValue,
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -102,13 +123,14 @@ private fun CustomTextField(
             topStart = ZeroCornerSize,
             topEnd = ZeroCornerSize
         )
-    val trailingIcon: @Composable (() -> Unit)? = if (textValue.isEmpty()) {
+    val trailingIcon: @Composable (() -> Unit)? = if (textValue.text.isEmpty()) {
         null
     } else {
         {
             Image(
                 modifier = Modifier
                     .size(20.dp)
+                    .padding(0.dp)
                     .clickable {
                         customTextFieldCallbacks.textBoxCancelClicked()
                     },
@@ -118,7 +140,7 @@ private fun CustomTextField(
         }
     }
 
-    val contentPadding = if (textValue.isEmpty()) {
+    val contentPadding = if (textValue.text.isEmpty()) {
         PaddingValues(8.dp)
     } else {
         PaddingValues(4.dp)
@@ -129,9 +151,12 @@ private fun CustomTextField(
             BasicTextField(
                 modifier = modifier
                     .fillMaxWidth()
+                    .heightIn(min = 42.dp, max = 42.dp)
                     .background(colors.backgroundColor(true).value, shape),
                 value = textValue,
-                onValueChange = { customTextFieldCallbacks.onSearchTextValueChanged(it) },
+                onValueChange = {
+                    customTextFieldCallbacks.onSearchTextValueChanged(it)
+                },
                 visualTransformation = visualTransformation,
                 cursorBrush = SolidColor(Color.Red),
                 interactionSource = interactionSource,
@@ -142,13 +167,12 @@ private fun CustomTextField(
                     imeAction = imeAction
                 ),
                 keyboardActions = KeyboardActions(onAny = {
-
-                    imeActionSelected(textValue)
+                    imeActionSelected(textValue.text)
                     keyboard?.hide()
                 }),
             ) { innerTextField ->
                 TextFieldDefaults.TextFieldDecorationBox(
-                    value = textValue,
+                    value = textValue.text,
                     innerTextField = innerTextField,
                     visualTransformation = visualTransformation,
                     singleLine = true,
@@ -165,15 +189,17 @@ private fun CustomTextField(
                     colors = colors,
                 )
             }
+
         }
     }
+
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun PreviewTextFieldWithIcons() {
-    val searchState = SearchState(searchText = "Sample search text")
+    val searchState = SearchState(searchText = TextFieldValue("Sample search text"))
 
     YTCoreTheme {
         Surface {
@@ -192,11 +218,12 @@ fun PreviewTextFieldWithIcons() {
 @Preview
 @Composable
 fun PreviewCustomSearchBar() {
-    val searchState = SearchState(searchText = "Sample search text")
+    val searchState = SearchState(searchText = TextFieldValue("Sample search text"))
     YTCoreTheme {
         SearchResultBar(
             searchState = searchState,
-            searchScreenCallbacks = SearchScreenCallbacks.default()
+            searchScreenCallbacks = SearchScreenCallbacks.default(),
+            screenState = VideoListScreenState.DEFAULT
         )
     }
 }

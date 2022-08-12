@@ -1,8 +1,10 @@
 package com.imdmp.youtubecompose.features.videolist.search
 
+import androidx.compose.ui.text.input.TextFieldValue
+
 data class SearchState(
     val suggestionList: List<String> = listOf(),
-    val searchText: String = "",
+    val searchText: TextFieldValue = TextFieldValue(),
     val searchNetworkState: SearchNetworkState = SearchNetworkState.EMPTY,
 ) {
     enum class SearchNetworkState {
@@ -11,7 +13,7 @@ data class SearchState(
 
     companion object {
         fun provideSample(): SearchState {
-            val sample = "kurzgesagt"
+            val sample = TextFieldValue("kurzgesagt")
             val sampleSuggestions = listOf(
                 "kurzgesagt in a nutshell",
                 "kurzgesagt black hole",

@@ -1,12 +1,14 @@
 package com.imdmp.youtubecompose
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import com.imdmp.youtubecompose.base.BaseViewModel
+import com.imdmp.youtubecompose.features.MainScreenEvents
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel @Inject constructor() : BaseViewModel() {
     fun updateMainScreenState(mainState: MainState) {
         mainScreenState.value = mainState
+        postViewModelEvent(MainScreenEvents.MainStateValueChanged(mainState = mainState))
     }
 
     //return true if handled

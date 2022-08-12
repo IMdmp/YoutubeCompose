@@ -1,5 +1,6 @@
 package com.imdmp.youtubecompose.features.videolist.model
 
+import androidx.compose.ui.text.input.TextFieldValue
 import com.imdmp.youtubecompose.features.videolist.search.SearchScreenCallbacks
 import com.imdmp.youtubecompose.features.videolist.topappbar.ToolbarActions
 
@@ -30,7 +31,7 @@ interface VideoListScreenCallbacks : VideoItemActions, ToolbarActions, SearchScr
                 TODO("Not yet implemented")
             }
 
-            override fun onSearchTextValueChanged(newValue: String) {
+            override fun onSearchTextValueChanged(newValue: TextFieldValue) {
                 TODO("Not yet implemented")
             }
 

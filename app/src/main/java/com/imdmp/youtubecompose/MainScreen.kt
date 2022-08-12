@@ -82,7 +82,6 @@ fun MainScreen(
                 padding.calculateBottomPadding()
             }
         )
-
         MainNavScreen(navController = navController)
 
         if (mainScreenState.value == MainState.PLAYER) {
