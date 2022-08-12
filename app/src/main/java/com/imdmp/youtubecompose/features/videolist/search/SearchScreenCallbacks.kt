@@ -1,5 +1,7 @@
 package com.imdmp.youtubecompose.features.videolist.search
 
+import androidx.compose.ui.text.input.TextFieldValue
+
 interface SearchScreenCallbacks : CustomTextFieldCallbacks {
     fun onSearchClicked(query: String)
     fun onBackButtonClicked()
@@ -27,7 +29,7 @@ interface SearchScreenCallbacks : CustomTextFieldCallbacks {
                 TODO("Not yet implemented")
             }
 
-            override fun onSearchTextValueChanged(newValue: String) {
+            override fun onSearchTextValueChanged(newValue: TextFieldValue) {
                 TODO("Not yet implemented")
             }
 
