@@ -7,6 +7,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.imdmp.datarepository.YoutubeRepository
 import com.imdmp.youtubecompose.base.BaseViewModel
+import com.imdmp.youtubecompose.features.videoplayer.desc.CommentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,33 +20,85 @@ class VideoPlayerViewModel @Inject constructor(
     val youtubeRepository: YoutubeRepository
 ) : BaseViewModel(),
     VideoPlayerViewCallbacks {
-    val url = mutableStateOf("")
+
+    private val state = mutableStateOf(VideoPlayerComposeScreenState.init())
+
+    fun getState(): VideoPlayerComposeScreenState {
+        return state.value
+    }
+
+    private fun initVideoPlayerData(encryptedUrl: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val videoData = youtubeRepository.getVideoDataInfo(encryptedUrl)
+            state.value = state.value.copy(
+                encryptedUrl = encryptedUrl,
+                videoDescription = videoData.videoDescription,
+                videoTitle = videoData.title,
+                views = videoData.views,
+                datePosted = videoData.uploadDate,
+                likeCount = videoData.likeCount,
+                authorUrl = videoData.uploaderProfilePicUrl,
+                authorName = videoData.uploaderName,
+                numberOfSubs = videoData.subscriberCount.toLong(),
+                streamList = videoData.streamList.map {
+                    StreamInfo(
+                        it.url,
+                        it.resolution
+                    )
+                },
+                currentStreamInfo = with(videoData.streamList.last()) {
+                    StreamInfo(this.url, this.resolution)
+                }
+            )
+        }
+    }
 
     fun initVideoPlayer(url: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val videoData = youtubeRepository.getVideoDataInfo(url)
-            val resUrl = videoData.streamList.last()
-            val uri =
-                Uri.parse(resUrl.url)
-            val mediaItem: MediaItem = MediaItem.fromUri(uri)
-
+        val uri =
+            Uri.parse(url)
+        val mediaItem: MediaItem = MediaItem.fromUri(uri)
+        viewModelScope.launch {
             withContext(Dispatchers.Main) {
                 videoPlayer.setMediaItem(mediaItem)
                 videoPlayer.prepare()
                 videoPlayer.play()
             }
-
         }
-
-
     }
+
 
     override fun goFullScreen() {
         postViewModelEvent(VideoPlayerEvents.FullScreenPressed())
     }
 
+    override fun closeButtonClicked() {
+        postViewModelEvent(VideoPlayerEvents.CloseButtonPressed())
+    }
+
+    override fun pausePlayClicked() {
+        TODO("Not yet implemented")
+    }
+
     fun updateUrl(streamUrl: String) {
-        url.value = streamUrl
+        initVideoPlayerData(streamUrl)
+        initComments(streamUrl)
+    }
+
+    private fun initComments(streamUrl: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val comments = youtubeRepository.getComments(streamUrl = streamUrl)
+            state.value = state.value.copy(
+                commentList = comments.map {
+                    CommentModel(
+                        it.name,
+                        it.comment,
+                        it.profilePicUrl,
+                        null,
+                        null
+                    )
+                }
+            )
+        }
     }
 
     fun onStart() {

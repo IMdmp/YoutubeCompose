@@ -25,6 +25,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.imdmp.youtubecompose.features.videolist.model.VideoItemActions
 import com.imdmp.youtubecompose.features.videolist.model.VideoListItem
+import com.imdmp.ytcore.YTCoreTheme
 import com.skydoves.landscapist.glide.GlideImage
 import com.imdmp.ytcore.R as R2
 
@@ -91,7 +92,7 @@ fun VideoItem(item: VideoListItem, videoItemActions: VideoItemActions) {
             )
 
             Text(
-                text = "${item.viewCount} views . ${item.uploadedDate} ago",
+                text = "${item.viewCount} views", //todo: update when uploaded
                 style = typography.subtitle1,
                 modifier = Modifier
                     .constrainAs(views) {
@@ -125,5 +126,7 @@ fun PreviewVideoItem() {
         author = "Kurzgesagt",
         viewCount = 10
     )
-    VideoItem(dataItem, VideoItemActions.default())
+    YTCoreTheme {
+        VideoItem(dataItem, VideoItemActions.default())
+    }
 }

@@ -82,7 +82,7 @@ class NewPipeDataModelConverterImpl : NewPipeDataModelConverter {
         return commentsInfo.relatedItems.map {
             VideoDataCommentSchema(
                 name = it.uploaderName,
-                profilePicUrl = it.uploaderAvatarUrl,
+                profilePicUrl = it.uploaderUrl,
                 comment = it.commentText
             )
         }

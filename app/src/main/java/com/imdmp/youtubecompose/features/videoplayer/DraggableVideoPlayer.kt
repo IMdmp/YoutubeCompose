@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.databinding.VideoPlayerBinding
+import com.imdmp.youtubecompose.features.videoplayer.desc.VideoPlayerDesc
 import com.mikepenz.iconics.view.IconicsImageView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,8 +31,10 @@ fun DraggableVideoPlayer(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 
     ) {
-    LaunchedEffect(videoPlayerViewModel.url.value) {
-        videoPlayerViewModel.initVideoPlayer(videoPlayerViewModel.url.value)
+    LaunchedEffect(videoPlayerViewModel.getState().currentStreamInfo) {
+        if (videoPlayerViewModel.getState().currentStreamInfo.url.isNotEmpty()) {
+            videoPlayerViewModel.initVideoPlayer(videoPlayerViewModel.getState().currentStreamInfo.url)
+        }
     }
 
     DisposableEffect(key1 = videoPlayerViewModel) {
@@ -49,7 +52,11 @@ fun DraggableVideoPlayer(
         callback = callback,
         exoPlayer = videoPlayerViewModel.videoPlayer,
         videoPlayerViewCallbacks = videoPlayerViewModel,
-        content = content
+        content = {
+            Surface(modifier = Modifier.fillMaxSize()) {
+                VideoPlayerDesc(videoPlayerViewModel.getState())
+            }
+        }
     )
 }
 
@@ -123,6 +130,10 @@ fun DraggableVidPlayer(
         this.root.progress = screenMotionProgress.value
         this.playerView.findViewById<IconicsImageView>(R.id.fullscreen).setOnClickListener {
             videoPlayerViewCallbacks?.goFullScreen()
+        }
+
+        this.closeButton.setOnClickListener {
+            videoPlayerViewCallbacks?.closeButtonClicked()
         }
         this.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

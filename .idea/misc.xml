@@ -92,6 +92,9 @@
         <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/search/SearchResultBar.kt" value="0.375" />
         <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/search/SearchScreen.kt" value="0.33796296296296297" />
         <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videolist/topappbar/HomeTopAppBar.kt" value="0.5055555555555555" />
+        <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videoplayer/Comments.kt" value="0.3648148148148148" />
+        <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videoplayer/VideoPlayerDesc.kt" value="0.3648148148148148" />
+        <entry key="app/src/main/java/com/imdmp/youtubecompose/features/videoplayer/desc/VideoPlayerDesc.kt" value="0.335" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/exo_styled_controls_pause.xml" value="0.1825" />
         <entry key="app/src/main/res/drawable/exo_styled_controls_play.xml" value="0.1825" />
@@ -100,7 +103,7 @@
         <entry key="app/src/main/res/layout/custom_player_controller.xml" value="0.1234375" />
         <entry key="app/src/main/res/layout/layout_main.xml" value="0.11820652173913043" />
         <entry key="app/src/main/res/layout/sample.xml" value="0.24895833333333334" />
-        <entry key="app/src/main/res/layout/video_player.xml" value="0.24895833333333334" />
+        <entry key="app/src/main/res/layout/video_player.xml" value="0.1" />
         <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/VideoPlayerScreen.kt" value="0.26472868217054263" />
         <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/comments/Comments.kt" value="0.37222222222222223" />
         <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/playback/Playback.kt" value="0.2712962962962963" />

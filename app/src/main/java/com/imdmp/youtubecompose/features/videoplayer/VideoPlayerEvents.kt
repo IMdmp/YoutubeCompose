@@ -4,4 +4,6 @@ import com.imdmp.youtubecompose.features.videolist.ViewModelEvent
 
 sealed class VideoPlayerEvents : ViewModelEvent() {
     class FullScreenPressed : VideoPlayerEvents()
+    class CloseButtonPressed : VideoPlayerEvents()
+
 }
