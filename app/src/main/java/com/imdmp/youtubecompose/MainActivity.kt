@@ -1,8 +1,10 @@
 package com.imdmp.youtubecompose
 
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -11,9 +13,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.LifecycleOwner
-import com.imdmp.youtubecompose.base.BaseActivityCallbacks
 import com.imdmp.youtubecompose.base.BaseViewModel
 import com.imdmp.youtubecompose.base.ViewModelActionHandler
+import com.imdmp.youtubecompose.features.MainScreenEvents
 import com.imdmp.youtubecompose.features.videolist.VideoListViewModel
 import com.imdmp.youtubecompose.features.videolist.ViewModelEvent
 import com.imdmp.youtubecompose.features.videolist.events.VideoListEvents
@@ -24,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalMaterialApi
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(), BaseActivityCallbacks {
+class MainActivity : ComponentActivity() {
 
     private val videoPlayerViewModel: VideoPlayerViewModel by viewModels()
     private val videoListViewModel: VideoListViewModel by viewModels()
@@ -85,6 +87,30 @@ class MainActivity : ComponentActivity(), BaseActivityCallbacks {
         }
     }
 
+    private val mainActionHandler: ViewModelActionHandler = object : ViewModelActionHandler {
+        override fun provideOwner(): LifecycleOwner {
+            return this@MainActivity
+        }
+
+        override fun provideViewModel(): BaseViewModel {
+            return mainViewModel
+        }
+
+        override fun handleViewModelAction(event: ViewModelEvent) {
+            if (event is MainScreenEvents) {
+                when (event) {
+                    is MainScreenEvents.MainStateValueChanged -> {
+                        if (event.mainState == MainState.DEFAULT) {
+                            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER
+                        }
+                    }
+                }
+            }
+
+            super.handleViewModelAction(event)
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,29 +119,54 @@ class MainActivity : ComponentActivity(), BaseActivityCallbacks {
                 MainScreen()
             }
         }
+
+        val orientation = resources.configuration.orientation
+
+        if (orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            showSystemBars()
+        } else {
+            hideSystemBars()
+        }
     }
 
     override fun onStart() {
         super.onStart()
         videoListActionHandler.onActivityStart()
         videoPlayerActionHandler.onActivityStart()
+        mainActionHandler.onActivityStart()
     }
 
-    override fun setOrientation(activityInfo: Int) {
-        this.let {
-            it.requestedOrientation = activityInfo
-            hideSystemBars(it.window.decorView)
+    private fun hideSystemBars() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowInsetsController =
+                ViewCompat.getWindowInsetsController(window.decorView) ?: return
+            // Configure the behavior of the hidden system bars
+            windowInsetsController.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            @Suppress("DEPRECATION")
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
         }
     }
 
-    private fun hideSystemBars(view: View) {
-        val windowInsetsController =
-            ViewCompat.getWindowInsetsController(view) ?: return
-        // Configure the behavior of the hidden system bars
-        windowInsetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        // Hide both the status bar and the navigation bar
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+    private fun showSystemBars() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowInsetsController =
+                ViewCompat.getWindowInsetsController(window.decorView) ?: return
+
+            windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+        } else {
+            @Suppress("DEPRECATION")
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            @Suppress("DEPRECATION")
+            window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+
+        }
+
     }
 
     override fun onBackPressed() {
