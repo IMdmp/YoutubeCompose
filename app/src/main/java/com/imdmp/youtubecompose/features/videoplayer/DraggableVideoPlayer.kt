@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.databinding.VideoPlayerBinding
+import com.imdmp.youtubecompose.features.videoplayer.desc.VideoPlayerDesc
 import com.mikepenz.iconics.view.IconicsImageView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -49,7 +50,7 @@ fun DraggableVideoPlayer(
         callback = callback,
         exoPlayer = videoPlayerViewModel.videoPlayer,
         videoPlayerViewCallbacks = videoPlayerViewModel,
-        content = content
+        content = { VideoPlayerDesc() }
     )
 }
 
