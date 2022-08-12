@@ -103,7 +103,7 @@
         <entry key="app/src/main/res/layout/custom_player_controller.xml" value="0.1234375" />
         <entry key="app/src/main/res/layout/layout_main.xml" value="0.11820652173913043" />
         <entry key="app/src/main/res/layout/sample.xml" value="0.24895833333333334" />
-        <entry key="app/src/main/res/layout/video_player.xml" value="0.24895833333333334" />
+        <entry key="app/src/main/res/layout/video_player.xml" value="0.1" />
         <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/VideoPlayerScreen.kt" value="0.26472868217054263" />
         <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/comments/Comments.kt" value="0.37222222222222223" />
         <entry key="videoplayer/src/main/java/com/imdmp/videoplayer/playback/Playback.kt" value="0.2712962962962963" />

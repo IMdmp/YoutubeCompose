@@ -80,6 +80,10 @@ class MainActivity : ComponentActivity() {
                         this@MainActivity.requestedOrientation =
                             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                     }
+
+                    is VideoPlayerEvents.CloseButtonPressed -> {
+                        onBackPressed()
+                    }
                 }
 
             }

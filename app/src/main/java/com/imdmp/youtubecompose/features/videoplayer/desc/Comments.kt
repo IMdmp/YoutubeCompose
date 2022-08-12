@@ -23,6 +23,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.imdmp.youtubecompose.R
 import com.imdmp.youtubecompose.base.TestTags
+import com.imdmp.youtubecompose.features.videoplayer.desc.CommentModel
+import com.imdmp.youtubecompose.features.videoplayer.desc.CommentState
 import com.imdmp.ytcore.YTCoreTheme
 import com.skydoves.landscapist.glide.GlideImage
 import compose.icons.FontAwesomeIcons

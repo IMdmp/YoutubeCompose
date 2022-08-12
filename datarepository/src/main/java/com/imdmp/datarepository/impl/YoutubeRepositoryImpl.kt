@@ -53,4 +53,11 @@ class YoutubeRepositoryImpl(
 
         }
     }
+
+    override suspend fun getComments(streamUrl: String): List<VideoDataCommentSchema> {
+        return newPipeDataModelConverter.mapCommentsInfoToVideoDataCommentSchemaList(
+            newPipeExtractorWrapper.getComments(streamUrl)
+        )
+
+    }
 }

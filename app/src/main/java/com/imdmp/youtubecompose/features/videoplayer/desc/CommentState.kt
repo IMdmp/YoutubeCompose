@@ -1,4 +1,4 @@
-package com.imdmp.youtubecompose.features.videoplayer
+package com.imdmp.youtubecompose.features.videoplayer.desc
 
 data class CommentState(
     val commentModelList: List<CommentModel>,
@@ -11,7 +11,7 @@ data class CommentState(
 data class CommentModel(
     val authorName: String,
     val commentText: String,
-    val profilePic: String,
-    val likeCount: Int,
-    val timeCommented: String,
+    val profilePic: String?,
+    val likeCount: Int?,
+    val timeCommented: String?,
 )

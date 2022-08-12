@@ -31,8 +31,10 @@ fun DraggableVideoPlayer(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 
     ) {
-    LaunchedEffect(videoPlayerViewModel.url.value) {
-        videoPlayerViewModel.initVideoPlayer(videoPlayerViewModel.url.value)
+    LaunchedEffect(videoPlayerViewModel.getState().currentStreamInfo) {
+        if (videoPlayerViewModel.getState().currentStreamInfo.url.isNotEmpty()) {
+            videoPlayerViewModel.initVideoPlayer(videoPlayerViewModel.getState().currentStreamInfo.url)
+        }
     }
 
     DisposableEffect(key1 = videoPlayerViewModel) {
@@ -50,7 +52,11 @@ fun DraggableVideoPlayer(
         callback = callback,
         exoPlayer = videoPlayerViewModel.videoPlayer,
         videoPlayerViewCallbacks = videoPlayerViewModel,
-        content = { VideoPlayerDesc() }
+        content = {
+            Surface(modifier = Modifier.fillMaxSize()) {
+                VideoPlayerDesc(videoPlayerViewModel.getState())
+            }
+        }
     )
 }
 
@@ -124,6 +130,10 @@ fun DraggableVidPlayer(
         this.root.progress = screenMotionProgress.value
         this.playerView.findViewById<IconicsImageView>(R.id.fullscreen).setOnClickListener {
             videoPlayerViewCallbacks?.goFullScreen()
+        }
+
+        this.closeButton.setOnClickListener {
+            videoPlayerViewCallbacks?.closeButtonClicked()
         }
         this.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

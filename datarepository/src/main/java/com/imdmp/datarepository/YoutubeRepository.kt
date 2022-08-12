@@ -17,4 +17,6 @@ interface YoutubeRepository {
     suspend fun search(query: String): YTDataSchema
 
     suspend fun searchAutoSuggestion(query: String): Flow<List<String>>
+
+    suspend fun getComments(streamUrl: String): List<VideoDataCommentSchema>
 }

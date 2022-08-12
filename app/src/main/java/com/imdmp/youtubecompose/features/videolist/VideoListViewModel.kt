@@ -138,7 +138,7 @@ class VideoListViewModel @Inject constructor(
                         it.thumbnail,
                         it.name,
                         it.uploaderName,
-                        it.uploaderThumbnail, 0, streamUrl = it.url, uploadedDate = ""
+                        it.uploaderThumbnail, it.viewCount, streamUrl = it.url, uploadedDate = ""
                     )
                 } else {
                 youtubeRepository.search(query = query).ytDataList.map {
@@ -146,7 +146,7 @@ class VideoListViewModel @Inject constructor(
                         it.thumbnail,
                         it.name,
                         it.uploaderName,
-                        it.uploaderThumbnail, 0, streamUrl = it.url, uploadedDate = ""
+                        it.uploaderThumbnail, it.viewCount, streamUrl = it.url, uploadedDate = ""
                     )
                 }
             }

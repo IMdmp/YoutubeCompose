@@ -1,10 +1,10 @@
-package com.imdmp.youtubecompose.features.videoplayer.desc
+package com.imdmp.youtubecompose.features.videoplayer
 
-import com.imdmp.youtubecompose.features.videoplayer.CommentModel
+import com.imdmp.youtubecompose.features.videoplayer.desc.CommentModel
 
 data class VideoPlayerComposeScreenState(
     val playerStatus: PlayerStatus = PlayerStatus.LOADING,
-    val streamUrl: String = "",
+    val encryptedUrl: String = "",
     val commentList: List<CommentModel> = listOf(),
     val videoTitle: String,
     val views: Long,
@@ -14,12 +14,14 @@ data class VideoPlayerComposeScreenState(
     val authorName: String,
     val numberOfSubs: Long,
     val videoDescription: String,
+    val streamList: List<StreamInfo>,
+    val currentStreamInfo: StreamInfo,
 ) {
     companion object {
         fun init(): VideoPlayerComposeScreenState {
             return VideoPlayerComposeScreenState(
                 playerStatus = PlayerStatus.IDLE,
-                streamUrl = "",
+                encryptedUrl = "",
                 commentList = listOf(),
                 videoTitle = "",
                 views = 0,
@@ -28,11 +30,18 @@ data class VideoPlayerComposeScreenState(
                 authorUrl = "",
                 authorName = "",
                 numberOfSubs = 0,
-                videoDescription = ""
+                videoDescription = "",
+                currentStreamInfo = StreamInfo("", ""),
+                streamList = listOf()
             )
         }
     }
 }
+
+data class StreamInfo(
+    val url: String,
+    val resolution: String
+)
 
 enum class PlayerStatus {
     PLAYING, PAUSED, LOADING, IDLE, ERROR

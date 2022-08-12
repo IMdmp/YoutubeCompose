@@ -31,5 +31,31 @@
         app:controller_layout_id="@layout/custom_player_controller"
         app:show_buffering="always" />
 
+    <TextView
+        android:id="@+id/tv_minimized_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        tools:text="How did my life get to the point where that is not a strange sentence to me" />
+
+    <TextView
+        android:id="@+id/tv_creator_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Doofenshrimtz" />
+
+
+    <!--    <com.mikepenz.iconics.view.IconicsImageView-->
+    <!--        android:id="@+id/pausePlayButton"-->
+    <!--        android:layout_width="24dp"-->
+    <!--        android:layout_height="24dp"-->
+    <!--        app:iiv_icon="gmd-favorite"-->
+    <!--        />-->
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/closeButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:iiv_icon="gmd-close" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
