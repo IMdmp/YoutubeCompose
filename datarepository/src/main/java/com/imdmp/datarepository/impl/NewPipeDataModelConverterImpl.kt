@@ -72,7 +72,7 @@ class NewPipeDataModelConverterImpl : NewPipeDataModelConverter {
                     it.isVideoOnly,
                     it.quality,
                     it.codec,
-                    it.url
+                    it.url ?: ""
                 )
             }
         )
