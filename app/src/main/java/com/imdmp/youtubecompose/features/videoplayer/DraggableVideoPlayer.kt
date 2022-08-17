@@ -1,16 +1,21 @@
 package com.imdmp.youtubecompose.features.videoplayer
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -71,7 +76,9 @@ fun DraggableVidPlayer(
     callback: (progress: Float) -> Unit = {},
     content: @Composable (modifier: Modifier) -> Unit = { Surface {} }
 ) {
-    var playerView1: StyledPlayerView? = null
+    var savedPlayerView: StyledPlayerView? = remember { null }
+    var visible by remember { mutableStateOf(true) }
+    var yOffset by remember { mutableStateOf(0f) }
     val screenMotionProgress = remember {
         Animatable(0f)
     }
@@ -91,13 +98,18 @@ fun DraggableVidPlayer(
         snapshotFlow {
             screenMotionProgress
         }.collect {
+            visible = it.value < 0.7f
+            yOffset = it.value * 1000
             callback(it.value)
         }
     }
 
     LaunchedEffect(key1 = windowState.value) {
-        playerView1?.useController = windowState.value != PlayerWindowState.COLLAPSED
+        savedPlayerView?.useController = windowState.value != PlayerWindowState.COLLAPSED
     }
+
+    val topPadding = remember { Animatable(0f) }
+    val videoDetailsAnimationScope = rememberCoroutineScope()
     ConstraintLayout {
         val (player, additionalContent) = createRefs()
         AndroidViewBinding(
@@ -133,24 +145,43 @@ fun DraggableVidPlayer(
                 },
             factory = VideoPlayerBinding::inflate
         ) {
-            playerView1 = this.playerView
-            this.playerView.player = exoPlayer
-            this.root.progress = screenMotionProgress.value
-            this.playerView.findViewById<IconicsImageView>(R.id.fullscreen).setOnClickListener {
-                videoPlayerViewCallbacks?.goFullScreen()
+            videoDetailsAnimationScope.launch { topPadding.animateTo((this@AndroidViewBinding.playerView.height).toFloat()) }
+
+            this.playerView.apply {
+                this.player = exoPlayer
+                savedPlayerView = this
+                findViewById<IconicsImageView>(R.id.fullscreen).setOnClickListener {
+                    videoPlayerViewCallbacks?.goFullScreen()
+                }
             }
+            this.root.progress = screenMotionProgress.value
 
             this.closeButton.setOnClickListener {
                 videoPlayerViewCallbacks?.closeButtonClicked()
             }
+
         }
-        content(Modifier
-            .constrainAs(additionalContent) {
-                top.linkTo(parent.top, margin = 300.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                Dimension.Companion.fillToConstraints
-            })
+
+        AnimatedVisibility(
+            visible = visible,
+            exit = fadeOut(
+                // Overwrites the default animation with tween
+                animationSpec = tween(durationMillis = 50)
+            )
+        ) {
+            // Content that needs to appear/disappear goes here:
+            content(
+                Modifier
+                    .padding(top = LocalDensity.current.run { topPadding.value.toDp() })
+                    .offset(y = LocalDensity.current.run { yOffset.toDp() })
+                    .constrainAs(additionalContent) {
+                        top.linkTo(player.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        Dimension.Companion.fillToConstraints
+                    })
+        }
+
 
     }
 }
